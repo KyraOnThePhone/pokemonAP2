@@ -1,34 +1,33 @@
 {
-  "trainer": 1,
-  "name": "G\u00f6rl",
+  "trainer": 0,
+  "name": "Spieler",
   "team": [
-    "Glutexo",
-    "Glumanda"
+    "Bisasam",
+    "Rossana"
   ],
   "pc_box": [
-    "Glumanda",
-    "Chimpep"
+    "Bisasam",
+    "Rossana"
   ],
-  "balls": 13,
-  "coins": 280,
-  "potions": 2,
+  "balls": 0,
+  "coins": 650,
+  "potions": 3,
   "super_potions": 0,
   "badges": 0,
-  "battles_won": 1,
-  "cards_known": 1,
+  "battles_won": 0,
+  "cards_known": 0,
   "total_catches": 1,
-  "step_count": 748,
+  "step_count": 6194,
   "trainer_battles_won": 0,
   "rocket_battles_won": 0,
-  "evolution_count": 1,
-  "cards_correct_total": 3,
-  "cards_best_streak": 3,
-  "cards_current_streak": 3,
+  "evolution_count": 0,
+  "cards_correct_total": 4,
+  "cards_best_streak": 4,
+  "cards_current_streak": 4,
   "achievements": {
-    "evolutions": 0,
+    "steps": 2,
     "catch_first": 0,
-    "steps": 0,
     "cards_streak": 0
   },
-  "starter": "Glumanda"
+  "starter": "Bisasam"
 }

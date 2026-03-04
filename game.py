@@ -473,6 +473,10 @@ class Battle:
         self.save_data_ref = {}
         self.last_effectiveness = (1.0, "", C_WHITE)
         self.pending_evolutions = []
+        self.item_pick_sel = 0
+        self.raid_cards_needed = 0   # for raid battles
+        self.raid_cards_answered = 0
+        self.overworld_ref = None    # set by Game for raid card tracking
         self._setup_enemies()
         self.push_log(f"Ein wildes {self.enemy_moonies[0].name} erscheint!" if is_wild
                       else f"Trainer {enemy_data.name} möchte kämpfen!")
@@ -554,6 +558,17 @@ class Battle:
         self.save_data_ref = save_data
         if self.state == "intro":
             self.state = "player_turn"
+        elif self.state == "item_pick":
+            items = self._get_usable_items(save_data)
+            if event.key == pygame.K_ESCAPE or event.key == pygame.K_x:
+                self.state = "player_turn"
+            elif event.key in (pygame.K_UP, pygame.K_w):
+                self.item_pick_sel = max(0, self.item_pick_sel - 1)
+            elif event.key in (pygame.K_DOWN, pygame.K_s):
+                self.item_pick_sel = min(len(items)-1, self.item_pick_sel + 1)
+            elif event.key in (pygame.K_RETURN, pygame.K_z):
+                if items:
+                    self._use_item(items[self.item_pick_sel], save_data)
         elif self.state == "player_turn":
             if event.key == pygame.K_LEFT:
                 self.selected_btn = (self.selected_btn - 1) % 4
@@ -576,15 +591,26 @@ class Battle:
             self.state = "result"; self.result = "win"; return
 
         if btn == 0:  # Attack
-            # Trigger flashcard every 3 turns
-            if random.random() < 0.4 and self.flashcards:
+            # Raid: flashcard every 2nd attack; normal battles: 40% chance
+            is_raid = getattr(self, '_is_raid', False)
+            if is_raid:
+                self._raid_attack_count = getattr(self, '_raid_attack_count', 0) + 1
+                show_card = (self._raid_attack_count % 2 == 1) and bool(self.flashcards)
+            else:
+                show_card = bool(self.flashcards) and random.random() < 0.4
+            if show_card:
                 def reward(correct, total):
                     bonus = correct * 5
                     leveled, evos = pm.gain_xp(bonus)
                     if leveled: notify(f"{pm.name} Level {pm.level}! +{bonus} Bonus-XP", C_YELLOW)
                     else: notify(f"+{bonus} Bonus-XP für {correct}/{total} richtige!", C_YELLOW)
+                    # Count correct raid answers
+                    if is_raid and correct > 0:
+                        self.raid_cards_answered = getattr(self, 'raid_cards_answered', 0) + correct
+                        if self.overworld_ref:
+                            self.overworld_ref.raid["cards_answered"] = self.raid_cards_answered
                 self.flash_game = FlashcardGame(self.flashcards, reward, n=1)
-                self.push_log("Eine Lernfrage erscheint!")
+                self.push_log("Lernfrage!" if not is_raid else f"📚 Raid-Lernkarte! ({getattr(self,'raid_cards_answered',0)}/{getattr(self,'raid_cards_needed',0)})")
                 return
             dmg, mult = pm.calculate_damage(em)
             em.take_damage(dmg)
@@ -622,28 +648,9 @@ class Battle:
             self.catch_result = random.random() < chance
             self.push_log(f"Pokéball geworfen! (Bälle: {save_data['balls']})")
 
-        elif btn == 2:  # Bag - use potion
-            # Check potions
-            potions = save_data.get("potions", 0)
-            super_p = save_data.get("super_potions", 0)
-            if super_p > 0:
-                save_data["super_potions"] -= 1
-                pm.heal(80)
-                self.push_log(f"Super Trank eingesetzt! +80 HP")
-            elif potions > 0:
-                save_data["potions"] -= 1
-                pm.heal(30)
-                self.push_log(f"Trank eingesetzt! +30 HP")
-            else:
-                self.push_log("Keine Tränke mehr! Flashcard?")
-                if self.flashcards:
-                    def reward(correct, total):
-                        bonus = correct * 8
-                        pm.heal(bonus)
-                        notify(f"Lernkarte: {bonus} HP wiederhergestellt!", C_GREEN)
-                    self.flash_game = FlashcardGame(self.flashcards, reward, n=1)
-                return
-            self._enemy_turn()
+        elif btn == 2:  # Item bag — open picker
+            self.state = "item_pick"
+            self.item_pick_sel = 0
 
         elif btn == 3:  # Run
             if self.is_wild:
@@ -691,6 +698,23 @@ class Battle:
             else:
                 self.player_idx = self.player_team.index(alive[0])
                 self.push_log(f"{alive[0].name} kämpft weiter!")
+
+    def _get_usable_items(self, save_data):
+        items = []
+        if save_data.get("potions", 0) > 0:
+            items.append(("Trank", "+30 HP", "potions", 30))
+        if save_data.get("super_potions", 0) > 0:
+            items.append(("Super Trank", "+80 HP", "super_potions", 80))
+        return items
+
+    def _use_item(self, item, save_data):
+        name, desc, key, heal = item
+        pm = self.player_moonie
+        save_data[key] -= 1
+        pm.heal(heal)
+        self.push_log(f"{name} eingesetzt! +{heal} HP")
+        self.state = "player_turn"
+        self._enemy_turn()
 
     def update(self):
         global shake_timer
@@ -755,6 +779,14 @@ class Battle:
         for txt, col in hud_items:
             draw_text(surf, txt, F_TINY, col, hx, 9)
             hx += 175
+
+        # Raid card progress in battle HUD
+        if getattr(self, '_is_raid', False):
+            needed = getattr(self, 'raid_cards_needed', 0)
+            answered = getattr(self, 'raid_cards_answered', 0)
+            ok = answered >= needed
+            rc = C_GREEN if ok else C_YELLOW
+            draw_text(surf, f"📚 RAID: {answered}/{needed} Lernkarten", F_SMALL, rc, SW//2, 10, center=True, shadow=True)
 
         # Background
         bg_color = (20, 18, 35) if not self.is_wild else (15, 30, 18)
@@ -821,7 +853,24 @@ class Battle:
             draw_text(surf, lbl, F_SMALL, ecol, log_rect[0]+10, log_rect[1]+120, shadow=True)
 
         # --- Buttons ---
-        if self.state == "player_turn":
+        if self.state == "item_pick":
+            items = self._get_usable_items(self.save_data_ref)
+            pw, ph = 320, 200
+            px2, py2 = SW//2 - pw//2, SH//2 - ph//2
+            draw_rounded_rect(surf, C_PANEL, (px2, py2, pw, ph), 14, 2, C_YELLOW)
+            draw_text(surf, "💊 Items benutzen", F_MED, C_YELLOW, px2+pw//2, py2+10, center=True, shadow=True)
+            if not items:
+                draw_text(surf, "Keine Items vorhanden!", F_SMALL, C_GRAY, px2+pw//2, py2+80, center=True)
+            else:
+                for i, (name, desc, key, heal) in enumerate(items):
+                    sel = (i == self.item_pick_sel)
+                    ibg = (50,80,130) if sel else (30,36,55)
+                    ibc = C_YELLOW if sel else (50,55,75)
+                    cnt = self.save_data_ref.get(key, 0)
+                    draw_rounded_rect(surf, ibg, (px2+16, py2+48+i*46, pw-32, 38), 8, 2 if sel else 1, ibc)
+                    draw_text(surf, f"{name}  ({cnt}x)  {desc}", F_SMALL, C_WHITE, px2+pw//2, py2+58+i*46, center=True)
+            draw_text(surf, "↑↓ wählen   ENTER nutzen   ESC zurück", F_TINY, C_GRAY, px2+pw//2, py2+ph-20, center=True)
+        elif self.state == "player_turn":
             btn_labels = ["⚔ Angriff", "🎯 Pokéball", "💊 Tasche", "🏃 Fliehen"]
             btn_colors = [(60,90,150),(90,150,60),(80,140,80),(150,60,60)]
             bw, bh = 118, 52
@@ -1804,7 +1853,8 @@ class OverworldScreen:
     SHOP_RECT   = pygame.Rect(20,  20, 130, 85)
     CENTER_RECT = pygame.Rect(170, 20, 130, 85)
     PC_RECT     = pygame.Rect(740, 30, 120, 75)
-    NUM_TRAINERS = 4
+    ARENA_RECT  = pygame.Rect(SW//2 - 65, 25, 130, 85)  # arena in center-top
+    MAX_TRAINERS = 4
 
     def __init__(self, save_data, flashcards):
         self.save = save_data
@@ -1815,23 +1865,59 @@ class OverworldScreen:
         self.step_anim = 0
         self.encounter_timer = 0
         self.trainer_cooldown = {}
-        self.center_cooldown = 0   # prevents re-entering shop/center right after close
+        self.center_cooldown = 0
         self.pending_action = None
         self.in_grass = False
         self.grass_particle_t = 0
-        import addEnemy
-        rng = random.Random(42)
+        self._ach_cb = None
+
+        # Trainer spawning
         self._trainers = []
-        for i in range(self.NUM_TRAINERS):
-            self._trainers.append({
-                "enemy": addEnemy.NORMAL_ENEMIES[i % len(addEnemy.NORMAL_ENEMIES)],
-                "x": float(rng.randint(200, SW-120)),
-                "y": float(rng.randint(140, SH-120)),
-                "vx": rng.choice([-1,1]) * rng.uniform(0.5, 1.2),
-                "vy": rng.choice([-1,1]) * rng.uniform(0.5, 1.2),
-                "move_t": 0,
-                "move_dir_t": rng.randint(80, 200),
-            })
+        self._spawn_timer = random.randint(180, 480)  # frames until next spawn check
+        self._spawn_initial()
+
+        # Raid state
+        self.raid = None          # None or RaidData dict
+        self.raid_timer = 0       # countdown in frames
+        self._raid_spawn_timer = random.randint(1800, 5400)  # 30–90 sec until first raid
+
+    def _spawn_initial(self):
+        import addEnemy
+        n = random.randint(1, self.MAX_TRAINERS)
+        all_e = addEnemy.ALL_ENEMIES
+        for _ in range(n):
+            self._spawn_trainer(all_e)
+
+    def _spawn_trainer(self, all_enemies=None):
+        if len(self._trainers) >= self.MAX_TRAINERS:
+            return
+        if all_enemies is None:
+            import addEnemy
+            all_enemies = addEnemy.ALL_ENEMIES
+        # 30% chance it's a Rocket member
+        rockets = [e for e in all_enemies if e.isRocket]
+        normals = [e for e in all_enemies if not e.isRocket]
+        if random.random() < 0.3 and rockets:
+            enemy = random.choice(rockets)
+        else:
+            enemy = random.choice(normals)
+        # Pick spawn location away from player
+        for _ in range(20):
+            x = float(random.randint(80, SW-80))
+            y = float(random.randint(130, SH-80))
+            dist = math.sqrt((x-self.player_x)**2 + (y-self.player_y)**2)
+            if dist > 200:
+                break
+        self._trainers.append({
+            "enemy":      enemy,
+            "x":          x,
+            "y":          y,
+            "vx":         random.choice([-1,1]) * random.uniform(0.5, 1.3),
+            "vy":         random.choice([-1,1]) * random.uniform(0.5, 1.3),
+            "move_t":     0,
+            "move_dir_t": random.randint(80, 220),
+            "alive":      True,
+        })
 
     def get_trainer_img(self):
         path = "assets/trainer2.png" if self.save.get("trainer") == 1 else "assets/trainer.png"
@@ -1854,6 +1940,66 @@ class OverworldScreen:
                 t["vy"] *= -1
                 t["y"] = max(130, min(SH-80, t["y"]))
 
+        # Random spawn
+        self._spawn_timer -= 1
+        if self._spawn_timer <= 0:
+            self._spawn_timer = random.randint(300, 900)  # 5–15 sec between spawns
+            if len(self._trainers) < self.MAX_TRAINERS and random.random() < 0.7:
+                self._spawn_trainer()
+
+    def _despawn_trainer(self, idx):
+        """Remove trainer at index after battle defeat."""
+        if 0 <= idx < len(self._trainers):
+            self._trainers.pop(idx)
+            # Reschedule next spawn soon
+            self._spawn_timer = min(self._spawn_timer, random.randint(300, 600))
+            # Clean up cooldown keys
+            new_cd = {}
+            for k, v in self.trainer_cooldown.items():
+                if k < idx:
+                    new_cd[k] = v
+                elif k > idx:
+                    new_cd[k-1] = v
+            self.trainer_cooldown = new_cd
+
+    def _update_raid(self):
+        """Tick raid spawn timer and raid countdown."""
+        if self.raid is None:
+            self._raid_spawn_timer -= 1
+            if self._raid_spawn_timer <= 0:
+                self._try_spawn_raid()
+        else:
+            self.raid_timer -= 1
+            if self.raid_timer <= 0 and not self.raid.get("defeated"):
+                # Raid expired
+                add_particles(self.ARENA_RECT.centerx, self.ARENA_RECT.centery, (200,50,50), n=30)
+                notify("Raid abgelaufen! Das Pokémon ist entkommen.", C_RED, 200)
+                self.raid = None
+                self._raid_spawn_timer = random.randint(1800, 7200)
+
+    def _try_spawn_raid(self):
+        """Pick a legendary/rare Pokémon and start a raid."""
+        legendaries = [m for m in ALL_MOONIES_DICT.values() if m.rarity == "legendary"]
+        rares = [m for m in ALL_MOONIES_DICT.values() if m.rarity == "rare"]
+        pool = legendaries if legendaries else rares
+        if not pool:
+            return
+        boss = random.choice(pool)
+        level = random.randint(45, 60)
+        cards_needed = random.randint(3, 8)  # must answer this many correctly during fight
+        self.raid = {
+            "name":          boss.name,
+            "image":         boss.image,
+            "level":         level,
+            "cards_needed":  cards_needed,
+            "defeated":      False,
+            "can_catch":     False,
+        }
+        self.raid_timer = 60 * 60  # 60 seconds
+        add_particles(self.ARENA_RECT.centerx, self.ARENA_RECT.centery, (255,200,50), n=50)
+        notify(f"⚔ RAID erschienen! {boss.name} in der Arena! ({cards_needed} Lernkarten nötig)", C_YELLOW, 300)
+        self._raid_spawn_timer = random.randint(3600, 10800)
+
     def handle_event(self, event):
         pass
 
@@ -1871,11 +2017,11 @@ class OverworldScreen:
             self.player_y = max(115, min(SH-80, self.player_y + dy))
             self.step_anim += 1
             self.save["step_count"] = self.save.get("step_count",0) + 1
-            # Check step achievements every 100 steps
             if self.save["step_count"] % 100 == 0 and hasattr(self, '_ach_cb') and self._ach_cb:
                 self._ach_cb()
 
         self._update_trainers()
+        self._update_raid()
 
         pr = pygame.Rect(int(self.player_x)-12, int(self.player_y)-20, 24, 40)
         self.in_grass = any(g.colliderect(pr) for g in self.GRASS_RECTS)
@@ -1900,6 +2046,13 @@ class OverworldScreen:
             self.pending_action = "center"
             if enter_pressed:
                 return "center"
+        elif pr.colliderect(self.ARENA_RECT):
+            self.pending_action = "arena"
+            if enter_pressed and self.raid:
+                if self.raid.get("can_catch") and not self.raid.get("catch_used"):
+                    return "raid_catch"
+                elif not self.raid.get("defeated"):
+                    return "raid_battle"
         elif pr.colliderect(self.PC_RECT):
             self.pending_action = "pc"
         else:
@@ -1913,10 +2066,10 @@ class OverworldScreen:
 
         for i, t in enumerate(self._trainers):
             if i in self.trainer_cooldown:
-                continue   # on cooldown, skip
+                continue
             tr = pygame.Rect(int(t["x"])-28, int(t["y"])-28, 56, 56)
             if pr.colliderect(tr):
-                self.trainer_cooldown[i] = 300   # 5 seconds cooldown
+                self.trainer_cooldown[i] = 300
                 return f"trainer_{i}"
 
         return self.pending_action
@@ -1945,12 +2098,32 @@ class OverworldScreen:
         surf.blit(center_img, (self.CENTER_RECT.x, self.CENTER_RECT.y))
         draw_text(surf, "Pokecenter", F_TINY, (255,180,220), self.CENTER_RECT.centerx, self.CENTER_RECT.bottom + 3, center=True, shadow=True)
 
-        # PC Building — two side-by-side buttons
+        # Arena building (center-top)
+        arena_img = load_img("assets/arena.png", (130, 85))
+        if self.raid:
+            pulse = abs(math.sin(pygame.time.get_ticks() * 0.003))
+            glow_col = (80, 255, 120) if self.raid.get("can_catch") else (255, int(150+100*pulse), 0)
+            glow = pygame.Surface((self.ARENA_RECT.width+20, self.ARENA_RECT.height+20), pygame.SRCALPHA)
+            pygame.draw.rect(glow, (*glow_col, int(60+80*pulse)), (0,0,self.ARENA_RECT.width+20, self.ARENA_RECT.height+20), border_radius=12)
+            surf.blit(glow, (self.ARENA_RECT.x-10, self.ARENA_RECT.y-10))
+        surf.blit(arena_img, (self.ARENA_RECT.x, self.ARENA_RECT.y))
+        if self.raid:
+            secs = self.raid_timer // 60
+            if self.raid.get("can_catch"):
+                draw_text(surf, f"⚡ {self.raid['name']}", F_TINY, C_GREEN, self.ARENA_RECT.centerx, self.ARENA_RECT.bottom+3, center=True, shadow=True)
+                draw_text(surf, "Fangen bereit!", F_TINY, C_GREEN, self.ARENA_RECT.centerx, self.ARENA_RECT.bottom+14, center=True)
+            else:
+                draw_text(surf, f"⚡ RAID: {self.raid['name']}", F_TINY, C_YELLOW, self.ARENA_RECT.centerx, self.ARENA_RECT.bottom+3, center=True, shadow=True)
+                timer_col = C_RED if secs < 15 else C_YELLOW
+                draw_text(surf, f"{secs}s", F_TINY, timer_col, self.ARENA_RECT.centerx, self.ARENA_RECT.bottom+14, center=True)
+        else:
+            draw_text(surf, "Arena", F_TINY, C_GRAY, self.ARENA_RECT.centerx, self.ARENA_RECT.bottom + 3, center=True)
+
+        # PC Building
         bw = 120
         draw_rounded_rect(surf, (30,50,90), (self.PC_RECT.x, self.PC_RECT.y, bw, self.PC_RECT.height), 10, 2, C_BLUE)
         draw_text(surf, "Pokédex", F_TINY, C_BLUE, self.PC_RECT.x + bw//2, self.PC_RECT.centery - 7, center=True)
         draw_text(surf, "[ B ]", F_TINY, C_GRAY, self.PC_RECT.x + bw//2, self.PC_RECT.centery + 9, center=True)
-
         draw_rounded_rect(surf, (30,80,60), (self.PC_RECT.x + bw + 6, self.PC_RECT.y, bw, self.PC_RECT.height), 10, 2, C_GREEN)
         draw_text(surf, "PC-Box", F_TINY, C_GREEN, self.PC_RECT.x + bw + 6 + bw//2, self.PC_RECT.centery - 7, center=True)
         draw_text(surf, "[ P ]", F_TINY, C_GRAY, self.PC_RECT.x + bw + 6 + bw//2, self.PC_RECT.centery + 9, center=True)
@@ -1961,6 +2134,15 @@ class OverworldScreen:
             draw_text(surf, "[ ENTER ] Shop betreten", F_SMALL, C_YELLOW, self.SHOP_RECT.centerx, self.SHOP_RECT.bottom + 18, center=True, shadow=True)
         if pr.colliderect(self.CENTER_RECT):
             draw_text(surf, "[ ENTER ] Pokecenter", F_SMALL, (255,220,240), self.CENTER_RECT.centerx, self.CENTER_RECT.bottom + 18, center=True, shadow=True)
+        if pr.colliderect(self.ARENA_RECT):
+            if self.raid and self.raid.get("can_catch") and not self.raid.get("catch_used"):
+                draw_text(surf, "[ ENTER ] Raid-Pokémon fangen!", F_SMALL, C_GREEN, self.ARENA_RECT.centerx, self.ARENA_RECT.bottom+18, center=True, shadow=True)
+            elif self.raid and not self.raid.get("defeated"):
+                draw_text(surf, "[ ENTER ] Raid starten!", F_SMALL, C_YELLOW, self.ARENA_RECT.centerx, self.ARENA_RECT.bottom+18, center=True, shadow=True)
+            elif self.raid and self.raid.get("catch_used"):
+                draw_text(surf, "Raid abgeschlossen", F_SMALL, C_GRAY, self.ARENA_RECT.centerx, self.ARENA_RECT.bottom+18, center=True)
+            else:
+                draw_text(surf, "Kein aktiver Raid", F_SMALL, C_GRAY, self.ARENA_RECT.centerx, self.ARENA_RECT.bottom+18, center=True)
 
         # Roaming trainers
         for t in self._trainers:
@@ -1971,13 +2153,14 @@ class OverworldScreen:
             badge_col = C_ROCKET if is_rocket else C_ORANGE
             pygame.draw.circle(surf, badge_col, (int(t["x"]), int(t["y"])-30), 5)
             draw_text(surf, en.name[:8], F_TINY, C_WHITE, int(t["x"]), int(t["y"])+28, center=True, shadow=True)
+            if is_rocket:
+                draw_text(surf, "R", F_TINY, C_ROCKET, int(t["x"])+14, int(t["y"])-30)
 
         # Player
         bob = math.sin(self.step_anim * 0.3) * 3
         trainer = self.get_trainer_img()
         surf.blit(trainer, (int(self.player_x)-24, int(self.player_y)-32+int(bob)))
-        pygame.draw.ellipse(surf, (0,0,0,80),
-            pygame.Rect(int(self.player_x)-18, int(self.player_y)+24, 36, 10))
+        pygame.draw.ellipse(surf, (0,0,0,80), pygame.Rect(int(self.player_x)-18, int(self.player_y)+24, 36, 10))
 
         # Top HUD bar
         draw_rounded_rect(surf, (15, 18, 28), (0, 0, SW, 32), 0, 1, (50, 55, 70))
@@ -1992,6 +2175,27 @@ class OverworldScreen:
         for txt, col in hud_items:
             draw_text(surf, txt, F_TINY, col, hx, 9)
             hx += 160
+
+        # Raid HUD mini-panel (bottom left when active)
+        if self.raid:
+            secs = self.raid_timer // 60
+            rx, ry, rw, rh = 8, SH-78, 290, 68
+            bg_c = (20,50,20) if self.raid.get("can_catch") else (50,25,10)
+            draw_rounded_rect(surf, bg_c, (rx, ry, rw, rh), 10, 2, C_YELLOW)
+            draw_text(surf, f"⚔ RAID: {self.raid['name']}  Lv{self.raid.get('level','?')}", F_SMALL, C_YELLOW, rx+8, ry+6, shadow=True)
+            if self.raid.get("can_catch"):
+                draw_text(surf, "✓ Gewonnen! Geh zur Arena zum Fangen", F_TINY, C_GREEN, rx+8, ry+28)
+            else:
+                cards_n = self.raid.get("cards_needed", 0)
+                cards_a = self.raid.get("cards_answered", 0)
+                timer_c = C_RED if secs < 15 else (255,200,50)
+                draw_text(surf, f"⏱ {secs}s   📚 Lernkarten: {cards_a}/{cards_n}", F_TINY, timer_c, rx+8, ry+28)
+                bar_w = rw - 16
+                pct = min(1.0, cards_a / max(1, cards_n))
+                pygame.draw.rect(surf, (40,40,60), (rx+8, ry+46, bar_w, 10), border_radius=5)
+                if pct > 0:
+                    pygame.draw.rect(surf, C_BLUE, (rx+8, ry+46, int(bar_w*pct), 10), border_radius=5)
+
         # Button strip (top right)
         btns = [
             ("B", "Pokédex",      C_BLUE),
@@ -2259,18 +2463,67 @@ class Game:
         self.screen_state = "battle"
 
     def start_trainer_battle(self, trainer_idx):
-        import addEnemy
-        enemies = addEnemy.NORMAL_ENEMIES
-        en = enemies[trainer_idx % len(enemies)]
+        if not self.overworld or trainer_idx >= len(self.overworld._trainers):
+            return
+        t = self.overworld._trainers[trainer_idx]
+        en = t["enemy"]
+        # Rocket members get +2 strength bonus
+        if getattr(en, "isRocket", False):
+            import copy
+            en = copy.copy(en)
+            en.strenght = getattr(en, 'strenght', 2) + 2
         self.battle = Battle(self.team, en, flashcards=self.flashcards, is_wild=False)
         self.battle.save_data_ref = self.save
+        self.battle._trainer_idx = trainer_idx   # remember for despawn
         self.screen_state = "battle"
-        # Push trainer away so they don't immediately re-trigger after battle
-        if self.overworld and trainer_idx < len(self.overworld._trainers):
-            t = self.overworld._trainers[trainer_idx]
-            t["vx"] = random.choice([-1, 1]) * 2.5
-            t["vy"] = random.choice([-1, 1]) * 2.5
-            t["move_dir_t"] = 180  # keep moving in this direction for 3 seconds
+        # Push trainer away
+        t["vx"] = random.choice([-1, 1]) * 2.5
+        t["vy"] = random.choice([-1, 1]) * 2.5
+        t["move_dir_t"] = 180
+
+    def start_raid_battle(self):
+        if not self.overworld or not self.overworld.raid:
+            return
+        raid = self.overworld.raid
+        m = ALL_MOONIES_DICT.get(raid["name"])
+        if not m:
+            return
+        boss = m.clone_for_battle()
+        boss.level = raid["level"]
+        boss.max_hp = boss.max_hp + boss.level * 5
+        boss.attack = boss.attack + boss.level * 2
+        boss.current_hp = boss.max_hp
+        self.battle = Battle(self.team, None, wild_moonie=boss, flashcards=self.flashcards, is_wild=True)
+        self.battle.save_data_ref = self.save
+        self.battle.raid_cards_needed = raid["cards_needed"]
+        self.battle.raid_cards_answered = 0
+        self.battle._is_raid = True
+        self.battle.overworld_ref = self.overworld
+        # Force flashcards during raid (always show flashcard before attack)
+        self.screen_state = "battle"
+        notify(f"⚔ RAID-KAMPF gegen {boss.name} Lv{boss.level}! Beantworte {raid['cards_needed']} Lernkarten!", C_YELLOW, 240)
+
+    def start_raid_catch(self):
+        """Start a wild catch attempt for the raid boss."""
+        if not self.overworld or not self.overworld.raid:
+            return
+        raid = self.overworld.raid
+        if not raid.get("can_catch") or raid.get("catch_used"):
+            return
+        m = ALL_MOONIES_DICT.get(raid["name"])
+        if not m:
+            return
+        boss = m.clone_for_battle()
+        boss.level = raid["level"]
+        boss.max_hp = 1   # very low hp so catch is possible
+        boss.current_hp = 1
+        boss.catch_rate = 0.5
+        self.battle = Battle(self.team, None, wild_moonie=boss, flashcards=self.flashcards, is_wild=True)
+        self.battle.save_data_ref = self.save
+        self.battle._is_raid_catch = True
+        self.overworld.raid["catch_used"] = True
+        self.screen_state = "battle"
+        notify(f"Fangversuch: {boss.name}!", C_GREEN, 180)
 
     def end_battle(self):
         result = self.battle.result
@@ -2287,8 +2540,26 @@ class Game:
             # Track trainer/rocket wins separately
             if is_trainer:
                 self.save["trainer_battles_won"] = self.save.get("trainer_battles_won",0) + 1
+                # Despawn the defeated trainer
+                tidx = getattr(self.battle, '_trainer_idx', None)
+                if tidx is not None and self.overworld:
+                    self.overworld._despawn_trainer(tidx)
             if is_rocket:
                 self.save["rocket_battles_won"] = self.save.get("rocket_battles_won",0) + 1
+            # Handle raid boss defeat
+            if getattr(self.battle, '_is_raid', False) and self.overworld and self.overworld.raid:
+                raid = self.overworld.raid
+                cards_ok = self.battle.raid_cards_answered >= self.battle.raid_cards_needed
+                if cards_ok:
+                    raid["defeated"] = True
+                    raid["can_catch"] = True
+                    notify(f"⚔ RAID gewonnen! {raid['name']} kann jetzt gefangen werden! → Arena", C_GREEN, 300)
+                else:
+                    raid["defeated"] = True
+                    raid["can_catch"] = False
+                    needed = self.battle.raid_cards_needed
+                    got = self.battle.raid_cards_answered
+                    notify(f"Raid gewonnen, aber nur {got}/{needed} Lernkarten! Kein Fangen möglich.", C_RED, 300)
             # Check evolutions
             self._pending_evos = []
             for m in self.team:
@@ -2316,6 +2587,11 @@ class Game:
             for m in self.team:
                 m.current_hp = m.max_hp
             notify("Du wachst im Pokécenter auf. Team vollständig geheilt!", C_RED, 200)
+            # If this was a raid battle, mark it as failed so we don't re-enter
+            if getattr(self.battle, '_is_raid', False) and self.overworld and self.overworld.raid:
+                self.overworld.raid["defeated"] = True
+                self.overworld.raid["can_catch"] = False
+                notify("Raid verloren! Das Pokémon ist entkommen.", C_RED, 240)
         elif result == "andreas":
             notify("Psycho Andreas hat das Moonie gestohlen! 😤", (255,80,255), 200)
 
@@ -2467,6 +2743,10 @@ class Game:
                 elif action and action.startswith("trainer_"):
                     idx = int(action.split("_")[1])
                     self.start_trainer_battle(idx)
+                elif action == "raid_battle":
+                    self.start_raid_battle()
+                elif action == "raid_catch":
+                    self.start_raid_catch()
 
             elif self.screen_state == "battle" and self.battle:
                 self.battle.update()
