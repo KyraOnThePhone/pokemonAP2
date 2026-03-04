@@ -1,4 +1,4 @@
-# MoonieQuest – AP2 Edition 🎮📚
+# MoonieQuest – AP2 Edition
 
 Ein Pokémon-inspiriertes Lernspiel für deine AP2-Prüfungsvorbereitung!
 
