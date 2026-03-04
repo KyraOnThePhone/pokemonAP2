@@ -73,3 +73,78 @@ Was ist der Unterschied zwischen NAT und PAT (Port Address Translation)?,"NAT is
 Definition: Metropolitan Area Network (MAN),"Ein breitbandiges Netzwerk, das mehrere LANs in einer geografischen Nähe (z. B. Stadt) verbindet."
 Nennen Sie die vier Schritte des DHCP-Prozesses (DORA-Prinzip).,"Discover, Offer, Request, Acknowledge."
 Aufgabe des Domain Name Systems (DNS):,Die Übersetzung von Domain-Namen in für Computer verständliche IP-Adressen.
+Wie wird in der Prozesskostenrechnung (PKR) der Umlagesatz für leistungsmengenneutrale Kosten ($lmn$) berechnet?,$100 \cdot (\text{lmn-Kosten} / \text{Summe lmi-Kosten})$
+Was ist in der PKR die Berechnungsgrundlage für die 'Gesamtkosten der Funktion'?,Die Summe aus $lmi$- und $lmn$-Kosten.
+Welcher Kennwert der PKR wird durch 'Gesamtprozesskosten / Kostentreiber' ermittelt?,Die Kosten pro Durchführung.
+Nenne zwei Vorteile einer Paketfilter-Firewall.,Hohe Geschwindigkeit/Effizienz beim Scannen und geringe Kosten.
+Warum ist die Payload-Manipulation bei Paketfilter-Firewalls ein Problem?,"Weil diese Firewalls nur Header-Informationen (IP, Port) prüfen und den Inhalt der Datenpakete ignorieren."
+Welche spezifische Netzwerknachricht überwacht ein 'Circuit Level Gateway' zur Sitzungsinitiierung?,Den TCP-Handshake.
+Warum können Application Level Gateways (Proxy Firewalls) die Netzwerk-Performance negativ beeinflussen?,Weil sie jedes Paket bis zur Anwendungsschicht (Content-Filterung) tiefgehend untersuchen.
+Welche Firewall-Variante überwacht Transaktionen über mehrere Protokollschichten des OSI-Modells hinweg?,Multilayer Inspection Firewall (Variante der Stateful Inspection).
+Was ist das Hauptmerkmal der Deep Packet Inspection (DPI) in einer Next-Generation Firewall?,Sie untersucht die konkreten Nutzdaten (Payload) auf zulässige Formate (z. B. HTML-Antworten).
+In welchem Szenario ist eine hostbasierte Software-Firewall besonders vorteilhaft?,Beim individuellen Schutz einzelner Geräte vor Viren und zur feingranularen Kontrolle von Programmunterhaltungen.
+Nenne die drei Hauptaufgaben eines Proxys neben der Vermittlung.,"Filterung von Daten, Zwischenspeichern (Caching) von Websites und Verbergen der IP-Adresse."
+Wie unterscheidet sich ein 'Forward Proxy' von einem 'Reverse Proxy'?,"Der Forward Proxy vermittelt Anfragen von Clients an Server, während der Reverse Proxy Anfragen von Servern an andere Server vermittelt."
+IPv4 Header: Was bedeutet ein gesetztes 'DF-Flag' (Don't Fragment)?,Es verbietet die Fragmentierung des Datenpakets.
+IPv4 Header: Welche Information liefert das Feld 'Fragment-Offset'?,Die genaue Position der Datenfragmente innerhalb des ursprünglichen IP-Pakets.
+Warum muss jede Station auf dem Weg zum Ziel die 'Header Checksum' im IPv4 Header neu berechnen?,Da sich Felder wie die TTL (Time to Live) bei jedem Hop ändern.
+"Welches Feld im IPv4 Header gibt an, welches Transportprotokoll (z. B. TCP oder UDP) folgt?",Das Protokoll-Feld (8 Bit).
+Ethernet Frame: Wie lang ist die Präambel und welche Funktion hat sie?,Sie ist 8 Byte lang und dient der Synchronisation der Empfänger.
+Was markiert der 'Start Frame Delimiter' (SFD) im Ethernet-Datenstrom?,"Die Bitfolge, die das eigentliche Ethernet-Frame einleitet."
+Wie groß ist die zeitliche Pause des 'Inter Frame Gap' nach dem Senden eines Ethernet-Frames?,"$9,6 \, \mu s$."
+IPv6 Header: Welchen Zweck erfüllt das 20 Bit große Feld 'Flow Label'?,Es kennzeichnet Pakete für ein beschleunigtes Routing (wird oft durch MPLS ersetzt).
+Welches IPv4-Feld entspricht funktional dem 'Hop Limit' im IPv6-Header?,Das TTL-Feld (Time to Live).
+Was ist ein 'Next Header' im Kontext von IPv6?,"Ein Feld, das entweder das nächste Transportprotokoll oder optionale Header-Erweiterungen angibt."
+Warum entfällt bei IPv6 die Prüfsummenberechnung im Header durch die Router?,Um die Verarbeitungsgeschwindigkeit zu erhöhen und weil übergeordnete Schichten die Fehlerkorrektur übernehmen.
+Algorithmus: Warum trägt der 'Bubble Sort' diesen Namen?,Weil die höchsten Werte während des Durchlaufs wie Blasen im Wasser nach oben (ans Ende des Arrays) steigen.
+Was ist der entscheidende Arbeitsschritt im 'Selection Sort'?,Das Finden des kleinsten Wertes im unsortierten Teil und dessen Verschieben an die vorderste Position.
+Wie definiert der 'Insertion Sort' seine Arbeitsbereiche innerhalb eines Arrays?,Er unterteilt das Array in einen bereits sortierten Teil und einen noch unsortierten Teil.
+Was versteht man unter 'Print Debugging'?,"Die Fehlersuche im Code durch das Einfügen von Ausgabe-Befehlen, um den Programmverlauf zu verfolgen."
+Nenne die drei Phasen des TDD-Zyklus in der richtigen Reihenfolge.,"Red (Test schlägt fehl), Green (Code schreiben), Refactor (Code optimieren)."
+Wofür steht das AAA-Schema beim Schreiben von Unit Tests?,"Arrange (Vorbereitung), Act (Ausführung), Assert (Prüfung)."
+Was ist das Hauptziel der 'Refactor'-Phase im Test Driven Development?,"Die Verbesserung der Codequalität (Lesbarkeit, Duplikate entfernen) ohne Änderung des funktionalen Verhaltens."
+Warum werden in Unit Tests oft 'Mocks' (Platzhalter) verwendet?,Um die zu testende Einheit vollständig zu isolieren und Abhängigkeiten von externen Systemen (z. B. DBs) zu vermeiden.
+Wie unterscheidet sich der 'Top-Down-Ansatz' beim Integrationstest vom 'Bottom-Up-Ansatz'?,"Top-Down testet zuerst die oberste Ebene mit Simulatoren für tiefere Module, Bottom-Up beginnt bei den untersten Basiselementen."
+In welchem Fall wird ein 'vertikaler E2E-Test' gegenüber einem horizontalen bevorzugt?,Wenn kritische technische Schichten eines komplexen Systems ohne Benutzerschnittstellen (z. B. APIs) validiert werden müssen.
+Was ist die Folge von 'Flaky Tests' für die CI/CD-Pipeline?,Sie verlangsamen die Pipeline und untergraben das Vertrauen in die Testergebnisse.
+SQL: Welcher Befehl löscht eine gesamte Tabelle inklusive ihrer Struktur dauerhaft?,DROP TABLE tabellenname;
+SQL: Was bewirkt der Platzhalter '%' im Zusammenhang mit dem 'LIKE'-Operator?,"Er steht für null, ein oder mehrere beliebige Zeichen."
+SQL: Welcher Wildcard-Operator sucht nach einem einzelnen Zeichen innerhalb eines definierten Bereichs?,"Das Muster in eckigen Klammern mit Bindestrich, z. B. $[a-c]$."
+SQL: Wie unterscheidet sich ein 'RIGHT JOIN' von einem 'LEFT JOIN'?,Ein RIGHT JOIN gibt alle Datensätze der rechten Tabelle und nur die passenden der linken Tabelle zurück.
+Was ist der Anwendungszweck eines 'Self Joins'?,"Die Verknüpfung einer Tabelle mit sich selbst, um hierarchische Daten (z. B. Mitarbeiter und ihre Vorgesetzten) abzufragen."
+SQL: Nenne die Bedingung für die Verwendung von 'UNION ALL' bei zwei SELECT-Statements.,"Beide Abfragen müssen die gleiche Anzahl an Spalten, die gleichen Datentypen und die gleiche Reihenfolge haben."
+SQL: Warum kann die 'WHERE'-Klausel nicht für Filterungen auf Basis von 'COUNT()' verwendet werden?,Weil WHERE keine Aggregatfunktionen verarbeiten kann; dafür muss HAVING genutzt werden.
+"SQL: Was gibt der 'EXISTS'-Operator zurück, wenn die Unterabfrage (Subquery) Treffer liefert?",Den Wahrheitswert TRUE.
+Wie unterscheidet sich 'SELECT INTO' von 'INSERT INTO SELECT'?,"SELECT INTO erstellt automatisch eine neue Zieltabelle, während INSERT INTO SELECT eine bereits existierende Tabelle voraussetzt."
+SQL: Mit welchem Schlüsselwort schließt man eine 'CASE'-Anweisung ab?,END (optional mit einem Alias via AS).
+"SQL: Welcher Constraint stellt sicher, dass ein Wert in einer Spalte eine spezifische Bedingung erfüllt (z. B. Alter $\ge 18$)?",CHECK-Constraint.
+SQL: Welches Format nutzt der Datentyp 'DATETIME' standardmäßig?,YYYY-MM-DD-HH:MI:SS.
+Logik: Wie lautet die Funktionsgleichung für ein NICHT (NOT)-Gatter mit Eingang $A$?,$X = \overline{A}$
+Wahrheitstabelle: Wann liefert ein NAND-Gatter den Ausgang $0$?,"Nur dann, wenn alle Eingänge den Wert $1$ haben."
+Logik: Welches Gatter entspricht der Funktionsgleichung $X = \overline{A \vee B}$?,Das NOR-Gatter.
+Netzwerk: Was ist ein 'One Armed Router'?,"Ein Router mit nur einem aktiven physischen Interface, das über VLANs oder Subinterfaces eingebunden ist."
+Was ist die Gefahr bei einem 'Router on a Stick'-Setup?,Das einzige physische Interface kann zum Flaschenhals (Bottleneck) für den gesamten Datenverkehr werden.
+Nenne die drei typischen Zonen einer 'Three-Legged Firewall'.,"WAN (Internet), DMZ (öffentliche Server) und LAN (internes Netz)."
+Was ist der Vorteil einer 'DMZ' (Demilitarized Zone)?,"Öffentliche Dienste sind vom internen LAN getrennt, was die Sicherheit bei einem Kompromiss der Server erhöht."
+Netzwerk: Wie unterscheiden sich 'Enterprise-Router' von 'Heimroutern'?,"Enterprise-Router unterstützen komplexe Protokolle (OSPF, BGP), sind modular erweiterbar und auf sehr hohe Performance ausgelegt."
+Welcher Router-Typ arbeitet im 'Backbone' großer Netzwerke und verbindet Provider miteinander?,Core-Router.
+Was zeichnet ein 'Inline-Gerät' (z. B. IPS oder Firewall) im Netzwerkpfad aus?,"Der gesamte Traffic muss physikalisch durch das Gerät fließen, um geprüft oder blockiert werden zu können."
+Netzwerk: Was ist der Unterschied zwischen einem 'Interface' und einem 'Subinterface'?,"Ein Interface ist ein physischer Anschluss, ein Subinterface ist eine logische Unterteilung dieses Ports für VLANs."
+DHCP: Was passiert in der 'Offer'-Phase des DORA-Prinzips?,Der DHCP-Server bietet dem Client eine freie IP-Adresse und eine Konfiguration an.
+Was ist ein 'DNS Recursor'?,"Ein Server, der DNS-Anfragen von Clients empfängt und selbst weitere Anfragen an Root- oder TLD-Server stellt."
+Welcher DNS-Servertyp ist die letzte Instanz und gibt die endgültige IP-Adresse zurück?,Der autoritative Namenserver.
+Welche zwei Teile bilden eine HTTP-Nachricht?,HTTP-Header (Metainformationen) und HTTP-Body (eigentlicher Inhalt für den Nutzer).
+Protokolle: Welchen Port nutzt SMB standardmäßig über TCP für den modernen Dateizugriff?,Port 445.
+Was ist das 'Piconet' im Kontext von Personal Area Networks (PAN)?,Ein über Bluetooth aufgebautes Netzwerk zwischen Geräten auf sehr kurzer Distanz.
+Netzwerk: Welcher Standard liegt einem 'Trunk' nach IEEE 802.1Q zugrunde?,VLAN-Tagging zur Übertragung mehrerer VLANs über ein einzelnes Kabel.
+Was versteht man unter 'SCA-Einhaltung' im Availability Management?,Die Rechenschaftspflicht über die Einhaltung der Service Level Agreements (SLA) mittels Verfügbarkeitsreports.
+Kano-Modell: Welchen Effekt haben 'Begeisterungsanforderungen' auf den Wettbewerb?,"Sie fungieren als Unique Selling Point (USP), der das Produkt von der Konkurrenz abhebt."
+Wofür steht die Abkürzung 'EFQM' im Qualitätsmanagement?,European Foundation for Quality Management (Excellence Modell).
+Was ist der Unterschied zwischen einem 'Standard-SLA' und einem 'kundenspezifischen SLA'?,"Das Standard-SLA stammt aus dem Portfolio, das kundenspezifische SLA erlaubt individuelle Abweichungen für den Kunden."
+"SQL: Welchen Standard-Wert setzt ein Constraint, wenn beim Einfügen kein Wert angegeben wird?",Den DEFAULT-Wert.
+Wie lautet die Binärdarstellung der maximalen Header-Länge im IPv4-Header (IHL)?,"Binär $1111$ (dezimal 15), was $60$ Byte entspricht."
+Wozu dient das Feld 'Type of Service' (ToS) im IP-Header?,Es legt die Qualität (Priorität und Übertragungseigenschaften) des angeforderten Dienstes fest.
+Was ist die 'Frame Check Sequence' (FCS) im Ethernet-Frame?,Eine 32-Bit-CRC-Prüfsumme zur Sicherstellung der Korrektheit des empfangenen Pakets.
+Was bedeutet 'Hardening' (Härtung) im Kontext eines Bastion Hosts?,"Das Entfernen unnötiger Dienste, Nutzerkonten und das Einrichten starker Firewalls/Updates zur Sicherheitsmaximierung."
+Netzwerk: Welche Reichweite deckt ein 'Metropolitan Area Network' (MAN) typischerweise ab?,Geografisch nahe beieinander liegende Standorte innerhalb einer Stadt oder ländlichen Region.
+Was ist die Besonderheit der 'Next-Generation Firewall' gegenüber der 'Stateful Inspection'?,"Die Integration von IPS, Malware-Filtern und Deep Packet Inspection (DPI) über alle Schichten hinweg."
