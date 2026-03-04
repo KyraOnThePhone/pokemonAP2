@@ -1,0 +1,75 @@
+Was bilden Servicevereinbarungen im Rahmen des IT Service Managements (ITSM)?,Sie bilden das Kernstück des ITSM und dienen als Abrechnungsgrundlage sowie zur Überwachung vereinbarter Leistungen.
+Definition: Service Validation Testing (SVT),"Eine strukturierte Überprüfung in technischer und wirtschaftlicher Hinsicht, nachdem ein Service wiederhergestellt wurde."
+Was versteht man unter einem Configuration Item (CI)?,"Eine Komponente, die gemanagt werden muss, um einen Service bereitzustellen (z. B. Router, Drucker, Mitarbeiter)."
+Was ist die primäre Aufgabe der Configuration Management Database (CMDB)?,"Die Erfassung aller CIs und ihrer Beziehungen, um einen Überblick über die IT-Infrastruktur und Änderungen zu geben."
+Welchen Zweck verfolgt ein Benchmarktest?,Die Einschätzung und den Vergleich der Leistung von Systemen mit anderen Systemen (z. B. FPS-Vergleich).
+Was wird bei einem Abnahmetest überprüft?,"Es wird geprüft, ob alle Anforderungen der Anwender erfüllt wurden."
+Was ist der Vorteil eines Configuration Management Systems (CMS)?,"Mehrere Prozesse können auf Daten zugreifen, und es bietet eine Übersicht über nicht lizensierte oder überflüssige Software."
+Definition: Asset (im ITSM-Kontext),Ein Asset gibt den Vermögenswert eines Configuration Items (CI) wieder.
+Was ist das Hauptziel des Capacity Managements?,"Die Bereitstellung optimaler Kapazitäten, um Engpässe oder zu hohe Lagerbestände zu vermeiden."
+Wofür ist das Availability Management verantwortlich?,Für die Sicherstellung der Verfügbarkeit eines Services und die Rechenschaft über die SLA-Einhaltung.
+Was bedeutet die Kennzahl MTTR?,Mean Time To Recovery oder Mean Time To Repair.
+Was bedeutet die Kennzahl MTBF?,Mean Time Between Failures.
+Wozu dient das Monitoring im IT-Betrieb?,Zur schnellen Informationsbereitstellung bei Ausfällen und zur Dokumentation von Laufzeit und Downtime.
+Unterscheidung Monitoring: Was meldet das Funktionalitäts-Monitoring?,Es meldet konkrete Ausfälle von Diensten oder Hardware (z. B. via Zabbix).
+Unterscheidung Monitoring: Was erfasst das Performance-Monitoring?,Es sammelt Antwortzeiten und Auslastungsdaten (z. B. via MRTG).
+Kano-Modell: Was kennzeichnet Basis-Erwartungen?,"Leistungen, die als selbstverständlich vorausgesetzt werden und bei Erfüllung die Kundenzufriedenheit nicht steigern."
+Kano-Modell: Wie wirken sich Leistungsanforderungen auf die Kundenerwartung aus?,Sie führen bei Erfüllung zu einer hohen Steigerung der Kundenzufriedenheit (z. B. kurze Kommunikationswege).
+Kano-Modell: Was sind Begeisterungsanforderungen?,"Leistungen, welche die Wünsche übertreffen und als Unique Selling Point (USP) fungieren."
+Was ist das Ziel des Continual Service Improvement (CSI)?,Die Steigerung der Kundenzufriedenheit sowie der Effizienz und Effektivität von Prozessen.
+Benennen Sie die vier Phasen des Deming Circles (PDCA).,"Plan, Do, Check, Act."
+Was ist der Kern des Kaizen-Ansatzes?,"Die fortlaufende Optimierung des Unternehmens, wobei Mitarbeiter als unerschöpflicher Fundus für Ideen dienen."
+Was ist das Systemziel des Total Quality Managements (TQM)?,Die bestmögliche Qualität unter Einbeziehung aller im Unternehmen arbeitenden Menschen.
+Welche ISO-Norm definiert Grundsätze für Maßnahmen zum Qualitätsmanagement?,ISO $9000$ ff.
+Was bescheinigt die ISO $20.000$ einem Unternehmen?,Dass IT-Leistungen nach einem systematischen ITSM-Konzept angeboten werden.
+Welche ISO-Norm befasst sich mit Sicherheitsmechanismen zum Schutz sämtlicher IT-Werte?,ISO $27.001$.
+Was regelt ein Operational Level Agreement (OLA)?,"Es ist ein interner Teil eines Vertrags, der Nachlässe oder Strafen bei Nichteinhaltung regelt."
+Was ist ein Underpinning Contract (UC)?,Ein Vertrag mit einem externen Dienstleister zur Erfüllung von SLAs.
+In der Prozesskostenrechnung: Wie berechnet man den Zeitbedarf gesamt?,Prozessmenge $\cdot$ Zeit in Minuten.
+In der Prozesskostenrechnung: Wie berechnet man die Personenjahre?,Zeitbedarf gesamt $/$ Jahresarbeitsminuten.
+In der Prozesskostenrechnung: Wie berechnet man die Prozesskosten (lmi)?,Personenjahre $\cdot$ Jahresarbeitslohn.
+Was versteht man unter 'informationeller Selbstbestimmung' im Rahmen der DSGVO?,"Dass Betroffene selbst entscheiden sollen, welche ihrer Daten öffentlich gemacht werden."
+Netzplantechnik: Was bedeuten FAZ und FEZ?,Frühester Anfangszeitpunkt und Frühester Endzeitpunkt.
+Netzplantechnik: Was bedeuten SAZ und SEZ?,Spätester Anfangszeitpunkt und Spätester Endzeitpunkt.
+Was ist die grundlegende Funktionsweise einer Paketfilter-Firewall?,"Sie vergleicht jedes empfangene Paket mit Kriterien wie IP-Adresse, Pakettyp oder Portnummer."
+Nennen Sie einen Nachteil der Paketfilterung.,Die Payload wird nicht überprüft und es fehlt der breitere Kontext der Kommunikation.
+Wie identifiziert ein Circuit Level Gateway bösartige Inhalte?,"Es überwacht TCP-Handshakes und Sitzungsinitiierungen, um die Zulässigkeit der Verbindung festzustellen."
+Was ist ein markantes Merkmal einer Application Level Gateway (Proxy Firewall)?,Sie fungiert als einziger Ein- und Austrittspunkt und filtert Pakete auch nach Inhalten wie HTTP-Request-Strings.
+Was unterscheidet eine Stateful Inspection Firewall von einer einfachen Paketfilterung?,"Sie prüft nicht nur Einzelpakete, sondern verfolgt auch, ob ein Paket Teil einer bestehenden Sitzung ist."
+Welche Zusatzfunktionen umfasst eine Next-Generation Firewall (NGFW) typischerweise?,"Deep Packet Inspection (DPI), IDS, IPS, Malware-Filter und Antivirus."
+Was ist der Unterschied zwischen hardwarebasierten und softwarebasierten Firewalls?,"Hardware-Firewalls sind eigenständige Geräte ohne Ressourcenverbrauch auf Hosts, während Software-Firewalls auf dem zu schützenden Gerät laufen."
+Was ist die Kernaufgabe eines Proxys?,"Er dient als Vermittler zwischen Nutzer und Internet, leitet Anfragen weiter und verbirgt dabei oft die IP des Nutzers."
+IPv4 Header: Was gibt das Feld 'IHL' (Internet Header Length) an?,Die Länge des IP-Headers als Vielfaches von $32$ Bit.
+IPv4 Header: Welche Funktion hat das Feld 'Time to Live' (TTL)?,"Es begrenzt die Lebensdauer eines Pakets, indem jede Station den Wert um mindestens $1$ verringert."
+Ethernet Frame: Wie groß ist die Zieladresse und die Quelladresse jeweils?,Jeweils $6$ Byte.
+Ethernet Frame: Wozu dient die Frame Check Sequence (FCS)?,Sie enthält eine $32$ Bit CRC-Prüfsumme zur Fehlererkennung.
+IPv6 Header: Wie lang ist eine IPv6-Quelladresse?,$128$ Bit.
+IPv6 Header: Was beschreibt das Feld 'Payload Length'?,Die Größe der im IP-Paket transportierten Daten in Byte.
+Was ist der Hauptvorteil von Multi-Protocol Label Switching (MPLS)?,"Datenverkehr wird effizient über vordefinierte Pfade mittels 'Labels' geleitet, anstatt nur auf IP-Adressen zu basieren."
+Wie funktioniert der Bubble Sort Algorithmus?,"Das Array wird wiederholt durchlaufen, wobei benachbarte Elemente verglichen und bei falscher Reihenfolge getauscht werden, bis der höchste Wert nach oben 'bubbelt'."
+Was ist das Grundprinzip des Selection Sort?,Es sucht den kleinsten Wert im unsortierten Teil des Arrays und tauscht ihn an die vorderste Position.
+Wie geht der Insertion Sort Algorithmus vor?,Er nimmt ein Element aus dem unsortierten Teil und fügt es an der korrekten Stelle im bereits sortierten Teil des Arrays ein.
+Was ist das Kernprinzip von Test Driven Development (TDD)?,"Tests werden vor dem eigentlichen Code geschrieben (Zyklus: Red, Green, Refactor)."
+Was wird in einem Unit Test geprüft?,Die kleinste isolierte Einheit einer Software (z. B. Funktion oder Methode) auf ihre Korrektheit.
+Was ist das Ziel eines Integrationstests?,Die Prüfung des Zusammenspiels und der Schnittstellen zwischen verschiedenen einzeln getesteten Komponenten.
+Was validiert ein End-to-End Test (E2E)?,Den gesamten Workflow einer Anwendung von Anfang bis Ende aus der Perspektive des Benutzers.
+Definition: Flaky Test,"Ein Test, der bei identischem Code instabile Ergebnisse liefert (mal erfolgreich, mal fehlgeschlagen)."
+SQL: Mit welchem Befehl erstellt man eine neue Datenbank?,CREATE DATABASE datenbankname;
+SQL: Was bewirkt die Option 'WITH DIFFERENTIAL' beim Datenbank-Backup?,Es wird nur ein Backup der seit dem letzten Voll-Backup geänderten Daten erstellt.
+SQL: Wie fügt man einer bestehenden Tabelle eine neue Spalte hinzu?,ALTER TABLE tabellenname ADD spaltenname datentyp;
+SQL: Was bewirkt das Schlüsselwort 'DISTINCT' in einem SELECT-Statement?,"Es sorgt dafür, dass jeder Wert im Ergebnis nur genau einmal ausgegeben wird (Duplikate werden entfernt)."
+SQL: Wie sortiert man Ergebnisse in absteigender Reihenfolge?,ORDER BY spaltenname DESC;
+SQL: Was ist der Unterschied zwischen einem INNER JOIN und einem LEFT JOIN?,INNER JOIN liefert nur Treffer in beiden Tabellen; LEFT JOIN liefert alle Datensätze der linken Tabelle plus passende der rechten.
+SQL: Wofür wird die 'HAVING'-Klausel verwendet?,"Um Suchbedingungen für aggregierte Werte (z. B. COUNT, SUM) festzulegen, da WHERE hierfür nicht nutzbar ist."
+SQL: Was ist eine Stored Procedure?,"Vorbereiteter und gespeicherter SQL-Code, der wiederholt ausgeführt werden kann (Aufruf mit EXEC)."
+SQL: Was ist ein 'VIEW'?,"Eine virtuelle Tabelle, die auf dem Ergebnis einer SQL-Abfrage basiert."
+Logikgatter: Wie lautet die Bedingung für einen Ausgang von $1$ bei einem UND (AND)-Gatter?,"Der Ausgang ist nur $1$, wenn alle Eingänge $1$ sind."
+Logikgatter: Wann liefert ein ODER (OR)-Gatter am Ausgang eine $0$?,"Nur dann, wenn alle Eingänge $0$ sind."
+Logikgatter: Was ist die Besonderheit des XOR (Exklusives ODER)-Gatters?,"Der Ausgang ist $1$, wenn genau einer der Eingänge $1$ ist (aber nicht beide)."
+Was beschreibt das Konzept 'Router on a Stick'?,Ein Router routet mehrere VLANs über ein einziges physisches Interface mittels Subinterfaces.
+Was ist ein 'Bastion Host'?,"Ein besonders gehärteter Server, der direkt aus dem Internet erreichbar ist (meist in der DMZ) und als Zugangspunkt dient."
+Was bedeutet NAT (Network Address Translation)?,Die Übersetzung privater IP-Adressen in eine öffentliche IP-Adresse zur Kommunikation mit dem Internet.
+Was ist der Unterschied zwischen NAT und PAT (Port Address Translation)?,"NAT ist oft eine $1:1$ Übersetzung; PAT ermöglicht vielen Geräten über eine einzige IP zu kommunizieren, indem unterschiedliche Ports genutzt werden."
+Definition: Metropolitan Area Network (MAN),"Ein breitbandiges Netzwerk, das mehrere LANs in einer geografischen Nähe (z. B. Stadt) verbindet."
+Nennen Sie die vier Schritte des DHCP-Prozesses (DORA-Prinzip).,"Discover, Offer, Request, Acknowledge."
+Aufgabe des Domain Name Systems (DNS):,Die Übersetzung von Domain-Namen in für Computer verständliche IP-Adressen.

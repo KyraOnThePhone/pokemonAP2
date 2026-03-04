@@ -1,0 +1,34 @@
+{
+  "trainer": 1,
+  "name": "G\u00f6rl",
+  "team": [
+    "Glutexo",
+    "Glumanda"
+  ],
+  "pc_box": [
+    "Glumanda",
+    "Chimpep"
+  ],
+  "balls": 13,
+  "coins": 280,
+  "potions": 2,
+  "super_potions": 0,
+  "badges": 0,
+  "battles_won": 1,
+  "cards_known": 1,
+  "total_catches": 1,
+  "step_count": 748,
+  "trainer_battles_won": 0,
+  "rocket_battles_won": 0,
+  "evolution_count": 1,
+  "cards_correct_total": 3,
+  "cards_best_streak": 3,
+  "cards_current_streak": 3,
+  "achievements": {
+    "evolutions": 0,
+    "catch_first": 0,
+    "steps": 0,
+    "cards_streak": 0
+  },
+  "starter": "Glumanda"
+}
