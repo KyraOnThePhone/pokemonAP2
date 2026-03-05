@@ -114,6 +114,8 @@ def default_save():
         "cards_best_streak":    0,
         "cards_current_streak": 0,
         "achievements": {},
+        "card_album":   {},
+        "blackmarket":  {"stock": [], "refresh_at": 0},
     }
 
 def save_game(data):
@@ -1709,6 +1711,577 @@ class AchievementScreen:
 
         draw_notifications(surf)
 
+# ── Card Album screen ─────────────────────────────────────────────────────────
+# Drop chances per rarity:  common 8%  uncommon 12%  rare 18%  epic 25%  legendary 35%
+# Shiny multiplier: 1/20 of normal drop chance
+CARD_DROP_CHANCES = {
+    "common":    0.08,
+    "uncommon":  0.12,
+    "rare":      0.18,
+    "epic":      0.25,
+    "legendary": 0.35,
+}
+CARD_SHINY_DIVISOR = 20   # shiny is 1/20th of normal chance
+
+def try_card_drop(pokemon_name, save):
+    """Call after catching. Returns ('normal'|'shiny'|None) and notifies."""
+    m = ALL_MOONIES_DICT.get(pokemon_name)
+    if not m:
+        return None
+    base = CARD_DROP_CHANCES.get(m.rarity, 0.08)
+    roll = random.random()
+    result = None
+    if roll < base / CARD_SHINY_DIVISOR:
+        result = "shiny"
+    elif roll < base:
+        result = "normal"
+    if result:
+        album = save.setdefault("card_album", {})
+        entry = album.setdefault(pokemon_name, {"count": 0, "shiny": 0})
+        if result == "shiny":
+            entry["shiny"] += 1
+        else:
+            entry["count"] += 1
+        col   = (255, 220, 50) if result == "shiny" else (180, 230, 255)
+        label = "✨ GLITZERKARTE" if result == "shiny" else "🃏 Pokémon-Karte"
+        notify(f"{label} erhalten: {pokemon_name}!", col, 220)
+    return result
+
+
+def _rarity_card_palette(rarity):
+    """Return (bg_top, bg_bot, border, accent) colors for a card based on rarity."""
+    return {
+        "common":    ((200,200,190), (150,152,148), (180,180,170), (100,100,100)),
+        "uncommon":  ((160,210,170), (80,150,100),  (100,180,120), (60,200,100)),
+        "rare":      ((140,190,240), (60,110,200),  (80,150,230),  (80,160,255)),
+        "epic":      ((190,140,240), (110,50,200),  (160,80,230),  (200,100,255)),
+        "legendary": ((255,220,80),  (220,140,20),  (255,200,40),  (255,160,0)),
+    }.get(rarity, ((200,200,200),(150,150,150),(170,170,170),(120,120,120)))
+
+
+def draw_tcg_card(surf, x, y, cw, ch, name, m, is_shiny, anim_t, idx, selected=False, scale=1.0):
+    """
+    Authentic Pokémon TCG card layout:
+      [outer gold/color border]
+        [inner thin border]
+          [header: type energy circle | Name ... HP xxx]
+          [subtext: Stage / category]
+          [image box with decorative corner border]
+          [flavor/move box]
+          [move row: ● ANGRIFF  damage]
+          [footer: Lv / rarity dots / illustrator]
+    """
+    r = m.rarity if m else "common"
+    bg_top, bg_bot, border_col, accent = _rarity_card_palette(r)
+
+    if is_shiny:
+        bg_top     = (255, 245, 160)
+        bg_bot     = (230, 185,  40)
+        border_col = (255, 215,   0)
+        accent     = (255, 200,   0)
+
+    # ── 1. Outer border fill ────────────────────────────────────────────────
+    outer_col = (255,215,0) if is_shiny else (border_col if not selected else C_YELLOW)
+    pygame.draw.rect(surf, outer_col, (x, y, cw, ch), border_radius=10)
+
+    # ── 2. Card body (gradient via two rects) ───────────────────────────────
+    b = 4   # outer border thickness
+    body_x, body_y = x+b, y+b
+    body_w, body_h = cw-b*2, ch-b*2
+    half = body_h * 6 // 10
+    pygame.draw.rect(surf, bg_top, (body_x, body_y, body_w, half),          border_radius=8)
+    pygame.draw.rect(surf, bg_bot, (body_x, body_y+half, body_w, body_h-half))
+    # restore corner rounding for bottom
+    pygame.draw.rect(surf, bg_bot, (body_x, body_y+body_h-10, body_w, 10),  border_radius=6)
+    # Inner thin border line
+    inner_bc = (255,255,255,120) if not is_shiny else (255,240,100,160)
+    inner_s = pygame.Surface((body_w, body_h), pygame.SRCALPHA)
+    pygame.draw.rect(inner_s, (255,255,255,80), (0,0,body_w,body_h), 2, border_radius=8)
+    surf.blit(inner_s, (body_x, body_y))
+
+    # Shiny rainbow shimmer over whole card
+    if is_shiny:
+        pulse = abs(math.sin(anim_t*0.05 + idx*0.5))
+        shim = pygame.Surface((cw, ch), pygame.SRCALPHA)
+        for si in range(0, cw, 12):
+            hue_shift = (si / cw + anim_t*0.008) % 1.0
+            h = hue_shift
+            # simple HSV-like rainbow
+            hi = int(h*6)
+            f2  = h*6 - hi
+            rainbow_cols = [
+                (255, int(255*f2), 0),
+                (int(255*(1-f2)), 255, 0),
+                (0, 255, int(255*f2)),
+                (0, int(255*(1-f2)), 255),
+                (int(255*f2), 0, 255),
+                (255, 0, int(255*(1-f2))),
+            ]
+            rc = rainbow_cols[hi % 6]
+            shim.fill((*rc, int(22 + 18*pulse)), rect=(si, 0, 10, ch))
+        surf.blit(shim, (x, y))
+
+    # ── Layout constants ────────────────────────────────────────────────────
+    px  = body_x + 5          # inner padding left
+    pw  = body_w - 10         # inner usable width
+    cy2 = body_y + 4          # current y cursor
+
+    # ── 3. Header row: [energy] Name .... HP 999 ───────────────────────────
+    hdr_h = max(16, int(ch * 0.10))
+    # energy type circle
+    if m and m.types:
+        ec = TYPE_COLORS.get(m.types[0], (150,150,150))
+        pygame.draw.circle(surf, ec, (px+8, cy2 + hdr_h//2), 8)
+        pygame.draw.circle(surf, (255,255,255), (px+8, cy2 + hdr_h//2), 8, 1)
+        name_x = px + 20
+    else:
+        name_x = px
+
+    # Name (bold feel via shadow offset 1)
+    short = name if len(name) <= 11 else name[:10]+"."
+    name_col = (20,20,20)
+    fs_n = F_TINY.render(short, True, name_col)
+    surf.blit(F_TINY.render(short, True, (200,200,200)), (name_x+1, cy2+2))
+    surf.blit(fs_n, (name_x, cy2+1))
+
+    # HP on far right
+    if m:
+        hp_col = (200, 30, 30)
+        hp_s   = F_TINY.render(f"HP {m.max_hp}", True, hp_col)
+        surf.blit(hp_s, (body_x + body_w - hp_s.get_width() - 4, cy2+2))
+
+    cy2 += hdr_h
+
+    # ── 4. Stage/category subtext ───────────────────────────────────────────
+    stage_map = {"common":"Basic","uncommon":"Basic","rare":"Stage 1","epic":"Stage 2","legendary":"MEGA"}
+    stage = stage_map.get(r, "Basic")
+    st_s  = F_TINY.render(stage, True, (60,60,60))
+    surf.blit(st_s, (px, cy2))
+    # Rarity indicator on right
+    r_col = m.get_rarity_color() if m else C_GRAY
+    ri_s  = F_TINY.render(r.capitalize(), True, r_col)
+    surf.blit(ri_s, (body_x+body_w - ri_s.get_width() - 4, cy2))
+    cy2 += 13
+
+    # ── 5. Image box ────────────────────────────────────────────────────────
+    img_h   = int(ch * 0.38)
+    img_pad = 3
+    img_bx  = px - 1
+    img_bw  = pw + 2
+    # Image frame: cream/light background with colored corner accents
+    img_bg  = (245, 240, 225) if not is_shiny else (255, 252, 210)
+    pygame.draw.rect(surf, img_bg, (img_bx, cy2, img_bw, img_h), border_radius=4)
+    # Decorative frame border (double line effect)
+    pygame.draw.rect(surf, (160,140,80), (img_bx, cy2, img_bw, img_h), 2, border_radius=4)
+    pygame.draw.rect(surf, (220,200,130), (img_bx+2, cy2+2, img_bw-4, img_h-4), 1, border_radius=3)
+
+    if m:
+        isz   = min(img_bw - img_pad*2 - 4, img_h - img_pad*2 - 2)
+        img   = load_img(m.image, (isz, isz))
+        surf.blit(img, (img_bx + (img_bw-isz)//2, cy2 + (img_h-isz)//2))
+
+    # Shiny shimmer over image
+    if is_shiny:
+        pulse2 = abs(math.sin(anim_t*0.07 + idx*0.3))
+        shim2  = pygame.Surface((img_bw, img_h), pygame.SRCALPHA)
+        for si in range(0, img_bw, 10):
+            shim2.fill((255,255,180, int(30*pulse2)), rect=(si,0,5,img_h))
+        surf.blit(shim2, (img_bx, cy2))
+
+    cy2 += img_h + 3
+
+    # ── 6. Type badges row ───────────────────────────────────────────────────
+    if m:
+        tbw = min(34, (pw) // max(len(m.types),1) - 3)
+        tx2 = px
+        for t in m.types:
+            tc = TYPE_COLORS.get(t, (150,150,150))
+            pygame.draw.rect(surf, tc,        (tx2, cy2, tbw, 11), border_radius=5)
+            pygame.draw.rect(surf, (255,255,255), (tx2, cy2, tbw, 11), 1, border_radius=5)
+            lb  = F_TINY.render(t[:4], True, C_WHITE)
+            surf.blit(lb, (tx2 + tbw//2 - lb.get_width()//2, cy2+1))
+            tx2 += tbw + 4
+    cy2 += 14
+
+    # ── 7. Flavor / move description box ────────────────────────────────────
+    desc_h = int(ch * 0.10)
+    pygame.draw.rect(surf, (235,228,210), (px, cy2, pw, desc_h), border_radius=3)
+    pygame.draw.rect(surf, (180,160,100), (px, cy2, pw, desc_h), 1, border_radius=3)
+    if m:
+        flavor = f"{m.rarity.capitalize()} Pokémon. Lvl {m.level}."
+        fl_s   = F_TINY.render(flavor, True, (60,50,30))
+        surf.blit(fl_s, (px+3, cy2+2))
+    cy2 += desc_h + 3
+
+    # ── 8. Attack move row ───────────────────────────────────────────────────
+    atk_h = int(ch * 0.11)
+    pygame.draw.rect(surf, (220,215,200), (px, cy2, pw, atk_h), border_radius=3)
+    pygame.draw.rect(surf, (160,140,80),  (px, cy2, pw, atk_h), 1, border_radius=3)
+    if m:
+        # Energy cost dot
+        if m.types:
+            ec2 = TYPE_COLORS.get(m.types[0], (150,150,150))
+            pygame.draw.circle(surf, ec2, (px+8, cy2+atk_h//2), 6)
+            pygame.draw.circle(surf, (255,255,255), (px+8, cy2+atk_h//2), 6, 1)
+        move_name = "Tackle" if r == "common" else ("Angriff" if r == "uncommon" else
+                    ("Spezial" if r == "rare" else ("Mega-Angriff" if r == "epic" else "ULTRA-MOVE")))
+        mv_s = F_TINY.render(move_name, True, (30,30,30))
+        surf.blit(mv_s, (px+18, cy2+2))
+        # Damage number on far right (bold)
+        dmg_val = str(m.attack * 10)
+        dmg_s   = F_SMALL.render(dmg_val, True, (20,20,20))
+        surf.blit(dmg_s, (body_x + body_w - dmg_s.get_width() - 5, cy2+1))
+    cy2 += atk_h + 3
+
+    # ── 9. Footer ────────────────────────────────────────────────────────────
+    # Weakness / Resistance / Retreat (tiny row)
+    foot_y = body_y + body_h - 16
+    pygame.draw.line(surf, (160,140,80), (px, foot_y-1), (px+pw, foot_y-1), 1)
+
+    if m:
+        # Weakness
+        wk_t = m.types[-1] if m.types else "Normal"
+        wc   = TYPE_COLORS.get(wk_t, (150,150,150))
+        wk_s = F_TINY.render(f"Schwäche: {wk_t[:5]}", True, (80,40,40))
+        surf.blit(wk_s, (px, foot_y+1))
+        # Retreat cost dots on right
+        retreat = {"common":1,"uncommon":1,"rare":2,"epic":3,"legendary":4}.get(r,1)
+        for ri2 in range(retreat):
+            pygame.draw.circle(surf, (60,60,60),   (px+pw - 6 - ri2*13, foot_y+7), 5)
+            pygame.draw.circle(surf, (120,120,120), (px+pw - 6 - ri2*13, foot_y+7), 5, 1)
+
+    # Rarity symbol row (stars / diamonds)
+    star_y = foot_y - 11
+    if is_shiny:
+        shiny_col = (255, int(200 + 55*abs(math.sin(anim_t*0.08+idx))), 0)
+        sh_s = F_TINY.render("✦ SHINY ✦", True, shiny_col)
+        surf.blit(sh_s, (px + pw//2 - sh_s.get_width()//2, star_y))
+    else:
+        n_stars = {"common":1,"uncommon":2,"rare":3,"epic":4,"legendary":5}.get(r,1)
+        sym     = "●" if r in ("common","uncommon") else ("◆" if r == "rare" else ("★" if r == "epic" else "✦"))
+        stars_str = sym * n_stars
+        st_s = F_TINY.render(stars_str, True, accent)
+        surf.blit(st_s, (px + pw//2 - st_s.get_width()//2, star_y))
+
+    # ── 10. Selected highlight glow ──────────────────────────────────────────
+    if selected:
+        glow = pygame.Surface((cw+10, ch+10), pygame.SRCALPHA)
+        pygame.draw.rect(glow, (255,220,50,90), (0,0,cw+10,ch+10), border_radius=14)
+        surf.blit(glow, (x-5, y-5))
+
+
+class CardAlbumScreen:
+    COLS = 5
+    ROWS = 4
+    PER_PAGE = COLS * ROWS
+
+    def __init__(self, save):
+        self.save    = save
+        self.sel     = 0
+        self.filter  = "all"
+        self.anim_t  = 0
+        self.detail  = None
+
+    def _visible(self):
+        album = self.save.get("card_album", {})
+        names = sorted(album.keys())
+        if self.filter == "normal":
+            names = [n for n in names if album[n].get("count",0) > 0]
+        elif self.filter == "shiny":
+            names = [n for n in names if album[n].get("shiny",0) > 0]
+        elif self.filter == "dupes":
+            names = [n for n in names if (album[n].get("count",0) + album[n].get("shiny",0)) > 1]
+        return names
+
+    def handle_event(self, event):
+        if event.type != pygame.KEYDOWN:
+            return None
+        k = event.key
+        if self.detail:
+            self.detail = None
+            return None
+        if k in (pygame.K_ESCAPE, pygame.K_x):
+            return "close"
+        vis = self._visible()
+        if k == pygame.K_LEFT:
+            self.sel = max(0, self.sel - 1)
+        elif k == pygame.K_RIGHT:
+            self.sel = min(len(vis)-1, self.sel + 1)
+        elif k == pygame.K_UP:
+            self.sel = max(0, self.sel - self.COLS)
+        elif k == pygame.K_DOWN:
+            self.sel = min(len(vis)-1, self.sel + self.COLS)
+        elif k in (pygame.K_RETURN, pygame.K_z):
+            if vis:
+                self.detail = vis[self.sel]
+        elif k == pygame.K_f:
+            filters = ["all","normal","shiny","dupes"]
+            self.filter = filters[(filters.index(self.filter)+1) % len(filters)]
+            self.sel = 0
+        return None
+
+    def draw(self, surf):
+        self.anim_t += 1
+        # Felt-green album background
+        surf.fill((18, 38, 24))
+        # Subtle grid texture
+        for gx in range(0, SW, 30):
+            pygame.draw.line(surf, (22,44,28), (gx,0),(gx,SH))
+        for gy in range(0, SH, 30):
+            pygame.draw.line(surf, (22,44,28), (0,gy),(SW,gy))
+
+        album = self.save.get("card_album", {})
+        total_unique = len(album)
+        total_cards  = sum(v.get("count",0)+v.get("shiny",0) for v in album.values())
+        total_shiny  = sum(v.get("shiny",0) for v in album.values())
+
+        # Header
+        draw_rounded_rect(surf, (12,28,18), (0,0,SW,50), 0)
+        pygame.draw.line(surf, (80,180,80), (0,50),(SW,50), 2)
+        draw_text(surf, "📖 Karten-Album", F_BIG, C_YELLOW, SW//2, 4, center=True, shadow=True)
+        filter_labels = {"all":"Alle","normal":"Normal","shiny":"✨ Glitzer","dupes":"Doppelte"}
+        fl = filter_labels.get(self.filter, "Alle")
+        draw_text(surf,
+            f"{total_unique} versch. | {total_cards} gesamt | {total_shiny} ✨  |  [F] Filter: {fl}  |  ENTER Detail  |  ESC zurück",
+            F_TINY, (160,220,160), SW//2, 35, center=True)
+
+        vis = self._visible()
+        if not vis:
+            draw_text(surf, "Keine Karten in dieser Kategorie.", F_MED, C_GRAY, SW//2, SH//2, center=True)
+            draw_notifications(surf)
+            return
+
+        page  = self.sel // self.PER_PAGE
+        start = page * self.PER_PAGE
+        end   = min(start + self.PER_PAGE, len(vis))
+
+        # Card dimensions — proper portrait ratio ~63×88mm ≈ 5:7
+        cw, ch = 148, 207
+        cols = 5
+        total_w = cols * cw + (cols-1)*6
+        pad_x = (SW - total_w) // 2
+        pad_y = 56
+
+        # Only 4 cards per row if they'd overflow vertically
+        visible_rows = max(1, (SH - pad_y - 30) // (ch + 8))
+        per_page = cols * visible_rows
+        page  = self.sel // per_page
+        start = page * per_page
+        end   = min(start + per_page, len(vis))
+
+        for i, idx in enumerate(range(start, end)):
+            name  = vis[idx]
+            entry = album.get(name, {})
+            cnt   = entry.get("count",0)
+            shiny = entry.get("shiny",0)
+            m     = ALL_MOONIES_DICT.get(name)
+            col_i = i % cols
+            row_i = i // cols
+            x = pad_x + col_i * (cw + 6)
+            y = pad_y + row_i * (ch + 8)
+            sel = (idx == self.sel)
+
+            # Draw proper TCG card (shiny version if they have one)
+            draw_tcg_card(surf, x, y, cw, ch, name, m,
+                          is_shiny=(shiny > 0), anim_t=self.anim_t,
+                          idx=idx, selected=sel)
+
+            # Stack counter badge
+            total_owned = cnt + shiny
+            if total_owned > 1:
+                badge_x, badge_y = x + cw - 18, y + ch - 18
+                pygame.draw.circle(surf, (30,30,30), (badge_x, badge_y), 12)
+                pygame.draw.circle(surf, C_YELLOW,   (badge_x, badge_y), 12, 2)
+                draw_text(surf, str(total_owned), F_TINY, C_YELLOW, badge_x, badge_y-5, center=True)
+
+        # Page indicator
+        total_pages = max(1,(len(vis)+per_page-1)//per_page)
+        draw_text(surf, f"◄  Seite {page+1}/{total_pages}  ►", F_TINY, (160,220,160), SW//2, SH-14, center=True)
+
+        # Detail overlay
+        if self.detail:
+            self._draw_detail(surf, self.detail, album.get(self.detail,{}))
+
+        draw_notifications(surf)
+
+    def _draw_detail(self, surf, name, entry):
+        """Full-size TCG card detail view."""
+        overlay = pygame.Surface((SW,SH), pygame.SRCALPHA)
+        overlay.fill((0,0,0,200))
+        surf.blit(overlay,(0,0))
+
+        m = ALL_MOONIES_DICT.get(name)
+        has_shiny = entry.get("shiny",0) > 0
+        cnt   = entry.get("count",0)
+        shiny = entry.get("shiny",0)
+
+        # Draw a large TCG card in the center
+        cw, ch = 280, 392   # proper 5:7 ratio, large
+        cx = SW//2 - cw//2
+        cy = SH//2 - ch//2 - 20
+
+        draw_tcg_card(surf, cx, cy, cw, ch, name, m,
+                      is_shiny=has_shiny, anim_t=self.anim_t,
+                      idx=0, selected=False)
+
+        # Info strip below card
+        info_y = cy + ch + 8
+        draw_text(surf, f"Normale Karten: {cnt}   ✨ Glitzerkarten: {shiny}",
+                  F_MED, C_YELLOW, SW//2, info_y, center=True)
+        if has_shiny:
+            pulse = abs(math.sin(self.anim_t*0.07))
+            sc = (255, int(200+55*pulse), 0)
+            draw_text(surf,"✨ GLITZERKARTE IM BESITZ ✨", F_SMALL, sc,
+                      SW//2, info_y+28, center=True, shadow=True)
+        draw_text(surf,"[ beliebige Taste ] schließen", F_TINY, C_GRAY,
+                  SW//2, SH-16, center=True)
+
+
+# ── Black Market screen ────────────────────────────────────────────────────────
+BLACKMARKET_REFRESH_SECONDS = 120   # 2 min real-time refresh
+
+class BlackMarketScreen:
+    STOCK_SIZE = 4
+
+    def __init__(self, save):
+        self.save   = save
+        self.sel    = 0
+        self.anim_t = 0
+        self._ensure_stock()
+
+    def _ensure_stock(self):
+        """Refresh stock if timer expired or not yet set."""
+        now = time.time()
+        bm  = self.save.setdefault("blackmarket", {"stock":[], "refresh_at": 0})
+        if now >= bm.get("refresh_at", 0) or len(bm.get("stock",[])) == 0:
+            self._refresh_stock(bm, now)
+
+    def _refresh_stock(self, bm, now):
+        all_names = list(ALL_MOONIES_DICT.keys())
+        picks = []
+        used  = set()
+        for _ in range(self.STOCK_SIZE * 10):
+            if len(picks) >= self.STOCK_SIZE:
+                break
+            name = random.choice(all_names)
+            if name in used:
+                continue
+            used.add(name)
+            m = ALL_MOONIES_DICT[name]
+            is_shiny = random.random() < 0.15   # 15% chance the black-market listing is shiny
+            # Price based on rarity
+            base_prices = {"common":8000,"uncommon":14000,"rare":28000,"epic":55000,"legendary":120000}
+            price = base_prices.get(m.rarity, 800)
+            if is_shiny:
+                price = int(price * 3.5)
+            picks.append({"name": name, "shiny": is_shiny, "price": price})
+        bm["stock"]      = picks
+        bm["refresh_at"] = now + BLACKMARKET_REFRESH_SECONDS
+        self.save["blackmarket"] = bm
+
+    def handle_event(self, event):
+        if event.type != pygame.KEYDOWN:
+            return None
+        k = event.key
+        if k in (pygame.K_ESCAPE, pygame.K_x):
+            return "close"
+        stock = self.save.get("blackmarket",{}).get("stock",[])
+        if k in (pygame.K_UP, pygame.K_w, pygame.K_LEFT, pygame.K_a):
+            self.sel = max(0, self.sel-1)
+        elif k in (pygame.K_DOWN, pygame.K_s, pygame.K_RIGHT, pygame.K_d):
+            self.sel = min(len(stock)-1, self.sel+1)
+        elif k in (pygame.K_RETURN, pygame.K_z):
+            self._buy(stock)
+        return None
+
+    def _buy(self, stock):
+        if not stock or self.sel >= len(stock):
+            return
+        item   = stock[self.sel]
+        price  = item["price"]
+        if self.save.get("coins",0) < price:
+            notify("Nicht genug Coins! 💰", C_RED, 160)
+            return
+        self.save["coins"] -= price
+        album = self.save.setdefault("card_album",{})
+        entry = album.setdefault(item["name"],{"count":0,"shiny":0})
+        key   = "shiny" if item["shiny"] else "count"
+        entry[key] += 1
+        label = "✨ Glitzerkarte" if item["shiny"] else "🃏 Karte"
+        notify(f"{label} von {item['name']} gekauft!", C_YELLOW, 200)
+        # Remove bought item from stock
+        stock.pop(self.sel)
+        self.sel = min(self.sel, max(0, len(stock)-1))
+        self.save["blackmarket"]["stock"] = stock
+
+    def draw(self, surf):
+        self.anim_t += 1
+        self._ensure_stock()
+        surf.fill((6, 6, 10))
+
+        # Spooky bg image
+        skull = load_img("assets/skull.png", (SW, SH))
+        skull_dark = skull.copy()
+        dark_overlay = pygame.Surface((SW,SH), pygame.SRCALPHA)
+        dark_overlay.fill((0,0,0,170))
+        surf.blit(skull, (0,0))
+        surf.blit(dark_overlay,(0,0))
+
+        draw_rounded_rect(surf, (18,10,30), (0,0,SW,50), 0)
+        draw_text(surf,"💀 Schwarzmarkt",F_BIG,(180,50,220),SW//2,5,center=True,shadow=True)
+        draw_text(surf,f"💰 {self.save.get('coins',0)} Coins   Sortiment aktualisiert sich alle {BLACKMARKET_REFRESH_SECONDS}s   ESC zurück",
+                  F_TINY,C_GRAY,SW//2,35,center=True)
+
+        # Refresh countdown
+        bm  = self.save.get("blackmarket",{})
+        secs_left = max(0, int(bm.get("refresh_at",0) - time.time()))
+        mins, secs2 = divmod(secs_left, 60)
+        draw_text(surf,f"🔄 Nächste Aktualisierung: {mins}:{secs2:02d}",F_TINY,(140,80,200),SW-200,38)
+
+        stock = bm.get("stock",[])
+        if not stock:
+            draw_text(surf,"Kein Sortiment verfügbar.",F_MED,C_GRAY,SW//2,SH//2,center=True)
+            draw_notifications(surf)
+            return
+
+        # Layout: 4 cards side by side
+        card_w, card_h = 175, 245
+        total_cw = len(stock) * card_w + (len(stock)-1) * 18
+        cards_x  = SW//2 - total_cw//2
+        cards_y  = 60
+
+        for i, item in enumerate(stock):
+            sel   = (i == self.sel)
+            name  = item["name"]
+            shiny = item["shiny"]
+            price = item["price"]
+            m     = ALL_MOONIES_DICT.get(name)
+
+            cx = cards_x + i * (card_w + 18)
+            cy = cards_y
+
+            # Lift selected card up
+            if sel:
+                cy -= 12
+
+            draw_tcg_card(surf, cx, cy, card_w, card_h, name, m,
+                          is_shiny=shiny, anim_t=self.anim_t, idx=i, selected=sel)
+
+            # Price tag below card
+            price_y = cy + card_h + 6
+            can_afford = self.save.get("coins",0) >= price
+            pc = C_GREEN if can_afford else C_RED
+            price_bg = (30,50,20) if can_afford else (50,20,20)
+            draw_rounded_rect(surf, price_bg, (cx, price_y, card_w, 24), 6, 2,
+                              C_GREEN if can_afford else C_RED)
+            draw_text(surf, f"💰 {price:,}", F_SMALL, pc, cx + card_w//2, price_y+3, center=True)
+
+            if sel:
+                draw_text(surf, "[ ENTER ] Kaufen", F_TINY, C_YELLOW,
+                          cx + card_w//2, price_y + 30, center=True, shadow=True)
+
+        draw_notifications(surf)
+
 # ── Shop screen ────────────────────────────────────────────────────────────────
 class ShopScreen:
     ITEMS = [
@@ -1853,7 +2426,8 @@ class OverworldScreen:
     SHOP_RECT   = pygame.Rect(20,  20, 130, 85)
     CENTER_RECT = pygame.Rect(170, 20, 130, 85)
     PC_RECT     = pygame.Rect(740, 30, 120, 75)
-    ARENA_RECT  = pygame.Rect(SW//2 - 65, 25, 130, 85)  # arena in center-top
+    ARENA_RECT  = pygame.Rect(SW//2 - 65, 25, 130, 85)
+    SKULL_RECT  = pygame.Rect(SW - 170, SH - 110, 120, 80)  # bottom-right corner
     MAX_TRAINERS = 4
 
     def __init__(self, save_data, flashcards):
@@ -1866,6 +2440,7 @@ class OverworldScreen:
         self.encounter_timer = 0
         self.trainer_cooldown = {}
         self.center_cooldown = 0
+        self.blackmarket_cooldown = 0
         self.pending_action = None
         self.in_grass = False
         self.grass_particle_t = 0
@@ -2036,6 +2611,8 @@ class OverworldScreen:
 
         if self.center_cooldown > 0:
             self.center_cooldown -= 1
+        if self.blackmarket_cooldown > 0:
+            self.blackmarket_cooldown -= 1
 
         enter_pressed = keys[pygame.K_RETURN] or keys[pygame.K_z]
         if self.center_cooldown == 0 and pr.colliderect(self.SHOP_RECT):
@@ -2053,6 +2630,10 @@ class OverworldScreen:
                     return "raid_catch"
                 elif not self.raid.get("defeated"):
                     return "raid_battle"
+        elif self.blackmarket_cooldown == 0 and pr.colliderect(self.SKULL_RECT):
+            self.pending_action = "blackmarket"
+            if enter_pressed:
+                return "blackmarket"
         elif pr.colliderect(self.PC_RECT):
             self.pending_action = "pc"
         else:
@@ -2119,6 +2700,11 @@ class OverworldScreen:
         else:
             draw_text(surf, "Arena", F_TINY, C_GRAY, self.ARENA_RECT.centerx, self.ARENA_RECT.bottom + 3, center=True)
 
+        # Schwarzmarkt (skull building, bottom-right)
+        skull_img = load_img("assets/skull.png", (self.SKULL_RECT.width, self.SKULL_RECT.height))
+        surf.blit(skull_img, (self.SKULL_RECT.x, self.SKULL_RECT.y))
+        draw_text(surf, "💀 Schwarzmarkt", F_TINY, (180,50,220), self.SKULL_RECT.centerx, self.SKULL_RECT.bottom+3, center=True, shadow=True)
+
         # PC Building
         bw = 120
         draw_rounded_rect(surf, (30,50,90), (self.PC_RECT.x, self.PC_RECT.y, bw, self.PC_RECT.height), 10, 2, C_BLUE)
@@ -2134,6 +2720,8 @@ class OverworldScreen:
             draw_text(surf, "[ ENTER ] Shop betreten", F_SMALL, C_YELLOW, self.SHOP_RECT.centerx, self.SHOP_RECT.bottom + 18, center=True, shadow=True)
         if pr.colliderect(self.CENTER_RECT):
             draw_text(surf, "[ ENTER ] Pokecenter", F_SMALL, (255,220,240), self.CENTER_RECT.centerx, self.CENTER_RECT.bottom + 18, center=True, shadow=True)
+        if pr.colliderect(self.SKULL_RECT):
+            draw_text(surf, "[ ENTER ] Schwarzmarkt", F_SMALL, (200,80,255), self.SKULL_RECT.centerx, self.SKULL_RECT.bottom+18, center=True, shadow=True)
         if pr.colliderect(self.ARENA_RECT):
             if self.raid and self.raid.get("can_catch") and not self.raid.get("catch_used"):
                 draw_text(surf, "[ ENTER ] Raid-Pokémon fangen!", F_SMALL, C_GREEN, self.ARENA_RECT.centerx, self.ARENA_RECT.bottom+18, center=True, shadow=True)
@@ -2198,11 +2786,13 @@ class OverworldScreen:
 
         # Button strip (top right)
         btns = [
-            ("B", "Pokédex",      C_BLUE),
-            ("P", "PC-Box",       C_GREEN),
-            ("T", "Team",         C_ORANGE),
-            ("I", "Items",        (180,120,220)),
-            ("A", "Achievements", C_YELLOW),
+            ("B", "Pokédex",   C_BLUE),
+            ("P", "PC-Box",    C_GREEN),
+            ("T", "Team",      C_ORANGE),
+            ("I", "Items",     (180,120,220)),
+            ("A", "Achiev.",   C_YELLOW),
+            ("C", "Karten",    (180,230,255)),
+            ("K", "Schwarzm.", (180,50,220)),
         ]
         bx = SW - 8
         for key, label, col in reversed(btns):
@@ -2401,9 +2991,11 @@ class Game:
         self.team_screen   = None
         self.item_bag      = None
         self.evo_screen    = None
-        self.pc_box_screen = None
-        self.ach_screen    = None
-        self.prev_state    = None
+        self.pc_box_screen     = None
+        self.ach_screen        = None
+        self.card_album_screen = None
+        self.blackmarket_screen= None
+        self.prev_state        = None
 
     def _trigger_achievements(self):
         """Check all achievements and fire notifications for newly unlocked ones."""
@@ -2583,6 +3175,8 @@ class Game:
             self.save["pc_box"] = pc
             self.save["total_catches"] = self.save.get("total_catches",0) + 1
             notify(f"{caught_name} wurde zum PC hinzugefügt!", C_GREEN, 160)
+            # Card drop chance
+            try_card_drop(caught_name, self.save)
         elif result == "lose":
             for m in self.team:
                 m.current_hp = m.max_hp
@@ -2658,6 +3252,12 @@ class Game:
                         elif event.key == pygame.K_a:
                             self.ach_screen = AchievementScreen(self.save, self.flashcards, ALL_MOONIES_DICT)
                             self.screen_state = "achievements"
+                        elif event.key == pygame.K_c:
+                            self.card_album_screen = CardAlbumScreen(self.save)
+                            self.screen_state = "card_album"
+                        elif event.key == pygame.K_k:
+                            self.blackmarket_screen = BlackMarketScreen(self.save)
+                            self.screen_state = "blackmarket"
                         elif event.key == pygame.K_t:
                             self.team_screen = TeamScreen(self.team, self.save)
                             self.screen_state = "team"
@@ -2710,6 +3310,20 @@ class Game:
                     if result == "close":
                         self.screen_state = "overworld"
 
+                # ── Card Album ──
+                elif self.screen_state == "card_album" and self.card_album_screen:
+                    result = self.card_album_screen.handle_event(event)
+                    if result == "close":
+                        self.screen_state = "overworld"
+
+                # ── Black Market ──
+                elif self.screen_state == "blackmarket" and self.blackmarket_screen:
+                    result = self.blackmarket_screen.handle_event(event)
+                    if result == "close":
+                        self.screen_state = "overworld"
+                        if self.overworld:
+                            self.overworld.blackmarket_cooldown = 90
+
                 # ── Evolution ──
                 elif self.screen_state == "evolution" and self.evo_screen:
                     result = self.evo_screen.handle_event(event)
@@ -2740,6 +3354,9 @@ class Game:
                 elif action == "center":
                     self.center = PokeCenterScreen(self.save, self.team)
                     self.screen_state = "center"
+                elif action == "blackmarket":
+                    self.blackmarket_screen = BlackMarketScreen(self.save)
+                    self.screen_state = "blackmarket"
                 elif action and action.startswith("trainer_"):
                     idx = int(action.split("_")[1])
                     self.start_trainer_battle(idx)
@@ -2780,6 +3397,10 @@ class Game:
                 self.pc_box_screen.draw(surface)
             elif self.screen_state == "achievements" and self.ach_screen:
                 self.ach_screen.draw(surface)
+            elif self.screen_state == "card_album" and self.card_album_screen:
+                self.card_album_screen.draw(surface)
+            elif self.screen_state == "blackmarket" and self.blackmarket_screen:
+                self.blackmarket_screen.draw(surface)
             elif self.screen_state == "pokedex" and self.pokedex:
                 self.pokedex.draw(surface)
             else:

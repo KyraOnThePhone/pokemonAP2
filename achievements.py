@@ -341,3 +341,63 @@ def get_all_status(save, flashcards, all_moonies):
         tier = unlocked.get(aid, -1)
         result.append((a, progress, tier))
     return result
+
+# ── Card achievements (appended) ────────────────────────────────────────────
+CARD_ACHIEVEMENTS = [
+    {
+        "id": "cards_collected",
+        "icon": "🃏", "category": "Karten",
+        "title": "Karten-Sammler",
+        "desc": "Sammle Pokémon-Karten",
+        "milestones": [
+            (1,   "Erste Karte",   100),
+            (10,  "10 Karten",     300),
+            (25,  "25 Karten",     600),
+            (50,  "50 Karten",    1200),
+            (100, "100 Karten",   3000),
+        ],
+    },
+    {
+        "id": "shiny_cards",
+        "icon": "✨", "category": "Karten",
+        "title": "Glitzer-Jäger",
+        "desc": "Sammle Glitzerkarten",
+        "milestones": [
+            (1,  "Erste Glitzerkarte",  500),
+            (5,  "5 Glitzerkarten",    2000),
+            (10, "10 Glitzerkarten",   5000),
+        ],
+    },
+    {
+        "id": "unique_cards",
+        "icon": "📦", "category": "Karten",
+        "title": "Vollständige Sammlung",
+        "desc": "Sammle verschiedene Pokémon-Karten",
+        "milestones": [
+            (10,  "10 verschiedene",    200),
+            (50,  "50 verschiedene",   1000),
+            (100, "100 verschiedene",  3000),
+            (200, "200 verschiedene", 10000),
+        ],
+    },
+]
+
+ACHIEVEMENTS.extend(CARD_ACHIEVEMENTS)
+ACHIEVEMENT_BY_ID.update({a["id"]: a for a in CARD_ACHIEVEMENTS})
+
+def _get_card_progress(ach_id, save):
+    album = save.get("card_album", {})
+    if ach_id == "cards_collected":
+        return sum(v.get("count",0) for v in album.values())
+    if ach_id == "shiny_cards":
+        return sum(v.get("shiny",0) for v in album.values())
+    if ach_id == "unique_cards":
+        return len(album)
+    return 0
+
+# Monkey-patch _get_progress to handle card achievements
+_orig_get_progress = _get_progress
+def _get_progress(ach_id, save, flashcards, caught_set, all_moonies):
+    if ach_id in ("cards_collected", "shiny_cards", "unique_cards"):
+        return _get_card_progress(ach_id, save)
+    return _orig_get_progress(ach_id, save, flashcards, caught_set, all_moonies)

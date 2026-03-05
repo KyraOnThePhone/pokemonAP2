@@ -2,32 +2,79 @@
   "trainer": 0,
   "name": "Spieler",
   "team": [
-    "Bisasam",
-    "Rossana"
+    "Rayquaza",
+    "Bisaflor",
+    "Rossana",
+    "Bisaflor",
+    "Gardevoir",
+    "Moruda"
   ],
   "pc_box": [
     "Bisasam",
-    "Rossana"
+    "Rossana",
+    "Rayquaza",
+    "Bisaknosp",
+    "Trasla",
+    "Moruda",
+    "Maskeregen",
+    "Bisaflor",
+    "Gladimperio"
   ],
   "balls": 0,
-  "coins": 650,
+  "coins": 249972500,
   "potions": 3,
   "super_potions": 0,
-  "badges": 0,
-  "battles_won": 0,
-  "cards_known": 0,
-  "total_catches": 1,
-  "step_count": 6194,
-  "trainer_battles_won": 0,
+  "badges": 1,
+  "battles_won": 8,
+  "cards_known": 1,
+  "total_catches": 7,
+  "step_count": 15304,
+  "trainer_battles_won": 1,
   "rocket_battles_won": 0,
-  "evolution_count": 0,
-  "cards_correct_total": 4,
-  "cards_best_streak": 4,
-  "cards_current_streak": 4,
+  "evolution_count": 6,
+  "cards_correct_total": 49,
+  "cards_best_streak": 49,
+  "cards_current_streak": 49,
   "achievements": {
-    "steps": 2,
+    "steps": 3,
     "catch_first": 0,
-    "cards_streak": 0
+    "cards_streak": 2,
+    "legendary": 0,
+    "evolutions": 1,
+    "cards_answered": 1,
+    "badges": 0,
+    "cards_collected": 0,
+    "shiny_cards": 0
+  },
+  "card_album": {
+    "Solgaleo": {
+      "count": 1,
+      "shiny": 0
+    },
+    "GalarZigzachs": {
+      "count": 0,
+      "shiny": 1
+    }
+  },
+  "blackmarket": {
+    "stock": [
+      {
+        "name": "Flurmel",
+        "shiny": false,
+        "price": 8000
+      },
+      {
+        "name": "Frizelbliz",
+        "shiny": false,
+        "price": 28000
+      },
+      {
+        "name": "Arbok",
+        "shiny": false,
+        "price": 14000
+      }
+    ],
+    "refresh_at": 1772717152.4537086
   },
   "starter": "Bisasam"
 }
