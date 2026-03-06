@@ -17,7 +17,7 @@ import math
 pygame.init()
 pygame.mixer.init()
 
-SW, SH = 900, 640
+SW, SH = 1200, 800
 screen = pygame.display.set_mode((SW, SH))
 pygame.display.set_caption("MoonieQuest – AP2 Edition")
 clock = pygame.time.Clock()
@@ -79,7 +79,26 @@ def load_img(path, size=None):
     _img_cache[key] = img
     return img
 
-# ── Flashcard loader ───────────────────────────────────────────────────────────
+# Item image paths — used everywhere items are displayed
+ITEM_IMAGES = {
+    "balls":                "assets/pokeball.png",
+    "master_balls":         "assets/meisterball.png",
+    "potions":              "assets/trank.png",
+    "super_potions":        "assets/supertrank.png",
+    "hyper_potions":        "assets/hypertrank.png",
+    "sonderbonbons":        "assets/sonderbonbon.png",
+    "beleber":              "assets/beleber.png",
+    "top_beleber":          "assets/topBeleber.png",
+    "raid_passes":          "assets/raidpass.png",
+    "premium_raid_passes":  "assets/premiumRaidPass.png",
+    "redbull":              "assets/redbull.png",
+}
+
+def item_icon(key, size=24):
+    path = ITEM_IMAGES.get(key)
+    if not path:
+        return None
+    return load_img(path, (size, size))
 def load_flashcards(path):
     cards = []
     try:
@@ -101,8 +120,10 @@ def default_save():
     return {
         "trainer": 0, "name": "Spieler",
         "team": [], "pc_box": [],
-        "balls": 10, "coins": 0,
-        "potions": 3, "super_potions": 0,
+        "balls": 10, "master_balls": 0, "coins": 0,
+        "potions": 3, "super_potions": 0, "hyper_potions": 0,
+        "sonderbonbons": 0, "beleber": 0, "top_beleber": 0,
+        "raid_passes": 0, "premium_raid_passes": 0, "redbull": 0,
         "badges": 0, "battles_won": 0,
         "cards_known": 0, "total_catches": 0,
         "step_count": 0,
@@ -479,6 +500,11 @@ class Battle:
         self.raid_cards_needed = 0   # for raid battles
         self.raid_cards_answered = 0
         self.overworld_ref = None    # set by Game for raid card tracking
+        # Energy Drink (Red Bull) effect
+        self.energy_drink_used    = False  # can only be used once per battle
+        self.energy_boost_rounds  = 0     # remaining boost rounds (3 when active)
+        self.energy_boost_actions = 0     # extra actions left this round (1 = second action available)
+        self.energy_down_phase    = False  # True during the downtime round
         self._setup_enemies()
         self.push_log(f"Ein wildes {self.enemy_moonies[0].name} erscheint!" if is_wild
                       else f"Trainer {enemy_data.name} möchte kämpfen!")
@@ -571,6 +597,17 @@ class Battle:
             elif event.key in (pygame.K_RETURN, pygame.K_z):
                 if items:
                     self._use_item(items[self.item_pick_sel], save_data)
+        elif self.state == "ball_pick":
+            balls = self._get_available_balls(save_data)
+            if event.key in (pygame.K_ESCAPE, pygame.K_x):
+                self.state = "player_turn"
+            elif event.key in (pygame.K_UP, pygame.K_w):
+                self.ball_pick_sel = max(0, self.ball_pick_sel - 1)
+            elif event.key in (pygame.K_DOWN, pygame.K_s):
+                self.ball_pick_sel = min(len(balls)-1, self.ball_pick_sel + 1)
+            elif event.key in (pygame.K_RETURN, pygame.K_z):
+                if balls:
+                    self._throw_ball(balls[self.ball_pick_sel], save_data)
         elif self.state == "player_turn":
             if event.key == pygame.K_LEFT:
                 self.selected_btn = (self.selected_btn - 1) % 4
@@ -593,6 +630,14 @@ class Battle:
             self.state = "result"; self.result = "win"; return
 
         if btn == 0:  # Attack
+            # ── Energy downphase: skip attack this round ──────────────────
+            if self.energy_down_phase:
+                self.push_log(f"⚠ {pm.name} ist erschöpft! Keine Aktion möglich.")
+                self.energy_down_phase = False
+                self.turn_cooldown = 30
+                self._enemy_turn()
+                return
+
             # Raid: flashcard every 2nd attack; normal battles: 40% chance
             is_raid = getattr(self, '_is_raid', False)
             if is_raid:
@@ -606,7 +651,6 @@ class Battle:
                     leveled, evos = pm.gain_xp(bonus)
                     if leveled: notify(f"{pm.name} Level {pm.level}! +{bonus} Bonus-XP", C_YELLOW)
                     else: notify(f"+{bonus} Bonus-XP für {correct}/{total} richtige!", C_YELLOW)
-                    # Count correct raid answers
                     if is_raid and correct > 0:
                         self.raid_cards_answered = getattr(self, 'raid_cards_answered', 0) + correct
                         if self.overworld_ref:
@@ -614,6 +658,7 @@ class Battle:
                 self.flash_game = FlashcardGame(self.flashcards, reward, n=1)
                 self.push_log("Lernfrage!" if not is_raid else f"📚 Raid-Lernkarte! ({getattr(self,'raid_cards_answered',0)}/{getattr(self,'raid_cards_needed',0)})")
                 return
+
             dmg, mult = pm.calculate_damage(em)
             em.take_damage(dmg)
             self.shake_enemy = 12
@@ -626,29 +671,38 @@ class Battle:
             if not em.is_alive():
                 self._enemy_faint()
                 return
+
+            # ── Energy boost: second action in same round ─────────────────
+            if self.energy_boost_rounds > 0 and self.energy_boost_actions > 0:
+                self.energy_boost_actions -= 1   # consume extra action
+                self.energy_boost_rounds  -= 1
+                remaining = self.energy_boost_rounds
+                if remaining > 0:
+                    self.push_log(f"⚡ Bonus-Angriff! Noch {remaining} Boost-Runde(n)!")
+                else:
+                    self.push_log("⚡ Letzter Boost-Angriff! Nächste Runde: Downphase!")
+                    self.energy_down_phase = True
+                # Stay in player_turn for second action — no enemy turn yet
+                self.turn_cooldown = 25
+                self.energy_boost_actions = 1  # next round gets an extra action too
+                return  # no enemy turn after first hit
+
             self.turn_cooldown = 40
             self._enemy_turn()
 
-        elif btn == 1:  # Bag / Pokéball
-            if save_data["balls"] <= 0:
+        elif btn == 1:  # Ball picker
+            # Check if any balls available
+            has_balls   = save_data.get("balls", 0) > 0
+            has_master  = save_data.get("master_balls", 0) > 0
+            if not has_balls and not has_master:
                 self.push_log("Keine Pokébälle mehr!")
                 return
             if not self.is_wild:
                 self.push_log("Du kannst keine Trainer-Moonies fangen!")
                 return
-            save_data["balls"] -= 1
-            self.balls_used += 1
-            # 8% chance Psycho Andreas appears and steals the pokemon
-            if random.random() < 0.08:
-                self.state = "andreas_steal"
-                self.andreas_anim_t = 0
-                self.push_log("Psycho Andreas taucht auf!!!")
-                return
-            chance = em.catch_rate * (1 - em.current_hp/em.max_hp*0.5)
-            self.state = "catch_anim"
-            self.catch_anim_t = 0
-            self.catch_result = random.random() < chance
-            self.push_log(f"Pokéball geworfen! (Bälle: {save_data['balls']})")
+            # Open ball selection overlay
+            self.state = "ball_pick"
+            self.ball_pick_sel = 0
 
         elif btn == 2:  # Item bag — open picker
             self.state = "item_pick"
@@ -664,6 +718,40 @@ class Battle:
                     self._enemy_turn()
             else:
                 self.push_log("Aus Trainer-Kämpfen kann man nicht fliehen!")
+
+    def _get_available_balls(self, save_data):
+        balls = []
+        if save_data.get("master_balls", 0) > 0:
+            balls.append(("Meisterball", "100% Fangchance!", "master_balls", 1.0))
+        if save_data.get("balls", 0) > 0:
+            balls.append(("Pokéball", "Normaler Ball", "balls", None))
+        return balls
+
+    def _throw_ball(self, ball_entry, save_data):
+        name, desc, key, catch_override = ball_entry
+        em = self.enemy_moonie
+        if not em or not em.is_alive():
+            return
+        self.state = "player_turn"
+        save_data[key] -= 1
+        self.balls_used += 1
+        # Andreas steal only for normal ball
+        if key == "balls" and random.random() < 0.08:
+            self.state = "andreas_steal"
+            self.andreas_anim_t = 0
+            self.push_log("Psycho Andreas taucht auf!!!")
+            return
+        if catch_override is not None:
+            chance = catch_override
+        else:
+            chance = em.catch_rate * (1 - em.current_hp / em.max_hp * 0.5)
+        self.state = "catch_anim"
+        self.catch_anim_t = 0
+        self.catch_result = (random.random() < chance)
+        ball_img_key = "master_balls" if key == "master_balls" else "balls"
+        self._catch_ball_key = ball_img_key
+        cnt = save_data.get(key, 0)
+        self.push_log(f"{name} geworfen! ({cnt} übrig)")
 
     def _enemy_faint(self):
         em = self.enemy_moonie
@@ -692,6 +780,10 @@ class Battle:
         add_particles(250, 380, (220,60,60), n=15)
         self.push_log(f"{em.name} greift an! -{dmg} HP")
         if not pm.is_alive():
+            # Clear energy boost — doesn't transfer to next pokemon
+            self.energy_boost_rounds  = 0
+            self.energy_boost_actions = 0
+            self.energy_down_phase    = False
             # Try next team member
             alive = [m for m in self.player_team if m.is_alive()]
             if not alive:
@@ -704,17 +796,59 @@ class Battle:
     def _get_usable_items(self, save_data):
         items = []
         if save_data.get("potions", 0) > 0:
-            items.append(("Trank", "+30 HP", "potions", 30))
+            items.append(("Trank",        "+30 HP",    "potions",       30))
         if save_data.get("super_potions", 0) > 0:
-            items.append(("Super Trank", "+80 HP", "super_potions", 80))
+            items.append(("Super Trank",  "+80 HP",    "super_potions", 80))
+        if save_data.get("hyper_potions", 0) > 0:
+            items.append(("Hyper Trank",  "+150 HP",   "hyper_potions", 150))
+        if save_data.get("sonderbonbons", 0) > 0:
+            items.append(("Sonderbonbon", "+1 Level",  "sonderbonbons", 0))
+        if save_data.get("beleber", 0) > 0:
+            items.append(("Beleber",      "½ HP beleben", "beleber",    -1))
+        if save_data.get("redbull", 0) > 0 and not self.energy_drink_used:
+            items.append(("Energy Drink", "3 Runden 2× Angriff", "redbull", -3))
         return items
 
     def _use_item(self, item, save_data):
         name, desc, key, heal = item
         pm = self.player_moonie
         save_data[key] -= 1
-        pm.heal(heal)
-        self.push_log(f"{name} eingesetzt! +{heal} HP")
+        if key == "redbull":
+            if self.energy_drink_used:
+                save_data[key] += 1
+                self.push_log("Energy Drink bereits benutzt!")
+                return
+            self.energy_drink_used   = True
+            self.energy_boost_rounds = 3
+            self.energy_boost_actions = 1  # first round: second action available immediately
+            self.energy_down_phase   = False
+            self.push_log("⚡ ENERGY BOOST! 3 Runden Doppel-Angriff!")
+            notify("⚡ Energy Drink! 3 Runden × 2 Aktionen!", (255, 80, 0), 200)
+            self.state = "player_turn"  # no enemy turn — it's a free action
+            return
+        elif key == "sonderbonbons":
+            pm.level += 1
+            pm.max_hp  = int(pm.max_hp  * 1.05) + 2
+            pm.attack  = int(pm.attack  * 1.05) + 1
+            pm.current_hp = min(pm.current_hp + 10, pm.max_hp)
+            self.push_log(f"Sonderbonbon! {pm.name} ist jetzt Level {pm.level}!")
+        elif key == "beleber":
+            if pm.current_hp > 0:
+                save_data[key] += 1  # refund
+                self.push_log("Nur für bewusstlose Pokémon!")
+                return
+            pm.current_hp = max(1, pm.max_hp // 2)
+            self.push_log(f"Beleber! {pm.name} mit {pm.current_hp} HP wiederbelebt!")
+        elif key == "top_beleber":
+            if pm.current_hp > 0:
+                save_data[key] += 1
+                self.push_log("Nur für bewusstlose Pokémon!")
+                return
+            pm.current_hp = pm.max_hp
+            self.push_log(f"Top-Beleber! {pm.name} vollständig wiederbelebt!")
+        else:
+            pm.heal(heal)
+            self.push_log(f"{name} eingesetzt! +{heal} HP")
         self.state = "player_turn"
         self._enemy_turn()
 
@@ -857,7 +991,7 @@ class Battle:
         # --- Buttons ---
         if self.state == "item_pick":
             items = self._get_usable_items(self.save_data_ref)
-            pw, ph = 320, 200
+            pw, ph = 340, min(60 + max(1,len(items))*52 + 40, 340)
             px2, py2 = SW//2 - pw//2, SH//2 - ph//2
             draw_rounded_rect(surf, C_PANEL, (px2, py2, pw, ph), 14, 2, C_YELLOW)
             draw_text(surf, "💊 Items benutzen", F_MED, C_YELLOW, px2+pw//2, py2+10, center=True, shadow=True)
@@ -869,14 +1003,76 @@ class Battle:
                     ibg = (50,80,130) if sel else (30,36,55)
                     ibc = C_YELLOW if sel else (50,55,75)
                     cnt = self.save_data_ref.get(key, 0)
-                    draw_rounded_rect(surf, ibg, (px2+16, py2+48+i*46, pw-32, 38), 8, 2 if sel else 1, ibc)
-                    draw_text(surf, f"{name}  ({cnt}x)  {desc}", F_SMALL, C_WHITE, px2+pw//2, py2+58+i*46, center=True)
-            draw_text(surf, "↑↓ wählen   ENTER nutzen   ESC zurück", F_TINY, C_GRAY, px2+pw//2, py2+ph-20, center=True)
+                    row_y = py2 + 44 + i * 50
+                    draw_rounded_rect(surf, ibg, (px2+14, row_y, pw-28, 42), 8, 2 if sel else 1, ibc)
+                    icon = item_icon(key, 32)
+                    if icon:
+                        surf.blit(icon, (px2+20, row_y+5))
+                    draw_text(surf, f"{name}", F_SMALL, C_WHITE, px2+60, row_y+4)
+                    draw_text(surf, f"{desc}  ({cnt}x)", F_TINY, C_GRAY, px2+60, row_y+22)
+            draw_text(surf, "↑↓ wählen   ENTER nutzen   ESC zurück", F_TINY, C_GRAY, px2+pw//2, py2+ph-18, center=True)
+
+        elif self.state == "ball_pick":
+            balls = self._get_available_balls(self.save_data_ref)
+            pw, ph = 340, min(60 + max(1,len(balls))*52 + 40, 260)
+            px2, py2 = SW//2 - pw//2, SH//2 - ph//2
+            draw_rounded_rect(surf, C_PANEL, (px2, py2, pw, ph), 14, 2, C_YELLOW)
+            draw_text(surf, "🎯 Ball wählen", F_MED, C_YELLOW, px2+pw//2, py2+10, center=True, shadow=True)
+            if not balls:
+                draw_text(surf, "Keine Bälle!", F_SMALL, C_GRAY, px2+pw//2, py2+80, center=True)
+            else:
+                for i, (name, desc, key, _) in enumerate(balls):
+                    sel = (i == self.ball_pick_sel)
+                    ibg = (50,80,130) if sel else (30,36,55)
+                    ibc = (255,215,0) if (sel and key=="master_balls") else (C_YELLOW if sel else (50,55,75))
+                    cnt = self.save_data_ref.get(key, 0)
+                    row_y = py2 + 44 + i * 50
+                    draw_rounded_rect(surf, ibg, (px2+14, row_y, pw-28, 42), 8, 2 if sel else 1, ibc)
+                    icon = item_icon(key, 32)
+                    if icon:
+                        surf.blit(icon, (px2+20, row_y+5))
+                    nc = (255,215,0) if key=="master_balls" else C_WHITE
+                    draw_text(surf, f"{name}", F_SMALL, nc, px2+60, row_y+4)
+                    draw_text(surf, f"{desc}  ({cnt}x)", F_TINY, C_GRAY, px2+60, row_y+22)
+            draw_text(surf, "↑↓ wählen   ENTER werfen   ESC zurück", F_TINY, C_GRAY, px2+pw//2, py2+ph-18, center=True)
+
         elif self.state == "player_turn":
-            btn_labels = ["⚔ Angriff", "🎯 Pokéball", "💊 Tasche", "🏃 Fliehen"]
+            # ── Energy boost / downphase HUD banner ──────────────────────
+            if self.energy_boost_rounds > 0 or self.energy_down_phase:
+                pulse = abs(math.sin(self.anim_t * 0.12))
+                if self.energy_down_phase:
+                    banner_col = (180, 60, 60)
+                    banner_txt = "⚠ DOWNPHASE — kein Angriff möglich!"
+                    bg_col     = (60, 10, 10)
+                else:
+                    banner_col = (255, int(120 + 135*pulse), 0)
+                    banner_txt = f"⚡ ENERGY BOOST aktiv! Noch {self.energy_boost_rounds} Runde(n) — 2. Angriff verfügbar!"
+                    bg_col     = (40, 20, 0)
+                bw2 = 600
+                bh2 = 28
+                bx2 = SW//2 - bw2//2
+                by2 = SH - 185
+                draw_rounded_rect(surf, bg_col, (bx2, by2, bw2, bh2), 8, 2, banner_col)
+                # Red Bull icon in banner
+                rb_icon = item_icon("redbull", 22)
+                if rb_icon:
+                    surf.blit(rb_icon, (bx2+6, by2+3))
+                draw_text(surf, banner_txt, F_SMALL, banner_col, bx2+bw2//2+10, by2+4, center=True, shadow=True)
+
+            btn_labels = ["⚔ Angriff", "🎯 Ball", "💊 Tasche", "🏃 Fliehen"]
             btn_colors = [(60,90,150),(90,150,60),(80,140,80),(150,60,60)]
+
+            # Attack button gets special styling during boost / downphase
+            if self.energy_boost_rounds > 0 and not self.energy_down_phase:
+                pulse2 = abs(math.sin(self.anim_t * 0.15))
+                btn_colors[0] = (int(160+60*pulse2), int(60+40*pulse2), 0)
+                btn_labels[0] = f"⚡×2 Angriff"
+            elif self.energy_down_phase:
+                btn_colors[0] = (60, 30, 30)
+                btn_labels[0] = "💤 Erschöpft"
+
             bw, bh = 118, 52
-            bx = SW - 250
+            bx = SW - 260
             by = SH - 148
             for i, (lbl, col) in enumerate(zip(btn_labels, btn_colors)):
                 bxi = bx + (i%2)*(bw+8)
@@ -890,11 +1086,18 @@ class Battle:
                     pygame.draw.rect(glow,(255,220,50,80),(0,0,bw+6,bh+6),border_radius=12)
                     surf.blit(glow,(bxi-3,byi-3))
                 draw_text(surf, lbl, F_SMALL, C_WHITE, bxi+bw//2, byi+bh//2-10, center=True, shadow=True)
-                # Show potion counts on bag button
-                if i == 2:
-                    pot = self.save_data_ref.get("potions",0) if hasattr(self,"save_data_ref") else 0
-                    sp  = self.save_data_ref.get("super_potions",0) if hasattr(self,"save_data_ref") else 0
-                    draw_text(surf, f"T:{pot} ST:{sp}", F_TINY, C_GRAY, bxi+bw//2, byi+bh//2+14, center=True)
+                # Show counts
+                if i == 1 and hasattr(self,"save_data_ref"):
+                    b  = self.save_data_ref.get("balls",0)
+                    mb = self.save_data_ref.get("master_balls",0)
+                    ball_str = f"×{b}" + (f" ✦×{mb}" if mb else "")
+                    draw_text(surf, ball_str, F_TINY, C_GRAY, bxi+bw//2, byi+bh//2+14, center=True)
+                if i == 2 and hasattr(self,"save_data_ref"):
+                    pot = self.save_data_ref.get("potions",0)
+                    sp  = self.save_data_ref.get("super_potions",0)
+                    hp  = self.save_data_ref.get("hyper_potions",0)
+                    sb  = self.save_data_ref.get("sonderbonbons",0)
+                    draw_text(surf, f"T:{pot} ST:{sp} HT:{hp} SB:{sb}", F_TINY, C_GRAY, bxi+bw//2, byi+bh//2+14, center=True)
 
         elif self.state == "andreas_steal":
             # Andreas overlay
@@ -918,11 +1121,12 @@ class Battle:
             draw_text(surf, "Warte auf Andreas...", F_TINY, C_GRAY, SW//2, SH-70, center=True)
 
         elif self.state == "catch_anim":
-            # Pokéball animation
             t = self.catch_anim_t
             ball_x = SW//2 + math.sin(t*0.2)*100
             ball_y = SH//2 - abs(math.cos(t*0.08))*120
-            ball_img = load_img("assets/pokeball.png", (48,48))
+            ball_key = getattr(self, "_catch_ball_key", "balls")
+            ball_path = ITEM_IMAGES.get(ball_key, "assets/pokeball.png")
+            ball_img = load_img(ball_path, (48,48))
             surf.blit(ball_img, (int(ball_x)-24, int(ball_y)-24))
             if t > 60:
                 msg = "Gefangen!" if self.catch_result else "Ausgebrochen!"
@@ -1443,30 +1647,52 @@ class ItemBagScreen:
         self.sel_mon  = 0
         self.mode = "items"  # items | pick_target
 
+    def _all_items(self):
+        return [
+            {"name": "Trank",             "key": "potions",              "heal": 30,   "col": (100,200,130), "action": "heal"},
+            {"name": "Super Trank",       "key": "super_potions",        "heal": 80,   "col": (80,160,255),  "action": "heal"},
+            {"name": "Hyper Trank",       "key": "hyper_potions",        "heal": 150,  "col": (200,100,255), "action": "heal"},
+            {"name": "Sonderbonbon",      "key": "sonderbonbons",        "heal": 0,    "col": (255,180,230), "action": "level"},
+            {"name": "Beleber",           "key": "beleber",              "heal": 0,    "col": (180,255,180), "action": "revive_half"},
+            {"name": "Top-Beleber",       "key": "top_beleber",          "heal": 0,    "col": (100,255,200), "action": "revive_full"},
+            {"name": "Meisterball",       "key": "master_balls",         "heal": 0,    "col": (255,215,0),   "action": "info"},
+            {"name": "Pokéball",          "key": "balls",                "heal": 0,    "col": (220,80,80),   "action": "info"},
+            {"name": "Raid-Pass",         "key": "raid_passes",          "heal": 0,    "col": (80,180,255),  "action": "info"},
+            {"name": "Premium Raid-Pass", "key": "premium_raid_passes",  "heal": 0,    "col": (255,160,80),  "action": "info"},
+        ]
+
     def handle_event(self, event):
         if event.type != pygame.KEYDOWN:
             return None
+        items = self._all_items()
         if self.mode == "items":
-            if event.key == pygame.K_UP or event.key == pygame.K_w:
+            if event.key in (pygame.K_UP, pygame.K_w):
                 self.sel_item = max(0, self.sel_item - 1)
-            elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
-                self.sel_item = min(1, self.sel_item + 1)
+            elif event.key in (pygame.K_DOWN, pygame.K_s):
+                self.sel_item = min(len(items)-1, self.sel_item + 1)
             elif event.key in (pygame.K_RETURN, pygame.K_z):
-                # Check if we have the item
-                if self.sel_item == 0 and self.save.get("potions",0) > 0:
+                item = items[self.sel_item]
+                if self.save.get(item["key"], 0) <= 0:
+                    notify(f"Kein {item['name']} mehr!", C_RED)
+                    return None
+                if item["action"] in ("heal", "level"):
                     self.mode = "pick_target"
                     self.sel_mon = 0
-                elif self.sel_item == 1 and self.save.get("super_potions",0) > 0:
-                    self.mode = "pick_target"
-                    self.sel_mon = 0
+                elif item["action"] in ("revive_half", "revive_full"):
+                    # Only allow if any pokemon is fainted
+                    if any(m.current_hp <= 0 for m in self.team):
+                        self.mode = "pick_target"
+                        self.sel_mon = 0
+                    else:
+                        notify("Kein besiegtes Pokémon im Team!", C_RED)
                 else:
-                    notify("Keinen Trank mehr!", C_RED)
+                    notify(f"{item['name']}: Nur im Kampf einsetzbar!", C_GRAY)
             elif event.key in (pygame.K_ESCAPE, pygame.K_x, pygame.K_i):
                 return "close"
         elif self.mode == "pick_target":
-            if event.key == pygame.K_UP or event.key == pygame.K_w:
+            if event.key in (pygame.K_UP, pygame.K_w):
                 self.sel_mon = max(0, self.sel_mon - 1)
-            elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
+            elif event.key in (pygame.K_DOWN, pygame.K_s):
                 self.sel_mon = min(len(self.team)-1, self.sel_mon + 1)
             elif event.key in (pygame.K_RETURN, pygame.K_z):
                 self._use_item()
@@ -1477,14 +1703,39 @@ class ItemBagScreen:
     def _use_item(self):
         m = self.team[self.sel_mon] if self.sel_mon < len(self.team) else None
         if not m: return
-        if self.sel_item == 0:  # potion
-            self.save["potions"] -= 1
-            m.heal(30)
-            notify(f"{m.name} +30 HP geheilt! ({self.save['potions']} übrig)", C_GREEN)
-        elif self.sel_item == 1:  # super potion
-            self.save["super_potions"] -= 1
-            m.heal(80)
-            notify(f"{m.name} +80 HP geheilt! ({self.save['super_potions']} übrig)", C_GREEN)
+        items = self._all_items()
+        item  = items[self.sel_item]
+        key   = item["key"]
+        if self.save.get(key, 0) <= 0:
+            return
+        self.save[key] -= 1
+        if item["action"] == "heal":
+            if m.current_hp <= 0:
+                notify(f"{m.name} ist bewusstlos! Nutze einen Beleber.", C_RED)
+                self.save[key] += 1  # refund
+                return
+            m.heal(item["heal"])
+            notify(f"{m.name} +{item['heal']} HP! ({self.save[key]} übrig)", C_GREEN)
+        elif item["action"] == "level":
+            m.level += 1
+            m.max_hp  = int(m.max_hp * 1.05) + 2
+            m.attack  = int(m.attack * 1.05) + 1
+            m.current_hp = min(m.current_hp + 10, m.max_hp)
+            notify(f"🍬 {m.name} ist jetzt Level {m.level}!", (255,180,230))
+        elif item["action"] == "revive_half":
+            if m.current_hp > 0:
+                notify(f"{m.name} ist nicht bewusstlos!", C_RED)
+                self.save[key] += 1
+                return
+            m.current_hp = max(1, m.max_hp // 2)
+            notify(f"💚 {m.name} wurde wiederbelebt! ({m.current_hp}/{m.max_hp} HP)", C_GREEN)
+        elif item["action"] == "revive_full":
+            if m.current_hp > 0:
+                notify(f"{m.name} ist nicht bewusstlos!", C_RED)
+                self.save[key] += 1
+                return
+            m.current_hp = m.max_hp
+            notify(f"💚 {m.name} vollständig wiederbelebt! ({m.max_hp}/{m.max_hp} HP)", (100,255,200))
         self.mode = "items"
 
     def draw(self, surf):
@@ -1493,41 +1744,47 @@ class ItemBagScreen:
         draw_text(surf, "Item-Beutel", F_BIG, C_YELLOW, SW//2, 6, center=True, shadow=True)
         draw_text(surf, "[ I / ESC ] zurück", F_TINY, C_GRAY, SW//2, 32, center=True)
 
-        # Items list
-        items = [
-            {"name": "Trank",       "key": "potions",       "heal": 30,  "col": (100,200,130)},
-            {"name": "Super Trank", "key": "super_potions", "heal": 80,  "col": (80,160,255)},
-        ]
-        ix = 40
+        items  = self._all_items()
+        # Two-column layout
+        col_w  = (SW - 100) // 2
         for i, item in enumerate(items):
             count = self.save.get(item["key"], 0)
+            col_i = i % 2
+            row_i = i // 2
+            ix = 40 + col_i * (col_w + 20)
+            iy = 60 + row_i * 76
             sel = (i == self.sel_item) and self.mode == "items"
             bg = (40,60,100) if sel else C_PANEL
-            draw_rounded_rect(surf, bg, (ix, 60, 360, 70), 12, 2 if sel else 1, C_YELLOW if sel else C_GRAY)
-            draw_text(surf, item["name"], F_MED, item["col"], ix+16, 70, shadow=True)
-            draw_text(surf, f"+{item['heal']} HP", F_SMALL, C_GRAY, ix+16, 96)
+            draw_rounded_rect(surf, bg, (ix, iy, col_w, 68), 12, 2 if sel else 1,
+                              C_YELLOW if sel else C_GRAY)
+            icon = item_icon(item["key"], 40)
+            if icon:
+                surf.blit(icon, (ix+10, iy+14))
+            draw_text(surf, item["name"], F_MED, item["col"], ix+58, iy+10, shadow=True)
+            action_desc = f"+{item['heal']} HP" if item["action"]=="heal" else ("+1 Level" if item["action"]=="level" else "Im Kampf")
+            draw_text(surf, action_desc, F_SMALL, C_GRAY, ix+58, iy+34)
             count_col = C_WHITE if count > 0 else C_RED
-            draw_text(surf, f"x{count}", F_BIG, count_col, ix+320, 77, center=True)
-            ix = 440
+            draw_text(surf, f"×{count}", F_BIG, count_col, ix+col_w-30, iy+22, center=True)
+
+        list_bottom = 60 + ((len(items)+1)//2) * 76 + 10
 
         if self.mode == "items":
-            draw_text(surf, "↑↓ wählen   ENTER benutzen", F_SMALL, C_GRAY, SW//2, 160, center=True)
+            draw_text(surf, "↑↓← → wählen   ENTER benutzen", F_SMALL, C_GRAY, SW//2, list_bottom, center=True)
         else:
-            draw_text(surf, "Welches Moonie heilen?", F_MED, C_YELLOW, SW//2, 155, center=True)
-
-        # Team list
-        for i, m in enumerate(self.team):
-            y = 180 + i * 78
-            sel = (i == self.sel_mon) and self.mode == "pick_target"
-            bg = (40,80,50) if sel else (28,32,45)
-            draw_rounded_rect(surf, bg, (40, y, SW-80, 70), 10, 2 if sel else 1, C_GREEN if sel else (55,60,75))
-            img = load_img(m.image, (48, 48))
-            surf.blit(img, (52, y+11))
-            draw_text(surf, m.name, F_MED, C_WHITE, 112, y+12)
-            draw_text(surf, f"Lv {m.level}", F_TINY, C_GRAY, 112, y+34)
-            draw_hp_bar(surf, 220, y+26, 380, 12, m.current_hp, m.max_hp)
-            hp_col = C_RED if m.current_hp < m.max_hp * 0.3 else C_WHITE
-            draw_text(surf, f"{m.current_hp}/{m.max_hp}", F_TINY, hp_col, 615, y+26)
+            draw_text(surf, "Welches Pokémon?", F_MED, C_YELLOW, SW//2, list_bottom, center=True)
+            # Team list
+            for i, m in enumerate(self.team):
+                y = list_bottom + 30 + i * 78
+                sel = (i == self.sel_mon) and self.mode == "pick_target"
+                bg2 = (40,80,50) if sel else (28,32,45)
+                draw_rounded_rect(surf, bg2, (40, y, SW-80, 70), 10, 2 if sel else 1, C_GREEN if sel else (55,60,75))
+                img = load_img(m.image, (48, 48))
+                surf.blit(img, (52, y+11))
+                draw_text(surf, m.name, F_MED, C_WHITE, 112, y+12)
+                draw_text(surf, f"Lv {m.level}", F_TINY, C_GRAY, 112, y+34)
+                draw_hp_bar(surf, 220, y+26, 500, 12, m.current_hp, m.max_hp)
+                hp_col = C_RED if m.current_hp < m.max_hp * 0.3 else C_WHITE
+                draw_text(surf, f"{m.current_hp}/{m.max_hp}", F_TINY, hp_col, 740, y+26)
 
         draw_notifications(surf)
 
@@ -2137,6 +2394,84 @@ class CardAlbumScreen:
                   SW//2, SH-16, center=True)
 
 
+# ── Raid Pass Selection screen ────────────────────────────────────────────────
+class RaidPassSelectScreen:
+    def __init__(self, save, raid):
+        self.save  = save
+        self.raid  = raid
+        self.sel   = 0
+        self.anim_t = 0
+
+    def _options(self):
+        opts = []
+        if self.save.get("premium_raid_passes", 0) > 0:
+            opts.append(("premium", "Premium Raid-Pass",
+                         "Raid erleichtert: ½ Boss-HP, -2 Lernkarten nötig",
+                         "premium_raid_passes", (255,160,80)))
+        if self.save.get("raid_passes", 0) > 0:
+            opts.append(("normal", "Raid-Pass",
+                         "Normaler Raid-Zutritt",
+                         "raid_passes", (80,180,255)))
+        return opts
+
+    def handle_event(self, event):
+        if event.type != pygame.KEYDOWN:
+            return None
+        k = event.key
+        if k in (pygame.K_ESCAPE, pygame.K_x):
+            return "close"
+        opts = self._options()
+        if k in (pygame.K_UP, pygame.K_w):
+            self.sel = max(0, self.sel - 1)
+        elif k in (pygame.K_DOWN, pygame.K_s):
+            self.sel = min(len(opts)-1, self.sel + 1)
+        elif k in (pygame.K_RETURN, pygame.K_z):
+            if opts:
+                chosen = opts[self.sel]
+                self.save[chosen[3]] -= 1
+                return ("start_raid", chosen[0])  # ("start_raid", "normal"|"premium")
+        return None
+
+    def draw(self, surf):
+        self.anim_t += 1
+        overlay = pygame.Surface((SW, SH), pygame.SRCALPHA)
+        overlay.fill((0, 0, 0, 190))
+        surf.blit(overlay, (0, 0))
+
+        pw, ph = 560, 300
+        px, py = SW//2 - pw//2, SH//2 - ph//2
+        draw_rounded_rect(surf, (18,20,40), (px, py, pw, ph), 16, 3, (255,160,40))
+        draw_text(surf, "⚔ Raid betreten", F_BIG, (255,160,40), SW//2, py+12, center=True, shadow=True)
+
+        boss_name = self.raid.get("name","???")
+        boss_lv   = self.raid.get("level", "?")
+        draw_text(surf, f"Boss: {boss_name}  Lv {boss_lv}", F_MED, C_WHITE, SW//2, py+48, center=True)
+
+        opts = self._options()
+        if not opts:
+            draw_text(surf, "Kein Raid-Pass vorhanden!", F_MED, C_RED, SW//2, py+120, center=True)
+            draw_text(surf, "Im Shop für 10.000 / 30.000 Coins kaufen.", F_SMALL, C_GRAY, SW//2, py+148, center=True)
+        else:
+            for i, (kind, name, desc, key, col) in enumerate(opts):
+                sel = (i == self.sel)
+                oy  = py + 90 + i * 76
+                bg  = (40,50,80) if sel else (22,26,44)
+                draw_rounded_rect(surf, bg, (px+20, oy, pw-40, 64), 12, 2 if sel else 1,
+                                  col if sel else (60,65,90))
+                icon = item_icon(key, 44)
+                if icon:
+                    surf.blit(icon, (px+30, oy+10))
+                nc = col if sel else C_WHITE
+                draw_text(surf, name, F_MED, nc, px+86, oy+8, shadow=True)
+                draw_text(surf, desc, F_SMALL, C_GRAY, px+86, oy+34)
+                cnt = self.save.get(key, 0)
+                draw_text(surf, f"×{cnt}", F_SMALL, col, px+pw-50, oy+20, center=True)
+
+        draw_text(surf, "↑↓ wählen   ENTER benutzen   ESC abbrechen",
+                  F_TINY, C_GRAY, SW//2, py+ph-20, center=True)
+        draw_notifications(surf)
+
+
 # ── Black Market screen ────────────────────────────────────────────────────────
 BLACKMARKET_REFRESH_SECONDS = 120   # 2 min real-time refresh
 
@@ -2285,23 +2620,46 @@ class BlackMarketScreen:
 # ── Shop screen ────────────────────────────────────────────────────────────────
 class ShopScreen:
     ITEMS = [
-        {"name": "Pokéball x5",   "cost": 50,  "desc": "Fange wilde Moonies (5 Stück)",  "key": "balls",   "amount": 5},
-        {"name": "Trank",         "cost": 20,  "desc": "Heilt 30 HP (1 Stück)",          "key": "potions", "amount": 1, "heal": 30},
-        {"name": "Super Trank",   "cost": 45,  "desc": "Heilt 80 HP (1 Stück)",          "key": "super_potions", "amount": 1, "heal": 80},
-        {"name": "Trank x5",      "cost": 80,  "desc": "Heilt 30 HP (5 Stück)",          "key": "potions", "amount": 5, "heal": 30},
+        {"name": "Pokéball x5",       "cost":    50, "desc": "Fange wilde Pokémon (5 Stück)",      "key": "balls",               "amount": 5,  "icon": "balls"},
+        {"name": "Trank",             "cost":    20, "desc": "Heilt 30 HP",                        "key": "potions",             "amount": 1,  "icon": "potions"},
+        {"name": "Super Trank",       "cost":    45, "desc": "Heilt 80 HP",                        "key": "super_potions",       "amount": 1,  "icon": "super_potions"},
+        {"name": "Trank x5",          "cost":    80, "desc": "Heilt 30 HP (5 Stück)",              "key": "potions",             "amount": 5,  "icon": "potions"},
+        {"name": "Hyper Trank",       "cost":   120, "desc": "Heilt 150 HP",                       "key": "hyper_potions",       "amount": 1,  "icon": "hyper_potions"},
+        {"name": "Energy Drink",      "cost":  3000, "desc": "3 Runden 2× Angriff, dann Pause",  "key": "redbull",             "amount": 1,  "icon": "redbull"},
+        {"name": "Sonderbonbon",      "cost":  5000, "desc": "+1 Level für ein Pokémon",           "key": "sonderbonbons",       "amount": 1,  "icon": "sonderbonbons"},
+        {"name": "Beleber",           "cost":   400, "desc": "Belebt besiegtes Pokémon (½ HP)",    "key": "beleber",             "amount": 1,  "icon": "beleber"},
+        {"name": "Top-Beleber",       "cost":   800, "desc": "Belebt besiegtes Pokémon (voll HP)", "key": "top_beleber",         "amount": 1,  "icon": "top_beleber"},
+        {"name": "Raid-Pass",         "cost": 10000, "desc": "Zutritt zu einem Raid",              "key": "raid_passes",         "amount": 1,  "icon": "raid_passes"},
+        {"name": "Premium Raid-Pass", "cost": 30000, "desc": "Raid erleichtert + Zutritt",         "key": "premium_raid_passes", "amount": 1,  "icon": "premium_raid_passes"},
     ]
+    VISIBLE = 6   # rows shown at once
+    ROW_H   = 58
+    PANEL_X = 50
+    PANEL_W = 520
+    PANEL_Y = 75
 
     def __init__(self, save_data, team):
-        self.save = save_data
-        self.team = team
-        self.sel = 0
+        self.save   = save_data
+        self.team   = team
+        self.sel    = 0
+        self.scroll = 0   # first visible index
+
+    def _clamp_scroll(self):
+        # Keep selected item in view
+        if self.sel < self.scroll:
+            self.scroll = self.sel
+        elif self.sel >= self.scroll + self.VISIBLE:
+            self.scroll = self.sel - self.VISIBLE + 1
+        self.scroll = max(0, min(self.scroll, max(0, len(self.ITEMS) - self.VISIBLE)))
 
     def handle_event(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                self.sel = (self.sel-1) % len(self.ITEMS)
+                self.sel = (self.sel - 1) % len(self.ITEMS)
+                self._clamp_scroll()
             elif event.key == pygame.K_DOWN:
-                self.sel = (self.sel+1) % len(self.ITEMS)
+                self.sel = (self.sel + 1) % len(self.ITEMS)
+                self._clamp_scroll()
             elif event.key in (pygame.K_RETURN, pygame.K_z):
                 self.buy(self.sel)
             elif event.key in (pygame.K_ESCAPE, pygame.K_x):
@@ -2310,46 +2668,104 @@ class ShopScreen:
 
     def buy(self, idx):
         item = self.ITEMS[idx]
-        if item["key"] is None: return
-        if self.save["coins"] < item["cost"]:
-            notify("Nicht genug Münzen!", C_RED)
+        if self.save.get("coins", 0) < item["cost"]:
+            notify("Nicht genug Münzen! 💰", C_RED)
             return
         self.save["coins"] -= item["cost"]
-        if item["key"] == "balls":
-            self.save["balls"] = self.save.get("balls", 0) + item["amount"]
-            notify(f"+{item['amount']} Pokébälle!", C_GREEN)
-        elif item["key"] == "potions":
-            self.save["potions"] = self.save.get("potions", 0) + item["amount"]
-            notify(f"+{item['amount']} Tränke! (jetzt: {self.save['potions']})", C_GREEN)
-        elif item["key"] == "super_potions":
-            self.save["super_potions"] = self.save.get("super_potions", 0) + item["amount"]
-            notify(f"+{item['amount']} Super Tränke! (jetzt: {self.save['super_potions']})", C_GREEN)
+        key = item["key"]
+        amt = item["amount"]
+        self.save[key] = self.save.get(key, 0) + amt
+        notify(f"+{amt}× {item['name']} gekauft!", C_GREEN)
 
     def draw(self, surf):
         surf.fill(C_BG)
         shop_img = load_img("assets/shop.png", (SW, SH))
-        surf.blit(shop_img, (0,0))
-        # Semi-transparent panel
-        panel = pygame.Surface((400, 400), pygame.SRCALPHA)
-        panel.fill((15,18,28,220))
-        surf.blit(panel, (50, 100))
+        surf.blit(shop_img, (0, 0))
 
-        draw_text(surf, "Pokéstore", F_BIG, C_YELLOW, 250, 112, center=True, shadow=True)
-        draw_text(surf, f"💰 {self.save['coins']} Münzen   🎯 {self.save.get('balls',0)} Bälle   💊 {self.save.get('potions',0)} Tr. / {self.save.get('super_potions',0)} STr.",
-                  F_SMALL, C_WHITE, 250, 152, center=True)
+        px = self.PANEL_X
+        pw = self.PANEL_W
+        py = self.PANEL_Y
+        header_h = 80
+        list_h   = self.VISIBLE * self.ROW_H + 8
+        footer_h = 30
+        total_h  = header_h + list_h + footer_h
 
-        for i, item in enumerate(self.ITEMS):
-            y = 185 + i*65
-            sel = (i == self.sel)
-            col = C_PANEL2 if not sel else C_BLUE
-            draw_rounded_rect(surf, col, (65, y, 370, 55), 10, 2 if sel else 1, C_YELLOW if sel else C_GRAY)
-            draw_text(surf, item["name"], F_MED, C_WHITE, 85, y+8, shadow=True)
-            draw_text(surf, item["desc"], F_SMALL, C_GRAY, 85, y+32)
-            if item["cost"] > 0:
-                draw_text(surf, f"💰 {item['cost']}", F_MED, C_YELLOW, 380, y+16)
+        # Panel background
+        panel = pygame.Surface((pw, total_h), pygame.SRCALPHA)
+        panel.fill((15, 18, 28, 225))
+        surf.blit(panel, (px, py))
+        pygame.draw.rect(surf, C_YELLOW, (px, py, pw, total_h), 2, border_radius=10)
 
-        draw_text(surf, "↑↓ wählen  ENTER kaufen  ESC zurück", F_TINY, C_GRAY, 250, 500, center=True)
+        # Header
+        draw_text(surf, "Pokéstore", F_BIG, C_YELLOW, px + pw//2, py + 8, center=True, shadow=True)
+        coins = self.save.get('coins', 0)
+        balls = self.save.get('balls', 0)
+        mb    = self.save.get('master_balls', 0)
+        sb    = self.save.get('sonderbonbons', 0)
+        info  = f"💰 {coins:,}   🎯 {balls} Bälle"
+        if mb: info += f"   ✦ {mb} MB"
+        if sb: info += f"   🍬 {sb} SB"
+        draw_text(surf, info, F_SMALL, C_WHITE, px + pw//2, py + 48, center=True)
+
+        # Scrollable item list
+        list_y = py + header_h
+        # Clip drawing to list area
+        clip = surf.get_clip()
+        surf.set_clip(pygame.Rect(px, list_y, pw, list_h))
+
+        for i in range(self.scroll, min(self.scroll + self.VISIBLE, len(self.ITEMS))):
+            item = self.ITEMS[i]
+            row  = i - self.scroll
+            iy   = list_y + 4 + row * self.ROW_H
+            sel  = (i == self.sel)
+            bg   = (35, 60, 110) if sel else (22, 26, 40)
+            bdr  = C_YELLOW if sel else (55, 60, 80)
+
+            can_afford = self.save.get("coins", 0) >= item["cost"]
+            if sel:
+                # Glow behind selected row
+                glow = pygame.Surface((pw - 20, self.ROW_H - 6), pygame.SRCALPHA)
+                glow.fill((255, 220, 50, 30))
+                surf.blit(glow, (px + 10, iy))
+
+            draw_rounded_rect(surf, bg, (px + 10, iy, pw - 20, self.ROW_H - 6), 8,
+                              2 if sel else 1, bdr)
+
+            # Icon
+            icon = item_icon(item.get("icon", ""), 38)
+            if icon:
+                surf.blit(icon, (px + 18, iy + (self.ROW_H - 6 - 38)//2))
+
+            # Name + desc
+            name_col = C_YELLOW if sel else C_WHITE
+            draw_text(surf, item["name"], F_MED, name_col, px + 64, iy + 6, shadow=True)
+            draw_text(surf, item["desc"], F_TINY, (160, 165, 180), px + 64, iy + 28)
+
+            # Price — right-aligned, guaranteed to fit
+            price_str  = f"💰 {item['cost']:,}"
+            price_col  = C_GREEN if can_afford else (180, 60, 60)
+            price_surf = F_MED.render(price_str, True, price_col)
+            surf.blit(price_surf, (px + pw - price_surf.get_width() - 16, iy + 12))
+
+        surf.set_clip(clip)
+
+        # Scrollbar
+        if len(self.ITEMS) > self.VISIBLE:
+            sb_x     = px + pw - 10
+            sb_top   = list_y + 4
+            sb_total = list_h - 8
+            thumb_h  = max(20, sb_total * self.VISIBLE // len(self.ITEMS))
+            thumb_y  = sb_top + (sb_total - thumb_h) * self.scroll // max(1, len(self.ITEMS) - self.VISIBLE)
+            pygame.draw.rect(surf, (40, 45, 60), (sb_x, sb_top, 6, sb_total), border_radius=3)
+            pygame.draw.rect(surf, C_YELLOW,     (sb_x, thumb_y, 6, thumb_h), border_radius=3)
+
+        # Footer hint
+        foot_y = py + header_h + list_h + 6
+        draw_text(surf, "↑↓ scrollen   ENTER kaufen   ESC zurück",
+                  F_TINY, C_GRAY, px + pw//2, foot_y, center=True)
+
         draw_notifications(surf)
+
 
 # ── Pokémon Center screen ──────────────────────────────────────────────────────
 class PokeCenterScreen:
@@ -2423,11 +2839,11 @@ class OverworldScreen:
         pygame.Rect(650, 360, 170, 140),
         pygame.Rect(55, 430, 145, 115),
     ]
-    SHOP_RECT   = pygame.Rect(20,  20, 130, 85)
-    CENTER_RECT = pygame.Rect(170, 20, 130, 85)
-    PC_RECT     = pygame.Rect(740, 30, 120, 75)
-    ARENA_RECT  = pygame.Rect(SW//2 - 65, 25, 130, 85)
-    SKULL_RECT  = pygame.Rect(SW - 170, SH - 110, 120, 80)  # bottom-right corner
+    SHOP_RECT   = pygame.Rect(30,   30, 140, 90)
+    CENTER_RECT = pygame.Rect(210,  30, 140, 90)
+    PC_RECT     = pygame.Rect(SW - 300, 30, 130, 80)
+    ARENA_RECT  = pygame.Rect(SW//2 - 70, 30, 140, 90)
+    SKULL_RECT  = pygame.Rect(SW - 160, SH - 120, 130, 85)
     MAX_TRAINERS = 4
 
     def __init__(self, save_data, flashcards):
@@ -2544,13 +2960,21 @@ class OverworldScreen:
             if self._raid_spawn_timer <= 0:
                 self._try_spawn_raid()
         else:
-            self.raid_timer -= 1
-            if self.raid_timer <= 0 and not self.raid.get("defeated"):
-                # Raid expired
-                add_particles(self.ARENA_RECT.centerx, self.ARENA_RECT.centery, (200,50,50), n=30)
-                notify("Raid abgelaufen! Das Pokémon ist entkommen.", C_RED, 200)
-                self.raid = None
-                self._raid_spawn_timer = random.randint(1800, 7200)
+            # Only count down if raid is still active (not defeated/caught)
+            if not self.raid.get("defeated") and not self.raid.get("catch_used"):
+                self.raid_timer -= 1
+                if self.raid_timer <= 0:
+                    # Raid expired
+                    add_particles(self.ARENA_RECT.centerx, self.ARENA_RECT.centery, (200,50,50), n=30)
+                    notify("Raid abgelaufen! Das Pokémon ist entkommen.", C_RED, 200)
+                    self.raid = None
+                    self._raid_spawn_timer = random.randint(1800, 7200)
+            elif self.raid.get("catch_used") or (self.raid.get("defeated") and not self.raid.get("can_catch")):
+                # Raid fully done — clear after short delay so player sees result
+                self.raid_timer -= 1
+                if self.raid_timer <= -300:  # 5 seconds after completion
+                    self.raid = None
+                    self._raid_spawn_timer = random.randint(1800, 5400)
 
     def _try_spawn_raid(self):
         """Pick a legendary/rare Pokémon and start a raid."""
@@ -2560,8 +2984,8 @@ class OverworldScreen:
         if not pool:
             return
         boss = random.choice(pool)
-        level = random.randint(45, 60)
-        cards_needed = random.randint(3, 8)  # must answer this many correctly during fight
+        level = random.randint(35, 50)
+        cards_needed = random.randint(2, 5)  # reduced from 3-8
         self.raid = {
             "name":          boss.name,
             "image":         boss.image,
@@ -2629,7 +3053,13 @@ class OverworldScreen:
                 if self.raid.get("can_catch") and not self.raid.get("catch_used"):
                     return "raid_catch"
                 elif not self.raid.get("defeated"):
-                    return "raid_battle"
+                    # Check passes
+                    has_normal  = self.save.get("raid_passes", 0) > 0
+                    has_premium = self.save.get("premium_raid_passes", 0) > 0
+                    if not has_normal and not has_premium:
+                        notify("Du brauchst einen Raid-Pass! 🎫 Im Shop kaufen.", C_RED, 200)
+                    else:
+                        return "raid_pass_select"
         elif self.blackmarket_cooldown == 0 and pr.colliderect(self.SKULL_RECT):
             self.pending_action = "blackmarket"
             if enter_pressed:
@@ -2689,7 +3119,7 @@ class OverworldScreen:
             surf.blit(glow, (self.ARENA_RECT.x-10, self.ARENA_RECT.y-10))
         surf.blit(arena_img, (self.ARENA_RECT.x, self.ARENA_RECT.y))
         if self.raid:
-            secs = self.raid_timer // 60
+            secs = max(0, self.raid_timer) // 60
             if self.raid.get("can_catch"):
                 draw_text(surf, f"⚡ {self.raid['name']}", F_TINY, C_GREEN, self.ARENA_RECT.centerx, self.ARENA_RECT.bottom+3, center=True, shadow=True)
                 draw_text(surf, "Fangen bereit!", F_TINY, C_GREEN, self.ARENA_RECT.centerx, self.ARENA_RECT.bottom+14, center=True)
@@ -2726,7 +3156,14 @@ class OverworldScreen:
             if self.raid and self.raid.get("can_catch") and not self.raid.get("catch_used"):
                 draw_text(surf, "[ ENTER ] Raid-Pokémon fangen!", F_SMALL, C_GREEN, self.ARENA_RECT.centerx, self.ARENA_RECT.bottom+18, center=True, shadow=True)
             elif self.raid and not self.raid.get("defeated"):
-                draw_text(surf, "[ ENTER ] Raid starten!", F_SMALL, C_YELLOW, self.ARENA_RECT.centerx, self.ARENA_RECT.bottom+18, center=True, shadow=True)
+                has_pass = self.save.get("raid_passes",0) > 0 or self.save.get("premium_raid_passes",0) > 0
+                col = C_YELLOW if has_pass else C_RED
+                label = "[ ENTER ] Raid starten! 🎫" if has_pass else "Kein Raid-Pass! Im Shop kaufen."
+                draw_text(surf, label, F_SMALL, col, self.ARENA_RECT.centerx, self.ARENA_RECT.bottom+18, center=True, shadow=True)
+                # Show pass counts
+                rp  = self.save.get("raid_passes",0)
+                prp = self.save.get("premium_raid_passes",0)
+                draw_text(surf, f"Pass: {rp}  Premium: {prp}", F_TINY, C_GRAY, self.ARENA_RECT.centerx, self.ARENA_RECT.bottom+34, center=True)
             elif self.raid and self.raid.get("catch_used"):
                 draw_text(surf, "Raid abgeschlossen", F_SMALL, C_GRAY, self.ARENA_RECT.centerx, self.ARENA_RECT.bottom+18, center=True)
             else:
@@ -2766,7 +3203,7 @@ class OverworldScreen:
 
         # Raid HUD mini-panel (bottom left when active)
         if self.raid:
-            secs = self.raid_timer // 60
+            secs = max(0, self.raid_timer) // 60
             rx, ry, rw, rh = 8, SH-78, 290, 68
             bg_c = (20,50,20) if self.raid.get("can_catch") else (50,25,10)
             draw_rounded_rect(surf, bg_c, (rx, ry, rw, rh), 10, 2, C_YELLOW)
@@ -2995,6 +3432,7 @@ class Game:
         self.ach_screen        = None
         self.card_album_screen = None
         self.blackmarket_screen= None
+        self.raid_pass_screen  = None
         self.prev_state        = None
 
     def _trigger_achievements(self):
@@ -3073,7 +3511,7 @@ class Game:
         t["vy"] = random.choice([-1, 1]) * 2.5
         t["move_dir_t"] = 180
 
-    def start_raid_battle(self):
+    def start_raid_battle(self, premium=False):
         if not self.overworld or not self.overworld.raid:
             return
         raid = self.overworld.raid
@@ -3082,18 +3520,25 @@ class Game:
             return
         boss = m.clone_for_battle()
         boss.level = raid["level"]
-        boss.max_hp = boss.max_hp + boss.level * 5
-        boss.attack = boss.attack + boss.level * 2
+        # Base stats boost (reduced from before for better balance)
+        boss.max_hp = boss.max_hp + boss.level * 3
+        boss.attack = boss.attack + boss.level
+        if premium:
+            # Premium pass: halve the boss HP and reduce cards needed
+            boss.max_hp = max(10, boss.max_hp // 2)
+            raid["_premium_bonus"] = True
         boss.current_hp = boss.max_hp
+        cards_needed = max(1, raid["cards_needed"] - (2 if premium else 0))
         self.battle = Battle(self.team, None, wild_moonie=boss, flashcards=self.flashcards, is_wild=True)
         self.battle.save_data_ref = self.save
-        self.battle.raid_cards_needed = raid["cards_needed"]
+        self.battle.raid_cards_needed = cards_needed
         self.battle.raid_cards_answered = 0
         self.battle._is_raid = True
+        self.battle._raid_attack_count = 0
         self.battle.overworld_ref = self.overworld
-        # Force flashcards during raid (always show flashcard before attack)
         self.screen_state = "battle"
-        notify(f"⚔ RAID-KAMPF gegen {boss.name} Lv{boss.level}! Beantworte {raid['cards_needed']} Lernkarten!", C_YELLOW, 240)
+        pass_str = " (Premium-Pass aktiv! 🌟)" if premium else ""
+        notify(f"⚔ RAID gegen {boss.name} Lv{boss.level}! {cards_needed} Lernkarten nötig!{pass_str}", C_YELLOW, 260)
 
     def start_raid_catch(self):
         """Start a wild catch attempt for the raid boss."""
@@ -3136,6 +3581,11 @@ class Game:
                 tidx = getattr(self.battle, '_trainer_idx', None)
                 if tidx is not None and self.overworld:
                     self.overworld._despawn_trainer(tidx)
+                # Masterball drop: 0.5% normal trainer, 2% Team Rocket
+                mb_chance = 0.02 if is_rocket else 0.005
+                if random.random() < mb_chance:
+                    self.save["master_balls"] = self.save.get("master_balls",0) + 1
+                    notify("✦ MEISTERBALL gefunden! ✦", (255,215,0), 300)
             if is_rocket:
                 self.save["rocket_battles_won"] = self.save.get("rocket_battles_won",0) + 1
             # Handle raid boss defeat
@@ -3177,6 +3627,10 @@ class Game:
             notify(f"{caught_name} wurde zum PC hinzugefügt!", C_GREEN, 160)
             # Card drop chance
             try_card_drop(caught_name, self.save)
+            # Sonderbonbon drop: 8% chance
+            if random.random() < 0.08:
+                self.save["sonderbonbons"] = self.save.get("sonderbonbons",0) + 1
+                notify("🍬 Sonderbonbon erhalten!", (255,180,230), 180)
         elif result == "lose":
             for m in self.team:
                 m.current_hp = m.max_hp
@@ -3324,6 +3778,15 @@ class Game:
                         if self.overworld:
                             self.overworld.blackmarket_cooldown = 90
 
+                # ── Raid Pass Select ──
+                elif self.screen_state == "raid_pass_select" and hasattr(self, 'raid_pass_screen'):
+                    result = self.raid_pass_screen.handle_event(event)
+                    if result == "close":
+                        self.screen_state = "overworld"
+                    elif isinstance(result, tuple) and result[0] == "start_raid":
+                        self.screen_state = "overworld"
+                        self.start_raid_battle(premium=(result[1] == "premium"))
+
                 # ── Evolution ──
                 elif self.screen_state == "evolution" and self.evo_screen:
                     result = self.evo_screen.handle_event(event)
@@ -3364,6 +3827,9 @@ class Game:
                     self.start_raid_battle()
                 elif action == "raid_catch":
                     self.start_raid_catch()
+                elif action == "raid_pass_select":
+                    self.raid_pass_screen = RaidPassSelectScreen(self.save, self.overworld.raid)
+                    self.screen_state = "raid_pass_select"
 
             elif self.screen_state == "battle" and self.battle:
                 self.battle.update()
@@ -3401,6 +3867,11 @@ class Game:
                 self.card_album_screen.draw(surface)
             elif self.screen_state == "blackmarket" and self.blackmarket_screen:
                 self.blackmarket_screen.draw(surface)
+            elif self.screen_state == "raid_pass_select" and hasattr(self, 'raid_pass_screen'):
+                # Draw overworld underneath, then overlay
+                if self.overworld:
+                    self.overworld.draw(surface)
+                self.raid_pass_screen.draw(surface)
             elif self.screen_state == "pokedex" and self.pokedex:
                 self.pokedex.draw(surface)
             else:
