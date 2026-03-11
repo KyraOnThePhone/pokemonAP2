@@ -5,9 +5,6 @@ Each achievement can have multiple milestones (tiers).
 """
 
 # ── Achievement definitions ─────────────────────────────────────────────────
-# Each entry: id, icon, title, description, milestones: [(threshold, label, reward_coins)]
-# If milestones is None → binary (done/not done), threshold=1
-
 ACHIEVEMENTS = [
 
     # ── Pokédex / Fangen ────────────────────────────────────────────────────
@@ -202,6 +199,35 @@ ACHIEVEMENTS = [
             (10,"10 Entwicklungen",   700),
         ],
     },
+
+    # ── NEU: Evoli-Kette (nur ohne Stein!) ───────────────────────────────────
+    {
+        "id": "evoli_chain",
+        "icon": "🦊", "category": "Abenteuer",
+        "title": "Evoli-Experte",
+        "desc": "Entwickle Evoli zu allen 8 Evolutions – ohne Entwicklungsstein!",
+        "milestones": [
+            (2, "2 Evoli-Evos",    200),
+            (4, "4 Evoli-Evos",    500),
+            (6, "6 Evoli-Evos",   1000),
+            (8, "Alle Evoli-Evos!", 5000),
+        ],
+    },
+
+    # ── NEU: Entwicklungsstein ────────────────────────────────────────────────
+    {
+        "id": "stein_used",
+        "icon": "💎", "category": "Abenteuer",
+        "title": "Steinreich",
+        "desc": "Benutze Entwicklungssteine",
+        "milestones": [
+            (1,  "Erster Stein",   200),
+            (5,  "5 Steine",       600),
+            (15, "15 Steine",     1500),
+        ],
+    },
+
+    # ── Pokédex ──────────────────────────────────────────────────────────────
     {
         "id": "pokedex_complete",
         "icon": "📖", "category": "Pokédex",
@@ -233,83 +259,65 @@ ACHIEVEMENT_BY_ID = {a["id"]: a for a in ACHIEVEMENTS}
 ALL_TYPES = ["Normal","Feuer","Wasser","Pflanze","Elektro","Eis","Kampf","Gift",
              "Boden","Flug","Psycho","Käfer","Gestein","Geist","Drache","Unlicht","Stahl","Fee"]
 
+# Alle Evoli-Entwicklungen – nur die ohne Stein ausgelösten zählen!
+EVOLI_EVOLUTIONS = {
+    "Aquana", "Blitza", "Flamara", "Psiana",
+    "Nachtara", "Folipurba", "Glaziola", "Feelinara"
+}
+
 
 def _get_progress(ach_id, save, flashcards, caught_set, all_moonies):
-    """Compute current progress value for an achievement."""
     a = ACHIEVEMENT_BY_ID.get(ach_id)
     if not a:
         return 0
 
     if ach_id == "catch_first":
         return min(1, save.get("total_catches", 0))
-
     if ach_id == "catch_pokemon":
         return len(caught_set)
-
     if ach_id == "pokedex_complete":
         return len(caught_set)
-
     if ach_id == "legendary":
-        count = 0
-        for name in caught_set:
-            m = all_moonies.get(name)
-            if m and m.rarity == "legendary":
-                count += 1
-        return count
-
+        return sum(1 for n in caught_set
+                   if all_moonies.get(n) and all_moonies[n].rarity == "legendary")
     if ach_id == "all_types":
         types_caught = set()
         for name in caught_set:
             m = all_moonies.get(name)
             if m:
-                for t in m.types:
-                    types_caught.add(t)
-        needed = set(ALL_TYPES)
-        return 1 if needed.issubset(types_caught) else 0
-
+                types_caught.update(m.types)
+        return 1 if set(ALL_TYPES).issubset(types_caught) else 0
     if "type" in a:
         typ = a["type"]
-        count = 0
-        for name in caught_set:
-            m = all_moonies.get(name)
-            if m and typ in m.types:
-                count += 1
-        return count
-
+        return sum(1 for n in caught_set
+                   if all_moonies.get(n) and typ in all_moonies[n].types)
     if ach_id == "battles_won":
         return save.get("battles_won", 0)
-
     if ach_id == "trainer_battles":
         return save.get("trainer_battles_won", 0)
-
     if ach_id == "rocket_battles":
         return save.get("rocket_battles_won", 0)
-
     if ach_id == "badges":
         return save.get("badges", 0)
-
     if ach_id == "cards_answered":
         return save.get("cards_correct_total", 0)
-
     if ach_id == "cards_streak":
         return save.get("cards_best_streak", 0)
-
     if ach_id == "steps":
         return save.get("step_count", 0)
-
     if ach_id == "evolutions":
         return save.get("evolution_count", 0)
-
+    if ach_id == "evoli_chain":
+        evoli_no_stone = save.get("evoli_evos_no_stone", [])
+        return len(set(evoli_no_stone) & EVOLI_EVOLUTIONS)
+    if ach_id == "stein_used":
+        return save.get("stein_used_count", 0)
     return 0
 
 
 def check_achievements(save, flashcards, all_moonies):
-    """
-    Check all achievements against current save state.
-    Returns list of newly unlocked (ach_id, milestone_label, reward_coins) tuples.
-    """
     caught_set = set(save.get("pc_box", []))
-    unlocked = save.setdefault("achievements", {})  # {ach_id: milestone_index_reached}
+    unlocked = save.setdefault("achievements", {})
     newly_unlocked = []
 
     for a in ACHIEVEMENTS:
@@ -319,19 +327,18 @@ def check_achievements(save, flashcards, all_moonies):
 
         for tier_idx, (threshold, label, reward) in enumerate(a["milestones"]):
             if tier_idx <= current_tier:
-                continue   # already unlocked
+                continue
             if progress >= threshold:
                 unlocked[aid] = tier_idx
                 save["coins"] = save.get("coins", 0) + reward
                 newly_unlocked.append((aid, label, a["title"], reward, a["icon"]))
             else:
-                break   # milestones are ordered; stop early
+                break
 
     return newly_unlocked
 
 
 def get_all_status(save, flashcards, all_moonies):
-    """Return list of (achievement, progress, current_tier) for display."""
     caught_set = set(save.get("pc_box", []))
     unlocked = save.get("achievements", {})
     result = []
@@ -342,7 +349,8 @@ def get_all_status(save, flashcards, all_moonies):
         result.append((a, progress, tier))
     return result
 
-# ── Card achievements (appended) ────────────────────────────────────────────
+
+# ── Card achievements ────────────────────────────────────────────────────────
 CARD_ACHIEVEMENTS = [
     {
         "id": "cards_collected",
@@ -385,19 +393,88 @@ CARD_ACHIEVEMENTS = [
 ACHIEVEMENTS.extend(CARD_ACHIEVEMENTS)
 ACHIEVEMENT_BY_ID.update({a["id"]: a for a in CARD_ACHIEVEMENTS})
 
+
 def _get_card_progress(ach_id, save):
     album = save.get("card_album", {})
     if ach_id == "cards_collected":
-        return sum(v.get("count",0) for v in album.values())
+        return sum(v.get("count", 0) for v in album.values())
     if ach_id == "shiny_cards":
-        return sum(v.get("shiny",0) for v in album.values())
+        return sum(v.get("shiny", 0) for v in album.values())
     if ach_id == "unique_cards":
         return len(album)
     return 0
 
-# Monkey-patch _get_progress to handle card achievements
+
 _orig_get_progress = _get_progress
+
+
 def _get_progress(ach_id, save, flashcards, caught_set, all_moonies):
     if ach_id in ("cards_collected", "shiny_cards", "unique_cards"):
         return _get_card_progress(ach_id, save)
     return _orig_get_progress(ach_id, save, flashcards, caught_set, all_moonies)
+
+# ── Eeveelution Achievement ──────────────────────────────────────────────────
+def _get_eevee_evolutions(all_moonies):
+    """
+    Dynamically read Evoli's next-evolutions from the Moonie registry.
+    Works automatically with fanmade Evolis — no hardcoded list needed.
+    """
+    evoli = all_moonies.get("Evoli")
+    if not evoli:
+        return set()
+    nxt = getattr(evoli, "nextEvolution", None)
+    if isinstance(nxt, list):
+        return set(nxt)
+    if isinstance(nxt, str):
+        return {nxt}
+    return set()
+
+
+def _eeveelution_milestone_label(all_moonies):
+    """Compute milestone thresholds based on actual number of Evoli evolutions."""
+    total = len(_get_eevee_evolutions(all_moonies))
+    if total == 0:
+        return []
+    third  = max(1, total // 3)
+    twothird = max(third + 1, (total * 2) // 3)
+    return [
+        (third,    "Eeveelution-Anfänger",  500),
+        (twothird, "Eeveelution-Profi",    2000),
+        (total,    "Eeveelution-Meister", 10000),
+    ]
+
+
+# Static definition — milestones are patched at check-time using actual count
+EEVEE_ACHIEVEMENTS = [
+    {
+        "id": "eeveelution_master",
+        "icon": "🌟", "category": "Abenteuer",
+        "title": "Eeveelution-Meister",
+        "desc": "Entwickle Evoli in alle möglichen Entwicklungen — ohne Entwicklungsstein!",
+        # Milestones are computed dynamically; these are fallback placeholders
+        "milestones": [
+            (3,  "Eeveelution-Anfänger",  500),
+            (12, "Eeveelution-Profi",    2000),
+            (36, "Eeveelution-Meister", 10000),
+        ],
+        "_dynamic_milestones": True,  # flag for dynamic patching below
+    },
+]
+
+ACHIEVEMENTS.extend(EEVEE_ACHIEVEMENTS)
+ACHIEVEMENT_BY_ID.update({a["id"]: a for a in EEVEE_ACHIEVEMENTS})
+
+_prev_get_progress = _get_progress
+
+def _get_progress(ach_id, save, flashcards, caught_set, all_moonies):
+    if ach_id == "eeveelution_master":
+        # Patch milestones dynamically so the UI always shows the correct totals
+        a = ACHIEVEMENT_BY_ID.get("eeveelution_master")
+        if a and a.get("_dynamic_milestones"):
+            dyn = _eeveelution_milestone_label(all_moonies)
+            if dyn:
+                a["milestones"] = dyn
+        seen = set(save.get("eevee_evolutions_no_stein", []))
+        valid = _get_eevee_evolutions(all_moonies)
+        return len(seen & valid)
+    return _prev_get_progress(ach_id, save, flashcards, caught_set, all_moonies)
