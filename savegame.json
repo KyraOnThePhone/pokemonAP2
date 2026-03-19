@@ -3,36 +3,52 @@
   "name": "Spieler",
   "team": [
     {
-      "name": "Glumanda",
+      "name": "Glutexo",
       "level": 16,
-      "xp": 40,
-      "current_hp": 12,
-      "max_hp": 80,
-      "attack": 65
-    },
-    {
-      "name": "Evoli",
-      "level": 23,
-      "xp": 40,
-      "current_hp": 50,
-      "max_hp": 50,
-      "attack": 35
+      "xp": 60,
+      "current_hp": 0,
+      "max_hp": 90,
+      "attack": 70
     },
     {
       "name": "Guardeon",
       "level": 20,
-      "xp": 5,
-      "current_hp": 90,
+      "xp": 910,
+      "current_hp": 0,
       "max_hp": 90,
       "attack": 70
     },
     {
       "name": "Magnezone",
       "level": 30,
-      "xp": 15,
-      "current_hp": 100,
+      "xp": 973,
+      "current_hp": 0,
       "max_hp": 100,
       "attack": 75
+    },
+    {
+      "name": "Gardevoir",
+      "level": 20,
+      "xp": 25,
+      "current_hp": 120,
+      "max_hp": 120,
+      "attack": 95
+    },
+    {
+      "name": "Nachtara",
+      "level": 20,
+      "xp": 707,
+      "current_hp": 90,
+      "max_hp": 90,
+      "attack": 70
+    },
+    {
+      "name": "Energeon",
+      "level": 20,
+      "xp": 0,
+      "current_hp": 90,
+      "max_hp": 90,
+      "attack": 70
     }
   ],
   "pc_box": [
@@ -40,44 +56,119 @@
     "Guardeon",
     "Magnezone",
     "Granforgita",
-    "Trasla"
+    "Trasla",
+    "Nachtara",
+    "Evoli",
+    "Galar Gallopa",
+    "Girafarig",
+    "Glutexo",
+    "Kirlia",
+    "Energeon",
+    "Gorgasonn",
+    "Axeon",
+    "Icognito",
+    "Hisui Zoroark",
+    "Knuddeluff",
+    "Plaudagei",
+    "Farigriaf",
+    "Dodri",
+    "Giflor",
+    "Wablu",
+    "Golgantes",
+    "Magbrant",
+    "Viscogon",
+    "Mobai",
+    "Chaneira",
+    "Robball",
+    "Wiesor",
+    "Haspiror",
+    "Fluffeluff",
+    "Ho-Oh",
+    "Gortrom",
+    "Porygon2",
+    "Chimpep",
+    "Miltank",
+    "Fennexis",
+    "Gardevoir",
+    "Taubsi",
+    "Ohrdoch",
+    "Schaloko",
+    "Sengo",
+    "Slusheon",
+    "Wieshu",
+    "Olangaar",
+    "Hopplo",
+    "Samurzel",
+    "Skelabra",
+    "Chillabell",
+    "Geradaks",
+    "Palimpalim",
+    "Wommel",
+    "Luxio"
   ],
-  "balls": 45,
+  "balls": 14,
   "master_balls": 0,
-  "coins": 2250,
+  "super_balls": 23,
+  "hyper_balls": 3,
+  "quick_balls": 14,
+  "heavy_balls": 4,
+  "heal_balls": 6,
+  "coins": 504,
   "potions": 0,
   "super_potions": 0,
   "hyper_potions": 0,
-  "sonderbonbons": 1,
+  "sonderbonbons": 6,
   "beleber": 0,
   "top_beleber": 0,
   "raid_passes": 0,
   "premium_raid_passes": 0,
   "redbull": 0,
-  "entwicklungsstein": 3,
-  "badges": 0,
-  "battles_won": 0,
-  "cards_known": 0,
-  "total_catches": 4,
-  "step_count": 14313,
-  "trainer_battles_won": 0,
+  "entwicklungsstein": 2,
+  "badges": 1,
+  "battles_won": 5,
+  "cards_known": 19,
+  "total_catches": 53,
+  "step_count": 56250,
+  "trainer_battles_won": 2,
   "rocket_battles_won": 0,
-  "evolution_count": 0,
-  "cards_correct_total": 20,
-  "cards_best_streak": 20,
-  "cards_current_streak": 20,
-  "stein_used_count": 1,
+  "evolution_count": 3,
+  "cards_correct_total": 61,
+  "cards_best_streak": 29,
+  "cards_current_streak": 3,
+  "stein_used_count": 2,
   "evoli_evos_no_stone": [],
   "achievements": {
     "stein_used": 0,
     "steps": 3,
     "cards_streak": 2,
     "catch_first": 0,
-    "cards_answered": 0,
-    "cards_collected": 0
+    "cards_answered": 2,
+    "cards_collected": 0,
+    "catch_pokemon": 2,
+    "evolutions": 0,
+    "pokedex_type_psycho": 0,
+    "pokedex_type_normal": 1,
+    "pokedex_type_feuer": 0,
+    "badges": 0
   },
   "card_album": {
     "Trasla": {
+      "count": 1,
+      "shiny": 0
+    },
+    "Girafarig": {
+      "count": 1,
+      "shiny": 0
+    },
+    "Knuddeluff": {
+      "count": 1,
+      "shiny": 0
+    },
+    "Plaudagei": {
+      "count": 1,
+      "shiny": 0
+    },
+    "Samurzel": {
       "count": 1,
       "shiny": 0
     }
@@ -85,46 +176,46 @@
   "blackmarket": {
     "stock": [
       {
-        "name": "Amonitas",
-        "shiny": true,
-        "price": 98000
+        "name": "Maracamba",
+        "shiny": false,
+        "price": 28000
       },
       {
-        "name": "Voldi",
+        "name": "Fatalitee",
+        "shiny": false,
+        "price": 55000
+      },
+      {
+        "name": "Wommel",
         "shiny": false,
         "price": 14000
       },
       {
-        "name": "Giratina",
+        "name": "Kickerlo",
         "shiny": false,
-        "price": 120000
-      },
-      {
-        "name": "Kikugi",
-        "shiny": false,
-        "price": 14000
+        "price": 8000
       }
     ],
-    "refresh_at": 1772992590.3469326
+    "refresh_at": 1773941334.3648727
   },
-  "daily_event_date": "2026-03-08",
-  "daily_event_streak": 1,
-  "current_map": "Psycho",
+  "daily_event_date": "2026-03-19",
+  "daily_event_streak": 3,
+  "current_map": "Normal",
   "map_weather": {
     "Normal": {
-      "date": "2026-03-10",
-      "weather": "Sonnig"
+      "date": "2026-03-19",
+      "weather": "Klar"
     },
     "Psycho": {
-      "date": "2026-03-10",
-      "weather": "Klar"
+      "date": "2026-03-11",
+      "weather": "Nebel"
     },
     "Pflanze": {
       "date": "2026-03-08",
       "weather": "Klar"
     },
     "Dunkel": {
-      "date": "2026-03-10",
+      "date": "2026-03-11",
       "weather": "Nebel"
     },
     "Drache": {
@@ -132,23 +223,23 @@
       "weather": "Klar"
     },
     "Gestein": {
-      "date": "2026-03-10",
-      "weather": "Klar"
+      "date": "2026-03-11",
+      "weather": "Sandsturm"
     },
     "Wasser": {
-      "date": "2026-03-08",
+      "date": "2026-03-11",
       "weather": "Regen"
     },
     "Elektro": {
-      "date": "2026-03-08",
-      "weather": "Klar"
+      "date": "2026-03-11",
+      "weather": "Gewitter"
     },
     "Eis": {
-      "date": "2026-03-08",
+      "date": "2026-03-11",
       "weather": "Schnee"
     },
     "Geist": {
-      "date": "2026-03-08",
+      "date": "2026-03-11",
       "weather": "Klar"
     },
     "Stahl": {
@@ -162,67 +253,4566 @@
     "K\u00e4fer": {
       "date": "2026-03-10",
       "weather": "Regen"
+    },
+    "Flug": {
+      "date": "2026-03-11",
+      "weather": "Klar"
+    },
+    "Gift": {
+      "date": "2026-03-11",
+      "weather": "Klar"
+    },
+    "Kampf": {
+      "date": "2026-03-11",
+      "weather": "Klar"
+    },
+    "Feuer": {
+      "date": "2026-03-11",
+      "weather": "Sonnig"
     }
   },
   "friendship": {
-    "Glumanda": 14,
-    "Evoli": 4,
-    "Guardeon": 2,
-    "Magnezone": 2
+    "Glumanda": 20,
+    "Evoli": 5,
+    "Guardeon": 80,
+    "Magnezone": 68,
+    "Granforgita": 19,
+    "Trasla": 3,
+    "Nachtara": 26,
+    "Glutexo": 58,
+    "Kirlia": 18,
+    "Gardevoir": 12,
+    "Energeon": 7
   },
-  "rank": 0,
-  "rank_points": 17,
-  "weather_date": "2026-03-10",
-  "weather": "Regen",
-  "guild_date": "2026-03-10",
+  "rank": 2,
+  "rank_points": 375,
+  "weather_date": "2026-03-19",
+  "weather": "Schnee",
+  "guild_date": "2026-03-19",
   "guild_challenges": [
-    {
-      "id": "steps_500",
-      "desc": "Laufe 500 Schritte",
-      "goal": 500,
-      "progress": 500,
-      "baseline": 12766,
-      "delta": true,
-      "reward_coins": 100,
-      "reward_rp": 2,
-      "stat": "step_count",
-      "done": true
-    },
-    {
-      "id": "win_5",
-      "desc": "Gewinne 5 K\u00e4mpfe",
-      "goal": 5,
-      "progress": 0,
-      "baseline": 0,
-      "delta": true,
-      "reward_coins": 400,
-      "reward_rp": 8,
-      "stat": "battles_won",
-      "done": false
-    },
     {
       "id": "trainer_2",
       "desc": "Besiege 2 Trainer",
       "goal": 2,
-      "progress": 0,
-      "baseline": 0,
+      "progress": 1,
+      "baseline": 1,
       "delta": true,
       "reward_coins": 350,
       "reward_rp": 7,
       "stat": "trainer_battles_won",
+      "done": false
+    },
+    {
+      "id": "catch_3",
+      "desc": "Fange 3 Pok\u00e9mon",
+      "goal": 3,
+      "progress": 3,
+      "baseline": 31,
+      "delta": true,
+      "reward_coins": 150,
+      "reward_rp": 3,
+      "stat": "total_catches",
+      "done": true
+    },
+    {
+      "id": "rocket_1",
+      "desc": "Besiege 1 Team Rocket-Trainer",
+      "goal": 1,
+      "progress": 0,
+      "baseline": 0,
+      "delta": true,
+      "reward_coins": 500,
+      "reward_rp": 10,
+      "stat": "rocket_battles_won",
       "done": false
     }
   ],
   "exam_best_score": 0,
   "exam_attempts": 0,
   "settings": {
-    "sfx_vol": 5,
+    "sfx_vol": 7,
     "music_vol": 5,
     "game_speed": 1,
     "show_hints": true
   },
   "starter": "Glumanda",
   "dex_seen": [
-    "Trasla"
-  ]
+    "Trasla",
+    "Galar Gallopa",
+    "Girafarig",
+    "Gorgasonn",
+    "Energeon",
+    "Woingenau",
+    "Simsala",
+    "Kangama",
+    "Axeon",
+    "Plusheon",
+    "Aereon",
+    "Farigriaf",
+    "Icognito",
+    "Gelatwino",
+    "Hisui Zoroark",
+    "Knuddeluff",
+    "Plaudagei",
+    "Dummimisel",
+    "Dodri",
+    "Giflor",
+    "Wablu",
+    "Pudox",
+    "Golgantes",
+    "Magbrant",
+    "Viscogon",
+    "Mobai",
+    "Chaneira",
+    "Robball",
+    "Farbeagle",
+    "Wiesor",
+    "Haspiror",
+    "Fluffeluff",
+    "Heiteira",
+    "Sumpex",
+    "Ho-Oh",
+    "Gortrom",
+    "Porygon2",
+    "Libelldra",
+    "Wonneira",
+    "Chimpep",
+    "Mauzi",
+    "Miltank",
+    "Fennexis",
+    "Hokumil",
+    "Primarene",
+    "Taubsi",
+    "M\u00e4hikel",
+    "Ohrdoch",
+    "Schaloko",
+    "Sengo",
+    "Slusheon",
+    "Wieshu",
+    "Olangaar",
+    "Hopplo",
+    "Samurzel",
+    "Skelabra",
+    "Zigzachs",
+    "Jungglut",
+    "Chillabell",
+    "Geradaks",
+    "Palimpalim",
+    "Wommel",
+    "Luxio"
+  ],
+  "disabled_csvs": [],
+  "enabled_csvs": [],
+  "srs_state": {
+    "flashcards.csv||Was bilden Servicevereinbarungen im Rahmen des IT Service Managements (ITSM)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Definition: Service Validation Testing (SVT)": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was versteht man unter einem Configuration Item (CI)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die prim\u00e4re Aufgabe der Configuration Management Database (CMDB)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen Zweck verfolgt ein Benchmarktest?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was wird bei einem Abnahmetest \u00fcberpr\u00fcft?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist der Vorteil eines Configuration Management Systems (CMS)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Definition: Asset (im ITSM-Kontext)": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist das Hauptziel des Capacity Managements?": {
+      "known": false,
+      "ease": 2.2,
+      "interval": 0,
+      "due": "2026-03-11",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wof\u00fcr ist das Availability Management verantwortlich?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was bedeutet die Kennzahl MTTR?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was bedeutet die Kennzahl MTBF?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wozu dient das Monitoring im IT-Betrieb?": {
+      "known": false,
+      "ease": 2.2,
+      "interval": 0,
+      "due": "2026-03-11",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Unterscheidung Monitoring: Was meldet das Funktionalit\u00e4ts-Monitoring?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Unterscheidung Monitoring: Was erfasst das Performance-Monitoring?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Kano-Modell: Was kennzeichnet Basis-Erwartungen?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Kano-Modell: Wie wirken sich Leistungsanforderungen auf die Kundenerwartung aus?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Kano-Modell: Was sind Begeisterungsanforderungen?": {
+      "known": true,
+      "ease": 2.5,
+      "interval": 1,
+      "due": "2026-03-12",
+      "reps": 1,
+      "streak": 1
+    },
+    "flashcards.csv||Was ist das Ziel des Continual Service Improvement (CSI)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Benennen Sie die vier Phasen des Deming Circles (PDCA).": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist der Kern des Kaizen-Ansatzes?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist das Systemziel des Total Quality Managements (TQM)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche ISO-Norm definiert Grunds\u00e4tze f\u00fcr Ma\u00dfnahmen zum Qualit\u00e4tsmanagement?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was bescheinigt die ISO 20.000 einem Unternehmen?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche ISO-Norm befasst sich mit Sicherheitsmechanismen zum Schutz s\u00e4mtlicher IT": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was regelt ein Operational Level Agreement (OLA)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist ein Underpinning Contract (UC)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||In der Prozesskostenrechnung: Wie berechnet man den Zeitbedarf gesamt?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||In der Prozesskostenrechnung: Wie berechnet man die Personenjahre?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||In der Prozesskostenrechnung: Wie berechnet man die Prozesskosten (lmi)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was versteht man unter 'informationeller Selbstbestimmung' im Rahmen der DSGVO?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Netzplantechnik: Was bedeuten FAZ und FEZ?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Netzplantechnik: Was bedeuten SAZ und SEZ?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die grundlegende Funktionsweise einer Paketfilter-Firewall?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Nennen Sie einen Nachteil der Paketfilterung.": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie identifiziert ein Circuit Level Gateway b\u00f6sartige Inhalte?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist ein markantes Merkmal einer Application Level Gateway (Proxy Firewall)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was unterscheidet eine Stateful Inspection Firewall von einer einfachen Paketfil": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Zusatzfunktionen umfasst eine Next-Generation Firewall (NGFW) typischerwe": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist der Unterschied zwischen hardwarebasierten und softwarebasierten Firewal": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Kernaufgabe eines Proxys?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||IPv4 Header: Was gibt das Feld 'IHL' (Internet Header Length) an?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||IPv4 Header: Welche Funktion hat das Feld 'Time to Live' (TTL)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Ethernet Frame: Wie gro\u00df ist die Zieladresse und die Quelladresse jeweils?": {
+      "known": true,
+      "ease": 2.5,
+      "interval": 1,
+      "due": "2026-03-12",
+      "reps": 1,
+      "streak": 1
+    },
+    "flashcards.csv||Ethernet Frame: Wozu dient die Frame Check Sequence (FCS)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||IPv6 Header: Wie lang ist eine IPv6-Quelladresse?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||IPv6 Header: Was beschreibt das Feld 'Payload Length'?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist der Hauptvorteil von Multi-Protocol Label Switching (MPLS)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie funktioniert der Bubble Sort Algorithmus?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist das Grundprinzip des Selection Sort?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie geht der Insertion Sort Algorithmus vor?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist das Kernprinzip von Test Driven Development (TDD)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was wird in einem Unit Test gepr\u00fcft?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist das Ziel eines Integrationstests?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was validiert ein End-to-End Test (E2E)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Definition: Flaky Test": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||SQL: Mit welchem Befehl erstellt man eine neue Datenbank?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||SQL: Was bewirkt die Option 'WITH DIFFERENTIAL' beim Datenbank-Backup?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||SQL: Wie f\u00fcgt man einer bestehenden Tabelle eine neue Spalte hinzu?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||SQL: Was bewirkt das Schl\u00fcsselwort 'DISTINCT' in einem SELECT-Statement?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||SQL: Wie sortiert man Ergebnisse in absteigender Reihenfolge?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||SQL: Was ist der Unterschied zwischen einem INNER JOIN und einem LEFT JOIN?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||SQL: Wof\u00fcr wird die 'HAVING'-Klausel verwendet?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||SQL: Was ist eine Stored Procedure?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||SQL: Was ist ein 'VIEW'?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Logikgatter: Wie lautet die Bedingung f\u00fcr einen Ausgang von 1 bei einem UND (AND": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Logikgatter: Wann liefert ein ODER (OR)-Gatter am Ausgang eine 0?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Logikgatter: Was ist die Besonderheit des XOR (Exklusives ODER)-Gatters?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was beschreibt das Konzept 'Router on a Stick'?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist ein 'Bastion Host'?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was bedeutet NAT (Network Address Translation)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist der Unterschied zwischen NAT und PAT (Port Address Translation)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Definition: Metropolitan Area Network (MAN)": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Nennen Sie die vier Schritte des DHCP-Prozesses (DORA-Prinzip).": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Aufgabe des Domain Name Systems (DNS):": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie wird in der Prozesskostenrechnung (PKR) der Umlagesatz f\u00fcr leistungsmengenne": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist in der PKR die Berechnungsgrundlage f\u00fcr die 'Gesamtkosten der Funktion'?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welcher Kennwert der PKR wird durch 'Gesamtprozesskosten / Kostentreiber' ermitt": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Nenne zwei Vorteile einer Paketfilter-Firewall.": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Warum ist die Payload-Manipulation bei Paketfilter-Firewalls ein Problem?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche spezifische Netzwerknachricht \u00fcberwacht ein 'Circuit Level Gateway' zur S": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Warum k\u00f6nnen Application Level Gateways (Proxy Firewalls) die Netzwerk-Performan": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Firewall-Variante \u00fcberwacht Transaktionen \u00fcber mehrere Protokollschichten": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist das Hauptmerkmal der Deep Packet Inspection (DPI) in einer Next-Generati": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||In welchem Szenario ist eine hostbasierte Software-Firewall besonders vorteilhaf": {
+      "known": true,
+      "ease": 2.5,
+      "interval": 1,
+      "due": "2026-03-12",
+      "reps": 1,
+      "streak": 1
+    },
+    "flashcards.csv||Nenne die drei Hauptaufgaben eines Proxys neben der Vermittlung.": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie unterscheidet sich ein 'Forward Proxy' von einem 'Reverse Proxy'?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||IPv4 Header: Was bedeutet ein gesetztes 'DF-Flag' (Don't Fragment)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||IPv4 Header: Welche Information liefert das Feld 'Fragment-Offset'?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Warum muss jede Station auf dem Weg zum Ziel die 'Header Checksum' im IPv4 Heade": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches Feld im IPv4 Header gibt an, welches Transportprotokoll (z. B. TCP oder ": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Ethernet Frame: Wie lang ist die Pr\u00e4ambel und welche Funktion hat sie?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was markiert der 'Start Frame Delimiter' (SFD) im Ethernet-Datenstrom?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie gro\u00df ist die zeitliche Pause des 'Inter Frame Gap' nach dem Senden eines Eth": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||IPv6 Header: Welchen Zweck erf\u00fcllt das 20 Bit gro\u00dfe Feld 'Flow Label'?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches IPv4-Feld entspricht funktional dem 'Hop Limit' im IPv6-Header?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist ein 'Next Header' im Kontext von IPv6?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Warum entf\u00e4llt bei IPv6 die Pr\u00fcfsummenberechnung im Header durch die Router?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Algorithmus: Warum tr\u00e4gt der 'Bubble Sort' diesen Namen?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist der entscheidende Arbeitsschritt im 'Selection Sort'?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie definiert der 'Insertion Sort' seine Arbeitsbereiche innerhalb eines Arrays?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was versteht man unter 'Print Debugging'?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Nenne die drei Phasen des TDD-Zyklus in der richtigen Reihenfolge.": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wof\u00fcr steht das AAA-Schema beim Schreiben von Unit Tests?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist das Hauptziel der 'Refactor'-Phase im Test Driven Development?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Warum werden in Unit Tests oft 'Mocks' (Platzhalter) verwendet?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie unterscheidet sich der 'Top-Down-Ansatz' beim Integrationstest vom 'Bottom-U": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||In welchem Fall wird ein 'vertikaler E2E-Test' gegen\u00fcber einem horizontalen bevo": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Folge von 'Flaky Tests' f\u00fcr die CI/CD-Pipeline?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||SQL: Welcher Befehl l\u00f6scht eine gesamte Tabelle inklusive ihrer Struktur dauerha": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||SQL: Was bewirkt der Platzhalter '%' im Zusammenhang mit dem 'LIKE'-Operator?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||SQL: Welcher Wildcard-Operator sucht nach einem einzelnen Zeichen innerhalb eine": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||SQL: Wie unterscheidet sich ein 'RIGHT JOIN' von einem 'LEFT JOIN'?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist der Anwendungszweck eines 'Self Joins'?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||SQL: Nenne die Bedingung f\u00fcr die Verwendung von 'UNION ALL' bei zwei SELECT-Stat": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||SQL: Warum kann die 'WHERE'-Klausel nicht f\u00fcr Filterungen auf Basis von 'COUNT()": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||SQL: Was gibt der 'EXISTS'-Operator zur\u00fcck, wenn die Unterabfrage (Subquery) Tre": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie unterscheidet sich 'SELECT INTO' von 'INSERT INTO SELECT'?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||SQL: Mit welchem Schl\u00fcsselwort schlie\u00dft man eine 'CASE'-Anweisung ab?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||SQL: Welcher Constraint stellt sicher, dass ein Wert in einer Spalte eine spezif": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||SQL: Welches Format nutzt der Datentyp 'DATETIME' standardm\u00e4\u00dfig?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Logik: Wie lautet die Funktionsgleichung f\u00fcr ein NICHT (NOT)-Gatter mit Eingang ": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wahrheitstabelle: Wann liefert ein NAND-Gatter den Ausgang 0?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Logik: Welches Gatter entspricht der Funktionsgleichung X = \\overline{A \\vee B}?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Netzwerk: Was ist ein 'One Armed Router'?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Gefahr bei einem 'Router on a Stick'-Setup?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Nenne die drei typischen Zonen einer 'Three-Legged Firewall'.": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist der Vorteil einer 'DMZ' (Demilitarized Zone)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Netzwerk: Wie unterscheiden sich 'Enterprise-Router' von 'Heimroutern'?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welcher Router-Typ arbeitet im 'Backbone' gro\u00dfer Netzwerke und verbindet Provide": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was zeichnet ein 'Inline-Ger\u00e4t' (z. B. IPS oder Firewall) im Netzwerkpfad aus?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Netzwerk: Was ist der Unterschied zwischen einem 'Interface' und einem 'Subinter": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||DHCP: Was passiert in der 'Offer'-Phase des DORA-Prinzips?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist ein 'DNS Recursor'?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welcher DNS-Servertyp ist die letzte Instanz und gibt die endg\u00fcltige IP-Adresse ": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche zwei Teile bilden eine HTTP-Nachricht?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Protokolle: Welchen Port nutzt SMB standardm\u00e4\u00dfig \u00fcber TCP f\u00fcr den modernen Datei": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist das 'Piconet' im Kontext von Personal Area Networks (PAN)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Netzwerk: Welcher Standard liegt einem 'Trunk' nach IEEE 802.1Q zugrunde?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was versteht man unter 'SCA-Einhaltung' im Availability Management?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Kano-Modell: Welchen Effekt haben 'Begeisterungsanforderungen' auf den Wettbewer": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wof\u00fcr steht die Abk\u00fcrzung 'EFQM' im Qualit\u00e4tsmanagement?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist der Unterschied zwischen einem 'Standard-SLA' und einem 'kundenspezifisc": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||SQL: Welchen Standard-Wert setzt ein Constraint, wenn beim Einf\u00fcgen kein Wert an": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie lautet die Bin\u00e4rdarstellung der maximalen Header-L\u00e4nge im IPv4-Header (IHL)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wozu dient das Feld 'Type of Service' (ToS) im IP-Header?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die 'Frame Check Sequence' (FCS) im Ethernet-Frame?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was bedeutet 'Hardening' (H\u00e4rtung) im Kontext eines Bastion Hosts?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Netzwerk: Welche Reichweite deckt ein 'Metropolitan Area Network' (MAN) typische": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Besonderheit der 'Next-Generation Firewall' gegen\u00fcber der 'Stateful ": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen UDP-Port nutzt das Netzwerk-Authentifizierungsprotokoll Kerberos standar": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Auf welcher Schicht des OSI-Modells operiert das Kerberos-Protokoll?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches System nutzt Kerberos": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie nennt man die zentrale Instanz bei Kerberos": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches Protokoll dient als offener Netzwerkstandard zum Abfragen und Verwalten ": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen TCP-Port verwendet LDAP f\u00c3\u00bcr verschl\u00c3\u00bcsselte Verbindungen (LDAPS) \u00c3\u00bcblic": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen spezifischen Algorithmus verwendet das Routingprotokoll OSPF zur Pfadbes": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Zu welcher Kategorie von Routingprotokollen geh\u00c3\u00b6rt OSPF aufgrund seiner Funktio": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||In welcher OSI-Schicht ist OSPF angesiedelt?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die maximale Hop-Anzahl": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||In welchem zeitlichen Intervall versendet RIP standardm\u00c3\u00a4\u00c3\u0178ig seine gesamte Rout": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen UDP-Port verwendet das Protokoll RIP?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie hoch ist die administrative Distanz von OSPF im Vergleich zu RIP?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches Transportprotokoll wird f\u00c3\u00bcr SMTP \u00c3\u00bcber STARTTLS (aktueller Standard) em": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist der wesentliche funktionale Unterschied zwischen IMAP und POP3 beim E-Ma": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen Port nutzt IMAP f\u00c3\u00bcr verschl\u00c3\u00bcsselte Verbindungen via SSL/TLS?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie werden unvorhersehbare Ereignisse von einem SNMP-Agenten an den Manager geme": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen Port verwendet ein SNMP-Agent f\u00c3\u00bcr den Empfang von Anfragen?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welcher Port ist f\u00c3\u00bcr den sicheren Fernzugriff via SSH reserviert?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Auf welcher OSI-Schicht arbeiten die Transportprotokolle TCP und UDP?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen Port nutzt das Microsoft-Protokoll RDP f\u00c3\u00bcr den Fernzugriff auf grafisch": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches Routingprotokoll wird prim\u00c3\u00a4r verwendet": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen TCP-Port nutzt BGP f\u00c3\u00bcr die Kommunikation?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welcher Algorithmus sorgt bei EIGRP f\u00c3\u00bcr schleifenfreie Pfade in gro\u00c3\u0178en Netzwer": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches veraltete Protokoll f\u00c3\u00bcr den Fernzugriff \u00c3\u00bcbertr\u00c3\u00a4gt Daten unverschl\u00c3\u00bcss": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen Zweck erf\u00c3\u00bcllt das Network Time Protocol (NTP) in einem Netzwerk?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was versteht man im ITSM unter einem Configuration Item (CI)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Datenbank erfasst alle CIs und deren gegenseitige Beziehungen?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist das Hauptziel des Availability Managements?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Nenne die vier Phasen des Deming-Kreises (PDCA).": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche ISO-Norm zertifiziert ein systematisches IT Service Management (ITSM)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist der Unterschied zwischen einem SLA und einem OLA?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie berechnet man die Prozesskosten (lmi) in der Prozesskostenrechnung?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was definiert der 'Fr\u00c3\u00bcheste Endzeitpunkt' (FEZ) in der Netzplantechnik?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welcher Firewall-Typ \u00c3\u00bcberwacht TCP-Handshakes": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was kennzeichnet eine 'Stateful Inspection Firewall'?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Funktion erm\u00c3\u00b6glicht einer Next-Generation Firewall (NGFW) die Analyse de": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches Feld im IPv4-Header verhindert": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie gro\u00c3\u0178 ist der Adressraum (in Bit) einer IPv6-Adresse?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Technologie nutzt 'Labels' zur schnellen Weiterleitung von Datenpaketen i": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Beschreibe das Grundprinzip von Bubble Sort.": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie geht der Selection Sort Algorithmus vor?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Kernidee von Test Driven Development (TDD)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was unterscheidet einen Integrationstest von einem Unit-Test?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was definiert einen 'Flaky-Test' in der Softwareentwicklung?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Mit welchem SQL-Befehl entfernt man Duplikate aus einer Ergebnismenge?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist der Unterschied zwischen einem INNER JOIN und einem LEFT JOIN?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Klausel muss in SQL verwendet werden": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist eine Stored Procedure in SQL?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wann liefert ein XOR-Gatter am Ausgang den Wert 1?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist ein 'Bastion Host' im Sicherheitskonzept?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Technik erm\u00c3\u00b6glicht es vielen Ger\u00c3\u00a4ten im LAN": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen Reichweitentyp hat ein Metropolitan Area Network (MAN)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||In welcher Phase des DHCP-Prozesses sendet der Server eine konkrete IP-Adresse a": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Aufgabe \u00c3\u00bcbernimmt ein Reverse Proxy?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was gibt die 'Internet Header Length' (IHL) im IPv4-Header an?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches Protokoll wird f\u00c3\u00bcr die \u00c3\u0153bertragung von Dateien zwischen Client und Ser": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Metrik verwendet das Routingprotokoll RIP zur Pfadbewertung?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist der Zweck eines 'Trunk'-Ports an einem Switch?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie hei\u00c3\u0178t die logische Einheit bei BGP": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches OSI-Layer-4-Protokoll ist verbindungslos und bietet keine Fehlerkorrektu": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist das Hauptmerkmal des 'Kano-Modells' in Bezug auf Kundenzufriedenheit?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Bedeutung hat 'MTBF' im IT-Service-Management?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was versteht man unter 'Kaizen'?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche SQL-Funktion wird genutzt": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was bewirkt der SQL-Befehl 'DROP TABLE'?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie lautet das Ergebnis der logischen Operation 1 \\text{ NAND } 1?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Schicht des OSI-Modells ist f\u00c3\u00bcr die Bit\u00c3\u00bcbertragung (Hardware": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches Datenformat nutzt IPv6 f\u00c3\u00bcr die Darstellung von IP-Adressen?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist ein 'Three-legged Firewall'-Setup?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches SQL-Schl\u00c3\u00bcsselwort wird verwendet": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches OSI-Protokoll sorgt f\u00c3\u00bcr eine verbindungsorientierte und zuverl\u00c3\u00a4ssige D": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen Standard nutzt VLAN-Tagging auf Trunk-Verbindungen?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Funktion des 'Flow Labels' im IPv6-Header?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welcher SQL-Datentyp wird typischerweise f\u00c3\u00bcr Texte mit variabler L\u00c3\u00a4nge bis zu ": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was bedeutet 'SSO' im Kontext von Kerberos?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie nennt man die \u00c3\u0153berpr\u00c3\u00bcfung eines Services nach seiner Wiederherstellung im ": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist ein 'Underpinning Contract' (UC)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welcher Firewall-Typ arbeitet auf der Anwendungsschicht und wird oft als Proxy b": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||In welchem OSI-Layer arbeitet ein klassischer Router?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie lautet die Funktionsgleichung eines UND-Gatters mit den Eing\u00c3\u00a4ngen A und B?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was bewirkt der SQL-Befehl 'ROLLBACK'?": {
+      "known": true,
+      "ease": 2.5,
+      "interval": 1,
+      "due": "2026-03-12",
+      "reps": 1,
+      "streak": 1
+    },
+    "flashcards.csv||Welches Feld im Ethernet-Frame dient der Fehlererkennung mittels CRC-Pr\u00c3\u00bcfsumme?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welcher Port wird f\u00c3\u00bcr verschl\u00c3\u00bcsseltes Webbrowsing (HTTPS) verwendet?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist der Unterschied zwischen einem 'Inline'-Ger\u00c3\u00a4t und einem 'Passiven' Netz": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches Routingprotokoll nutzt den Bellman-Ford-Algorithmus?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was versteht man unter 'Horizontalem E2E-Testing'?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches SQL-Kommando \u00c3\u00a4ndert die Struktur einer bestehenden Tabelle": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die prim\u00c3\u00a4re Aufgabe des DNS-Recursors?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Reichweite deckt ein 'Personal Area Network' (PAN) typischerweise ab?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist der Zweck eines 'Default'-Constraints in SQL?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches System nutzt Kerberos, um Benutzersitzungen in unsicheren Netzwerken sic": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie nennt man die zentrale Instanz bei Kerberos, von der Benutzer zeitlich begre": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen TCP-Port verwendet LDAP f\u00fcr verschl\u00fcsselte Verbindungen (LDAPS) \u00fcblicher": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Zu welcher Kategorie von Routingprotokollen geh\u00f6rt OSPF aufgrund seiner Funktion": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die maximale Hop-Anzahl, die das Routing Information Protocol (RIP) unte": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||In welchem zeitlichen Intervall versendet RIP standardm\u00e4\u00dfig seine gesamte Routin": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches Transportprotokoll wird f\u00fcr SMTP \u00fcber STARTTLS (aktueller Standard) empf": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen Port nutzt IMAP f\u00fcr verschl\u00fcsselte Verbindungen via SSL/TLS?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen Port verwendet ein SNMP-Agent f\u00fcr den Empfang von Anfragen?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welcher Port ist f\u00fcr den sicheren Fernzugriff via SSH reserviert?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen Port nutzt das Microsoft-Protokoll RDP f\u00fcr den Fernzugriff auf grafische": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches Routingprotokoll wird prim\u00e4r verwendet, um unterschiedliche Autonome Sys": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen TCP-Port nutzt BGP f\u00fcr die Kommunikation?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welcher Algorithmus sorgt bei EIGRP f\u00fcr schleifenfreie Pfade in gro\u00dfen Netzwerke": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches veraltete Protokoll f\u00fcr den Fernzugriff \u00fcbertr\u00e4gt Daten unverschl\u00fcsselt ": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen Zweck erf\u00fcllt das Network Time Protocol (NTP) in einem Netzwerk?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was definiert der 'Fr\u00fcheste Endzeitpunkt' (FEZ) in der Netzplantechnik?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welcher Firewall-Typ \u00fcberwacht TCP-Handshakes, ohne die Inhalte der Pakete selbs": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Funktion erm\u00f6glicht einer Next-Generation Firewall (NGFW) die Analyse der": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches Feld im IPv4-Header verhindert, dass Pakete unendlich lange im Netzwerk ": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie gro\u00df ist der Adressraum (in Bit) einer IPv6-Adresse?": {
+      "known": false,
+      "ease": 2.2,
+      "interval": 0,
+      "due": "2026-03-11",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Klausel muss in SQL verwendet werden, um Filterbedingungen auf aggregiert": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Technik erm\u00f6glicht es vielen Ger\u00e4ten im LAN, \u00fcber eine einzige \u00f6ffentlich": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Aufgabe \u00fcbernimmt ein Reverse Proxy?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches Protokoll wird f\u00fcr die \u00dcbertragung von Dateien zwischen Client und Serve": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie hei\u00dft die logische Einheit bei BGP, die eine Sammlung von IP-Netzen unter ei": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche SQL-Funktion wird genutzt, um die Anzahl der Datens\u00e4tze in einer Gruppe z": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Schicht des OSI-Modells ist f\u00fcr die Bit\u00fcbertragung (Hardware, Kabel, Stec": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches Datenformat nutzt IPv6 f\u00fcr die Darstellung von IP-Adressen?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches SQL-Schl\u00fcsselwort wird verwendet, um eine Ergebnismenge nach einer oder ": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches OSI-Protokoll sorgt f\u00fcr eine verbindungsorientierte und zuverl\u00e4ssige Dat": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welcher SQL-Datentyp wird typischerweise f\u00fcr Texte mit variabler L\u00e4nge bis zu ei": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie nennt man die \u00dcberpr\u00fcfung eines Services nach seiner Wiederherstellung im IT": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie lautet die Funktionsgleichung eines UND-Gatters mit den Eing\u00e4ngen A und B?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches Feld im Ethernet-Frame dient der Fehlererkennung mittels CRC-Pr\u00fcfsumme?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welcher Port wird f\u00fcr verschl\u00fcsseltes Webbrowsing (HTTPS) verwendet?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist der Unterschied zwischen einem 'Inline'-Ger\u00e4t und einem 'Passiven' Netzw": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches SQL-Kommando \u00e4ndert die Struktur einer bestehenden Tabelle, z.B. das Hin": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die prim\u00e4re Aufgabe des DNS-Recursors?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "rekursion.csv||Was ist das zentrale Merkmal der direkten Rekursion?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "rekursion.csv||Was ist das entscheidende Merkmal der indirekten (wechselseitigen) Rekursion?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "rekursion.csv||Was ist die notwendige Voraussetzung": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "rekursion.csv||Was passiert bei einer Rekursion ohne Basisfall?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "rekursion.csv||Was kennzeichnet eine Rekursion 1. Grades?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "rekursion.csv||Was kennzeichnet eine Rekursion 2. Grades?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "rekursion.csv||Warum f\u00fchrt eine Rekursion 2. Grades oft zu exponentiellem Rechenaufwand?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "rekursion.csv||Wie unterscheidet sich die \"Tiefe\" vom \"Grad\" der Rekursion?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "rekursion.csv||Was ist der Vorteil von Rekursion gegen\u00fcber Iteration?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "rekursion.csv||Was ist ein Nachteil der Rekursion bei gro\u00dfen Datenmengen?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "rekursion.csv||Welchen Vorteil bietet die indirekte Rekursion in der Softwarearchitektur?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "rekursion.csv||Was beschreibt ein 'Stack-Frame' bei einem rekursiven Aufruf?": {
+      "known": true,
+      "ease": 2.5,
+      "interval": 1,
+      "due": "2026-03-12",
+      "reps": 1,
+      "streak": 1
+    },
+    "rekursion.csv||Was versteht man unter 'Tail Recursion' (Endrekursion)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "rekursion.csv||Warum ist ein 'Zyklus' in der Rekursion gef\u00e4hrlich?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "rekursion.csv||F\u00fcr welche Art von Problemen ist eine Rekursion 3. Grades (tern\u00e4r) besonders gee": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen Port nutzt das Network Time Protocol (NTP) f\u00fcr die Synchronisierung?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welcher Port ist standardm\u00e4\u00dfig f\u00fcr das Post Office Protocol Version 3 (POP3) unv": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen Port nutzt POP3 \u00fcber eine SSL/TLS-verschl\u00fcsselte Verbindung?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen Port nutzt SMTP f\u00fcr die Kommunikation von Mailserver zu Mailserver?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welcher Port ist der aktuelle Standard f\u00fcr SMTP \u00fcber STARTTLS?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie sch\u00fctzt Kerberos Benutzersitzungen vor dem Aussp\u00e4hen von Zugangsdaten im Net": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||In welcher hierarchischen Struktur werden Daten im LDAP-Protokoll \u00fcblicherweise ": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches Routing-Verfahren nutzt OSPF zur Berechnung des besten Pfades?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Metrik verwendet das Routing Information Protocol (RIP), um die beste Rou": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Auf welcher Schicht des OSI-Modells operiert das Border Gateway Protocol (BGP)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was unterscheidet eBGP von iBGP im Border Gateway Protocol?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welcher Algorithmus wird von EIGRP verwendet, um schleifenfreie Pfade zu garanti": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen Portbereich umfasst die Kategorie der 'Well Known Ports' (System Ports)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||In welchem Portbereich liegen die 'Dynamischen' oder 'Privaten' Ports laut IANA?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie viele Bit umfasst das Feld 'Identification' im IPv4-Header?": {
+      "known": false,
+      "ease": 2.2,
+      "interval": 0,
+      "due": "2026-03-11",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Aufgabe hat das Feld 'Flags' (3 Bit) im IPv4-Header?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was bedeutet ein gesetztes 'MF-Flag' (More Fragments) im IPv4-Header?": {
+      "known": true,
+      "ease": 2.5,
+      "interval": 1,
+      "due": "2026-03-12",
+      "reps": 1,
+      "streak": 1
+    },
+    "flashcards.csv||Welche Konsequenz hat es, wenn der TTL-Wert eines IPv4-Pakets den Wert 0 erreich": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie gro\u00df ist der IPv6-Header im Vergleich zum IPv4-Header standardm\u00e4\u00dfig?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wozu dient das Feld 'Traffic Class' (8 Bit) im IPv6-Header?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||In welcher Einheit wird das Feld 'Payload Length' im IPv6-Header angegeben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie lang ist die Pr\u00e4ambel eines Ethernet-Frames?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abbruchbedingung f\u00fcr einen Durchlauf im Bubble-Sort-Algorithmus?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches Ziel verfolgt der Selection-Sort-Algorithmus im ersten Schritt?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wof\u00fcr steht das 'A' in der Assert-Phase des AAA-Schemas bei Unit-Tests?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist das Hauptziel der 'Green'-Phase im Test-Driven Development (TDD)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie funktioniert der 'Big Bang'-Ansatz bei Integrationstests?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Aus welcher Perspektive werden horizontale End-to-End-Tests (E2E) durchgef\u00fchrt?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist der Fokus eines vertikalen End-to-End-Tests?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen Zweck erf\u00fcllt das Schl\u00fcsselwort 'DISTINCT' in einer SQL-Abfrage?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wof\u00fcr wird der 'BETWEEN'-Operator in einer SQL-WHERE-Klausel verwendet?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was bewirkt das Muster '%a' bei der Verwendung des SQL-Operators 'LIKE'?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Bedeutung hat der Unterstrich '_' als Wildcard in SQL?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Warum ist die Verwendung des 'IN'-Operators in SQL oft effizienter als 'OR'?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie lautet das SQL-Schl\u00fcsselwort zum Erstellen eines Spalten-Alias f\u00fcr die Anzei": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Standard-Sortierreihenfolge beim SQL-Befehl 'ORDER BY'?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche SQL-Aggregatfunktion berechnet den Durchschnittswert einer numerischen Sp": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche SQL-Aggregatfunktion addiert alle Werte einer numerischen Spalte auf?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist das Ergebnis eines INNER JOIN in SQL?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was kennzeichnet einen LEFT JOIN in SQL?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Anforderung m\u00fcssen Spalten bei der Nutzung von 'UNION ALL' erf\u00fcllen?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was gibt der SQL-Operator 'EXISTS' zur\u00fcck, wenn die Unterabfrage mindestens eine": {
+      "known": true,
+      "ease": 2.5,
+      "interval": 1,
+      "due": "2026-03-12",
+      "reps": 1,
+      "streak": 1
+    },
+    "flashcards.csv||Wann gibt der SQL-Operator 'ANY' den Wert 'TRUE' zur\u00fcck?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wof\u00fcr wird der SQL-Befehl 'SELECT INTO' prim\u00e4r verwendet?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Voraussetzung f\u00fcr die Nutzung von 'INSERT INTO SELECT'?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Mit welchem Schl\u00fcsselwort wird eine SQL-'CASE'-Anweisung formal abgeschlossen?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen Zweck hat der 'UNIQUE'-Constraint in einer SQL-Tabelle?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was bewirkt ein 'CHECK'-Constraint in einer SQL-Spalte?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welcher SQL-Datentyp speichert ein Datum ohne Zeitangabe?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches mathematische Symbol wird in Logikpl\u00e4nen f\u00fcr das UND-Gatter verwendet?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches Symbol repr\u00e4sentiert das ODER-Gatter in Funktionsgleichungen?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie lautet das Symbol f\u00fcr die logische Operation 'Exklusives ODER' (XOR)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist das Ergebnis der logischen Operation 1 XOR 1?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie lautet das Ergebnis der logischen Operation 0 NAND 1?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie lautet das Ergebnis der logischen Operation 1 NOR 0?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist das prim\u00e4re Merkmal eines 'VPN-Routers'?": {
+      "known": true,
+      "ease": 2.5,
+      "interval": 1,
+      "due": "2026-03-12",
+      "reps": 1,
+      "streak": 1
+    },
+    "flashcards.csv||Welche Aufgabe \u00fcbernimmt ein 'Edge-Router' im Netzwerk?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was kennzeichnet ein 'Passives Netzwerkger\u00e4t' (Out-of-Band) im Vergleich zu Inli": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist der Zweck eines 'Subinterfaces' auf einem Router?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche geografische Reichweite deckt ein 'Personal Area Network' (PAN) ab?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Formel wird zur Berechnung der 'lmi-Prozesskosten' (leistungsmengeninduzi": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie berechnet man den 'lmn-Umlagesatz' in der Prozesskostenrechnung?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie ermittelt man den 'Zeitbedarf gesamt' f\u00fcr einen Prozess in der PKR?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches Ziel verfolgt das 'Capacity Management' im ITSM?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was kennzeichnet ein 'Leistungsmerkmal' im Kano-Modell?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was kennzeichnet ein 'Begeisterungsmerkmal' im Kano-Modell?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||In welchem Rhythmus muss die Zertifizierung nach ISO 20.000 wiederholt werden?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen Fokus hat die Norm ISO 9.000 ff.?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Kernphilosophie des 'Total Quality Management' (TQM)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches Recht wird in der DSGVO als 'Informationelle Selbstbestimmung' bezeichne": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was bedeutet die Abk\u00fcrzung 'FAZ' in der Netzplantechnik?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was versteht man unter dem 'Gesamtpuffer' (GP) in einem Netzplan?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Komponenten integriert eine Next-Generation Firewall (NGFW) zus\u00e4tzlich zu": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen Vorteil bietet eine Hardware-Firewall gegen\u00fcber einer Software-L\u00f6sung?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie verbirgt ein Proxy die Identit\u00e4t eines Nutzers im Internet?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die prim\u00e4re Aufgabe des DNS-'Root-Namenservers'?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen Port nutzt das Common Internet File System (CIFS) \u00fcber TCP?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was beschreibt das 'Piconet' im Kontext von PAN-Netzwerken?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches symmetrische Verschl\u00fcsselungsverfahren wird laut Quellmaterial standardm": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||In welcher spezifischen hierarchischen Struktur werden Daten im LDAP-Protokoll o": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welcher mathematische Algorithmus bildet die Grundlage f\u00fcr den Shortest Path Fir": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Warum kann das Routing Information Protocol (RIP) in einem Netzwerk zu kritische": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches Kriterium nutzt das Border Gateway Protocol (BGP) prim\u00e4r f\u00fcr die Pfadaus": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Warum wird das EIGRP-Protokoll in der Netzwerktechnik oft als 'Hybrid-Protokoll'": {
+      "known": true,
+      "ease": 2.5,
+      "interval": 1,
+      "due": "2026-03-12",
+      "reps": 1,
+      "streak": 1
+    },
+    "flashcards.csv||Welches Protokoll ist im E-Mail-Verkehr ausschlie\u00dflich f\u00fcr den Transport von Nac": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie nennt man die zentrale Management-Anwendung innerhalb einer SNMP-Architektur": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Auf welcher Schicht des OSI-Modells wird das HTTPS-Protokoll durch die SSL/TLS-V": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welcher Portbereich ist laut IANA-Standard f\u00fcr die sogenannten 'Registrierten Po": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Warum ist das User Datagram Protocol (UDP) besonders f\u00fcr das Streaming von Medie": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen monet\u00e4ren Aspekt spiegelt ein 'Asset' im Vergleich zu einem Configuratio": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie definiert sich die Kostenkomponente 'leistungsmengeninduziert' (lmi) in der ": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Anforderungen im Kano-Modell dienen als 'Unique Selling Point' (USP) zur ": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche ISO-Norm definiert die Grunds\u00e4tze f\u00fcr ein systematisches Qualit\u00e4tsmanagem": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Warum bietet eine Paketfilter-Firewall keinen Schutz vor Manipulationen innerhal": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie wird ein Application Level Gateway technisch bezeichnet, wenn es als Vermitt": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Information liefert das Feld 'IHL' (Internet Header Length) im IPv4-Heade": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Konsequenz hat ein Time-to-Live (TTL) Wert von 0 f\u00fcr ein IPv4-Datenpaket?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie viele Bytes umfasst der IPv6-Header im Gegensatz zum variablen IPv4-Header s": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||An welcher Stelle im Netzwerk wird einem Datenpaket in einer MPLS-Umgebung ein '": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Unter welcher logischen Bedingung erfolgt ein Tausch benachbarter Elemente im Bu": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist der erste operative Schritt des Selection-Sort-Algorithmus innerhalb ein": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches Ziel verfolgt die 'Refactor'-Phase innerhalb des Test-Driven Development": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Komponenten stehen im Fokus der \u00dcberpr\u00fcfung w\u00e4hrend eines Integrationstes": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was wird durch einen horizontalen End-to-End-Test (E2E) aus Sicht des Nutzers va": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches SQL-Schl\u00fcsselwort unterdr\u00fcckt die Ausgabe von Duplikaten in einer Ergebn": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches Sonderzeichen dient in einer SQL-LIKE-Abfrage als Platzhalter f\u00fcr belieb": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welcher SQL-Join-Typ liefert ausschlie\u00dflich Datens\u00e4tze zur\u00fcck, die in beiden Tab": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Mit welcher SQL-Funktion wird der arithmetische Mittelwert einer numerischen Spa": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Unter welcher Bedingung liefert ein NAND-Gatter am Ausgang den logischen Wert 0?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie lautet die logische Funktionsgleichung f\u00fcr ein XOR-Gatter mit den Eing\u00e4ngen ": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Konfiguration des Switch-Ports ist zwingend erforderlich, um ein 'Router ": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was versteht man unter dem Prozess des 'H\u00e4rtens' (Hardening) bei einem Bastion H": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches Infrastrukturproblem wird durch Network Address Translation (NAT) prim\u00e4r": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Aktion f\u00fchrt der Client im 'Request'-Schritt des DHCP-DORA-Verfahrens aus": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie berechnet man in der Prozesskostenrechnung (PKR) die 'Personenjahre' f\u00fcr ein": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche vertragliche Vereinbarung regelt die Zusammenarbeit interner Abteilungen ": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches funktionale Merkmal unterscheidet die Stateful Inspection Firewall von e": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Warum ist eine Neuberechnung der Header-Checksumme eines IPv4-Pakets an jedem Ho": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||In welcher Einheit wird die Gr\u00f6\u00dfe der transportierten Daten im Feld 'Payload Len": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie wird ein neues Element aus dem unsortierten Teil beim Insertion-Sort-Algorit": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie stellt man in einem Unit-Test sicher, dass die zu pr\u00fcfende Einheit vollst\u00e4nd": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Warum ist die WHERE-Klausel in SQL ungeeignet, um Ergebnisse von Aggregatfunktio": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie lautet die logische Funktionsgleichung f\u00fcr ein NOR-Gatter mit den Eing\u00e4ngen ": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist das kennzeichnende physische Merkmal eines 'One Armed Routers'?": {
+      "known": true,
+      "ease": 2.5,
+      "interval": 1,
+      "due": "2026-03-12",
+      "reps": 1,
+      "streak": 1
+    },
+    "flashcards.csv||Welches ITSM-System dient als zentrale Datenquelle f\u00fcr alle verwalteten IT-Kompo": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie ver\u00e4ndert sich die Kundenzufriedenheit im Kano-Modell bei einer \u00dcbererf\u00fcllun": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was umfasst die 'Deep Packet Inspection' (DPI) einer Next-Generation Firewall \u00fcb": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||In welchem Zahlensystem und Vielfachen wird die Header-L\u00e4nge im IHL-Feld des IPv": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Pr\u00e4zision wird bei der Zeitsynchronisation durch das Network Time Protoco": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie wird eine organisatorische Einheit von IP-Netzen unter gemeinsamer Verwaltun": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchem Zweck dienen 'Traps' innerhalb der SNMP-Architektur?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Kosten fallen in der Prozesskostenrechnung (PKR) unter die Kategorie 'lei": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie lautet die G\u00fcltigkeitsdauer einer ISO 20.000 Zertifizierung f\u00fcr das IT Servi": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Mit welchem SQL-Statement l\u00e4sst sich die Struktur einer existierenden Tabelle du": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche logische Bedingung m\u00fcssen alle Eing\u00e4nge eines UND-Gatters erf\u00fcllen, damit": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie realisiert ein Router beim 'Router on a Stick' Verfahren logisch getrennte L": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche spezifische Rolle nimmt ein TLD-Nameserver innerhalb der DNS-Hierarchie e": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welcher Bestandteil einer HTTP-Nachricht transportiert Metadaten wie Statuscodes": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen Zustand definiert die 'Red'-Phase im Test-Driven Development (TDD)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Nach welchem hierarchischen Prinzip erfolgt die Modulpr\u00fcfung bei einem 'Bottom-U": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche drei Bedingungen m\u00fcssen erf\u00fcllt sein, um zwei SELECT-Statements mittels U": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen logischen Wert liefert ein XOR-Gatter am Ausgang, wenn beide Eing\u00e4nge au": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Aufgabe \u00fcbernimmt das 'MF-Flag' (More Fragments) im IPv4-Header?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wof\u00fcr steht das Akronym 'CSI' im Kontext der kontinuierlichen Qualit\u00e4tsverbesser": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen Teil der Netzwerkkommunikation \u00fcberwacht ein Circuit Level Gateway zur I": {
+      "known": true,
+      "ease": 2.5,
+      "interval": 1,
+      "due": "2026-03-12",
+      "reps": 1,
+      "streak": 1
+    },
+    "flashcards.csv||Wozu dient das 20 Bit gro\u00dfe Feld 'Flow Label' im IPv6-Header?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Warum gilt der Bubble-Sort-Algorithmus bei der Verarbeitung gro\u00dfer Datenmengen a": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Unter welcher Bedingung liefert der SQL-Operator 'EXISTS' den Wahrheitswert TRUE": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie lautet die logische Funktionsgleichung f\u00fcr ein NICHT-Gatter mit dem Eingang ": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche drei logischen Bereiche werden typischerweise durch eine 'Three-Legged Fi": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welcher Server bildet im DNS-System die erste Anlaufstelle f\u00fcr eine Namensaufl\u00f6s": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie berechnet man die 'Gesamtkosten einer Funktion' innerhalb der Prozesskostenr": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Nennen Sie drei typische Beispiele f\u00fcr Configuration Items (CI) in einer IT-Infr": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen Vorteil bietet eine Hardware-Firewall gegen\u00fcber einer Software-L\u00f6sung im": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Information liefert das Feld 'Fragment-Offset' im IPv4-Header f\u00fcr die Rea": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Mit welchem Schl\u00fcsselwort wird eine CASE-Anweisung in SQL abgeschlossen?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches mathematische Pr\u00fcfverfahren wird zur Ermittlung der Frame Check Sequence": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches \u00fcbergeordnete Ziel verfolgt das Capacity Management in Bezug auf die Ver": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Mit welchem SQL-Befehl l\u00e4sst sich die Ergebnismenge auf die ersten drei Datens\u00e4t": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wann liefert ein logisches ODER-Gatter am Ausgang den Wert 0?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||In welcher Netzwerkzone wird ein Bastion Host positioniert, um interne Server vo": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welcher Typ von DNS-Server liefert als letzte Instanz die endg\u00fcltige IP-Adresse ": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie werden die 'Kosten pro Durchf\u00fchrung' eines Prozesses in der PKR ermittelt?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was beschreibt das Feld 'Next Header' im IPv6-Header?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Integrit\u00e4tsbedingung stellt der 'UNIQUE'-Constraint in einer SQL-Tabelle ": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie lautet die logische Funktionsgleichung f\u00fcr ein NAND-Gatter mit den Eing\u00e4ngen": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie nennt man im ITSM die strukturierte \u00dcberpr\u00fcfung eines IT-Services unmittelba": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist der strukturelle Unterschied zwischen dem SQL-Befehl DROP TABLE und DELE": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Auf welcher Schicht des OSI-Modells operiert eine Proxy-Firewall im Gegensatz zu": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie viele Bits umfasst das Feld zur Angabe der IP-Protokollversion im Header?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||In welchem Fall liefert der SQL-Operator 'ANY' den Wahrheitswert TRUE?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was bedeutet das Pr\u00e4fix 'X' in der Bezeichnung des XOR-Gatters?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Kennzahl beschreibt im Availability Management die durchschnittliche Zeit": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung FPS ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung KPI ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung MTBI ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung KVP ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung BPMN ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung FP ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung ACL ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung MSSP ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung SOHO ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung NIC ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung WPAN ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung MEN ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung CE ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung WMAN ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung WiMAX ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung IPC ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung SSO ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung IGP ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung IANA ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung EIGRP ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung SCOM ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung IEEE ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung AGB ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung SVT ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung PKR ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung CMS ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung AD im Kontext von Routingprotokollen ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung SPF ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung SMB ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung LDAP ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung SNMP ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Abk\u00fcrzung NTP ausgeschrieben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||In welchem OSI-Layer operiert das Protokoll Kerberos?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen UDP-Port nutzt Kerberos standardm\u00e4\u00dfig?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Warum gilt RIP als ungeeignet f\u00fcr das Routing \u00fcber das Internet?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie oft versendet RIP standardm\u00e4\u00dfig die gesamte Routing-Tabelle an alle aktiven ": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Administrative Distanz (AD) hat das Protokoll OSPF laut Quellmaterial?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches Peering-Verfahren nutzt BGP zum Austausch von Routing-Informationen?": {
+      "known": true,
+      "ease": 2.5,
+      "interval": 1,
+      "due": "2026-03-12",
+      "reps": 1,
+      "streak": 1
+    },
+    "flashcards.csv||Welches Protokoll dient heute prim\u00e4r zur Diagnose von Netzwerkverbindungen und z": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Pr\u00e4zision erreicht NTP bei der Zeitsynchronisation \u00fcblicherweise?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||F\u00fcr welche drei Bereiche ist eine genaue Zeitsynchronisation via NTP essenziell?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welchen Standard nutzt das VLAN-Tagging auf Trunk-Verbindungen?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was versteht man unter 'SSO' im Kontext von Kerberos?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Warum verursacht RIP einen hohen Bandbreitenverbrauch?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches Protokoll wird als 'Wegweiser' bezeichnet, der Datenpakete durch das Int": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||In welchem OSI-Layer operiert das Routingprotokoll EIGRP?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||\u00dcber welche Adressierungsart findet die Kommunikation bei EIGRP statt?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches Protokoll wurde durch SSH aufgrund seiner unsicheren Klartext\u00fcbertragung": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche zwei Protokollschichten \u00fcberwacht eine Multilayer Inspection Firewall?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist der Vorteil von Cloud-basierten Firewalls f\u00fcr verteilte Unternehmen?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie viele Bits umfasst das Feld 'Version' im IPv4-Header?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie ist das Feld 'Type of Service' (ToS) im IPv4-Header unterteilt?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die maximale L\u00e4nge des IPv4-Headers in Byte inklusive Optionen?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche typischen Werte werden f\u00fcr die 'Time to Live' (TTL) in IPv4 verwendet?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||In welcher Einheit wird die Header-L\u00e4nge im IHL-Feld des IPv4-Headers angegeben?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist die Aufgabe des 'Frame Check Sequence' (FCS) Feldes im Ethernet-Frame?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie gro\u00df ist die zeitliche Pause des 'Inter Frame Gaps' laut Ethernet-Standard?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie viele Bits umfasst ein IPv6-Erweiterungsheader \u00fcblicherweise?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Anwendung profitiert bei MPLS besonders von der 'Quality of Service' (QoS": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was passiert beim Bubble-Sort-Algorithmus, wenn ein Wert h\u00f6her ist als sein Nach": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist der entscheidende Schritt in der 'Arrange'-Phase des AAA-Schemas bei Uni": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie viele Assertions sollte ein guter Unit-Test idealerweise enthalten?": {
+      "known": true,
+      "ease": 2.5,
+      "interval": 1,
+      "due": "2026-03-12",
+      "reps": 1,
+      "streak": 1
+    },
+    "flashcards.csv||Was ist das Ziel eines Integrationstests im Vergleich zu einem Unit-Test?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was wird bei einem horizontalen E2E-Test prim\u00e4r \u00fcberpr\u00fcft?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie oft sollte eine Zertifizierung nach ISO 20.000 wiederholt werden?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches SQL-Schl\u00fcsselwort wird verwendet, um nur eindeutige Werte ohne Duplikate": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie lautet die SQL-Syntax, um die Ergebnismenge auf die ersten 3 Zeilen zu begre": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welcher SQL-Operator dient als Kurzform f\u00fcr mehrere OR-Bedingungen?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Wildcard in SQL steht f\u00fcr genau ein beliebiges Zeichen?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||In welcher Reihenfolge werden Ergebnisse bei 'ORDER BY' standardm\u00e4\u00dfig sortiert?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Aggregatfunktion wird in der HAVING-Klausel oft verwendet, um Gruppen zu ": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was liefert der SQL-Operator ANY zur\u00fcck, wenn mindestens ein Unterabfragewert di": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welches Gatter liefert nur dann eine 1, wenn alle Eing\u00e4nge 1 sind?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist das Ergebnis von 1 XOR 1 in der Digitaltechnik?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie viele Wertekombinationen hat eine Wahrheitstabelle mit 3 Eingangsvariablen?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie viele Wertekombinationen hat eine Wahrheitstabelle mit 4 Eingangsvariablen?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist ein 'One Armed Router'?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche Gefahr besteht beim 'Router on a Stick' Verfahren?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Welche drei Zonen verbindet eine 'Three-legged Firewall' typischerweise?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Was ist das Merkmal eines Inline-Ger\u00e4ts im Netzwerk?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie berechnet man in der PKR die Prozesskosten (lmi)?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie lautet die Formel zur Berechnung des lmn-Umlagesatzes in der PKR?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    },
+    "flashcards.csv||Wie werden in der PKR die 'Kosten pro Durchf\u00fchrung' ermittelt?": {
+      "known": false,
+      "ease": 2.5,
+      "interval": 0,
+      "due": "",
+      "reps": 0,
+      "streak": 0
+    }
+  },
+  "held_moonie": "Guardeon",
+  "mystery_box_date": "2026-03-19"
 }

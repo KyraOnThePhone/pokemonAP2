@@ -389,8 +389,6 @@ Kirlia       = M("Kirlia",       "uncommon",  True,  ["Psycho","Fee"],     30, 2
 Gardevoir    = M("Gardevoir",    "epic",      False, ["Psycho","Fee"],      0, 3, "gardevoir.png",    "Kirlia",     None)
 Galagladi    = M("Galagladi",    "epic",      False, ["Kampf","Fee"],       0, 3, "galagladi.png",    "Kirlia",     None)
 
-# Custom
-PiarosaurusRex=M("Piarosaurus Rex","epic",    False, ["Drache","Boden"],    0, 1, "piarosaurusRex.png",None,        None)
 
 # Ekans line – Poison; Ekans(=Rettan)→22
 Rettan       = M("Rettan",       "common",    True,  ["Gift"],             22, 1, "rettan.png",       None,         "Arbok")

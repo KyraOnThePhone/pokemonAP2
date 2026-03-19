@@ -20,14 +20,14 @@ Was ist das Ziel des Continual Service Improvement (CSI)?,Die Steigerung der Kun
 Benennen Sie die vier Phasen des Deming Circles (PDCA).,"Plan, Do, Check, Act."
 Was ist der Kern des Kaizen-Ansatzes?,"Die fortlaufende Optimierung des Unternehmens, wobei Mitarbeiter als unerschöpflicher Fundus für Ideen dienen."
 Was ist das Systemziel des Total Quality Managements (TQM)?,Die bestmögliche Qualität unter Einbeziehung aller im Unternehmen arbeitenden Menschen.
-Welche ISO-Norm definiert Grundsätze für Maßnahmen zum Qualitätsmanagement?,ISO $9000$ ff.
-Was bescheinigt die ISO $20.000$ einem Unternehmen?,Dass IT-Leistungen nach einem systematischen ITSM-Konzept angeboten werden.
-Welche ISO-Norm befasst sich mit Sicherheitsmechanismen zum Schutz sämtlicher IT-Werte?,ISO $27.001$.
+Welche ISO-Norm definiert Grundsätze für Maßnahmen zum Qualitätsmanagement?,ISO 9000 ff.
+Was bescheinigt die ISO 20.000 einem Unternehmen?,Dass IT-Leistungen nach einem systematischen ITSM-Konzept angeboten werden.
+Welche ISO-Norm befasst sich mit Sicherheitsmechanismen zum Schutz sämtlicher IT-Werte?,ISO 27.001.
 Was regelt ein Operational Level Agreement (OLA)?,"Es ist ein interner Teil eines Vertrags, der Nachlässe oder Strafen bei Nichteinhaltung regelt."
 Was ist ein Underpinning Contract (UC)?,Ein Vertrag mit einem externen Dienstleister zur Erfüllung von SLAs.
-In der Prozesskostenrechnung: Wie berechnet man den Zeitbedarf gesamt?,Prozessmenge $\cdot$ Zeit in Minuten.
-In der Prozesskostenrechnung: Wie berechnet man die Personenjahre?,Zeitbedarf gesamt $/$ Jahresarbeitsminuten.
-In der Prozesskostenrechnung: Wie berechnet man die Prozesskosten (lmi)?,Personenjahre $\cdot$ Jahresarbeitslohn.
+In der Prozesskostenrechnung: Wie berechnet man den Zeitbedarf gesamt?,Prozessmenge \cdot Zeit in Minuten.
+In der Prozesskostenrechnung: Wie berechnet man die Personenjahre?,Zeitbedarf gesamt / Jahresarbeitsminuten.
+In der Prozesskostenrechnung: Wie berechnet man die Prozesskosten (lmi)?,Personenjahre \cdot Jahresarbeitslohn.
 Was versteht man unter 'informationeller Selbstbestimmung' im Rahmen der DSGVO?,"Dass Betroffene selbst entscheiden sollen, welche ihrer Daten öffentlich gemacht werden."
 Netzplantechnik: Was bedeuten FAZ und FEZ?,Frühester Anfangszeitpunkt und Frühester Endzeitpunkt.
 Netzplantechnik: Was bedeuten SAZ und SEZ?,Spätester Anfangszeitpunkt und Spätester Endzeitpunkt.
@@ -39,11 +39,11 @@ Was unterscheidet eine Stateful Inspection Firewall von einer einfachen Paketfil
 Welche Zusatzfunktionen umfasst eine Next-Generation Firewall (NGFW) typischerweise?,"Deep Packet Inspection (DPI), IDS, IPS, Malware-Filter und Antivirus."
 Was ist der Unterschied zwischen hardwarebasierten und softwarebasierten Firewalls?,"Hardware-Firewalls sind eigenständige Geräte ohne Ressourcenverbrauch auf Hosts, während Software-Firewalls auf dem zu schützenden Gerät laufen."
 Was ist die Kernaufgabe eines Proxys?,"Er dient als Vermittler zwischen Nutzer und Internet, leitet Anfragen weiter und verbirgt dabei oft die IP des Nutzers."
-IPv4 Header: Was gibt das Feld 'IHL' (Internet Header Length) an?,Die Länge des IP-Headers als Vielfaches von $32$ Bit.
-IPv4 Header: Welche Funktion hat das Feld 'Time to Live' (TTL)?,"Es begrenzt die Lebensdauer eines Pakets, indem jede Station den Wert um mindestens $1$ verringert."
-Ethernet Frame: Wie groß ist die Zieladresse und die Quelladresse jeweils?,Jeweils $6$ Byte.
-Ethernet Frame: Wozu dient die Frame Check Sequence (FCS)?,Sie enthält eine $32$ Bit CRC-Prüfsumme zur Fehlererkennung.
-IPv6 Header: Wie lang ist eine IPv6-Quelladresse?,$128$ Bit.
+IPv4 Header: Was gibt das Feld 'IHL' (Internet Header Length) an?,Die Länge des IP-Headers als Vielfaches von 32 Bit.
+IPv4 Header: Welche Funktion hat das Feld 'Time to Live' (TTL)?,"Es begrenzt die Lebensdauer eines Pakets, indem jede Station den Wert um mindestens 1 verringert."
+Ethernet Frame: Wie groß ist die Zieladresse und die Quelladresse jeweils?,Jeweils 6 Byte.
+Ethernet Frame: Wozu dient die Frame Check Sequence (FCS)?,Sie enthält eine 32 Bit CRC-Prüfsumme zur Fehlererkennung.
+IPv6 Header: Wie lang ist eine IPv6-Quelladresse?,128 Bit.
 IPv6 Header: Was beschreibt das Feld 'Payload Length'?,Die Größe der im IP-Paket transportierten Daten in Byte.
 Was ist der Hauptvorteil von Multi-Protocol Label Switching (MPLS)?,"Datenverkehr wird effizient über vordefinierte Pfade mittels 'Labels' geleitet, anstatt nur auf IP-Adressen zu basieren."
 Wie funktioniert der Bubble Sort Algorithmus?,"Das Array wird wiederholt durchlaufen, wobei benachbarte Elemente verglichen und bei falscher Reihenfolge getauscht werden, bis der höchste Wert nach oben 'bubbelt'."
@@ -63,18 +63,18 @@ SQL: Was ist der Unterschied zwischen einem INNER JOIN und einem LEFT JOIN?,INNE
 SQL: Wofür wird die 'HAVING'-Klausel verwendet?,"Um Suchbedingungen für aggregierte Werte (z. B. COUNT, SUM) festzulegen, da WHERE hierfür nicht nutzbar ist."
 SQL: Was ist eine Stored Procedure?,"Vorbereiteter und gespeicherter SQL-Code, der wiederholt ausgeführt werden kann (Aufruf mit EXEC)."
 SQL: Was ist ein 'VIEW'?,"Eine virtuelle Tabelle, die auf dem Ergebnis einer SQL-Abfrage basiert."
-Logikgatter: Wie lautet die Bedingung für einen Ausgang von $1$ bei einem UND (AND)-Gatter?,"Der Ausgang ist nur $1$, wenn alle Eingänge $1$ sind."
-Logikgatter: Wann liefert ein ODER (OR)-Gatter am Ausgang eine $0$?,"Nur dann, wenn alle Eingänge $0$ sind."
-Logikgatter: Was ist die Besonderheit des XOR (Exklusives ODER)-Gatters?,"Der Ausgang ist $1$, wenn genau einer der Eingänge $1$ ist (aber nicht beide)."
+Logikgatter: Wie lautet die Bedingung für einen Ausgang von 1 bei einem UND (AND)-Gatter?,"Der Ausgang ist nur 1, wenn alle Eingänge 1 sind."
+Logikgatter: Wann liefert ein ODER (OR)-Gatter am Ausgang eine 0?,"Nur dann, wenn alle Eingänge 0 sind."
+Logikgatter: Was ist die Besonderheit des XOR (Exklusives ODER)-Gatters?,"Der Ausgang ist 1, wenn genau einer der Eingänge 1 ist (aber nicht beide)."
 Was beschreibt das Konzept 'Router on a Stick'?,Ein Router routet mehrere VLANs über ein einziges physisches Interface mittels Subinterfaces.
 Was ist ein 'Bastion Host'?,"Ein besonders gehärteter Server, der direkt aus dem Internet erreichbar ist (meist in der DMZ) und als Zugangspunkt dient."
 Was bedeutet NAT (Network Address Translation)?,Die Übersetzung privater IP-Adressen in eine öffentliche IP-Adresse zur Kommunikation mit dem Internet.
-Was ist der Unterschied zwischen NAT und PAT (Port Address Translation)?,"NAT ist oft eine $1:1$ Übersetzung; PAT ermöglicht vielen Geräten über eine einzige IP zu kommunizieren, indem unterschiedliche Ports genutzt werden."
+Was ist der Unterschied zwischen NAT und PAT (Port Address Translation)?,"NAT ist oft eine 1:1 Übersetzung; PAT ermöglicht vielen Geräten über eine einzige IP zu kommunizieren, indem unterschiedliche Ports genutzt werden."
 Definition: Metropolitan Area Network (MAN),"Ein breitbandiges Netzwerk, das mehrere LANs in einer geografischen Nähe (z. B. Stadt) verbindet."
 Nennen Sie die vier Schritte des DHCP-Prozesses (DORA-Prinzip).,"Discover, Offer, Request, Acknowledge."
 Aufgabe des Domain Name Systems (DNS):,Die Übersetzung von Domain-Namen in für Computer verständliche IP-Adressen.
-Wie wird in der Prozesskostenrechnung (PKR) der Umlagesatz für leistungsmengenneutrale Kosten ($lmn$) berechnet?,$100 \cdot (\text{lmn-Kosten} / \text{Summe lmi-Kosten})$
-Was ist in der PKR die Berechnungsgrundlage für die 'Gesamtkosten der Funktion'?,Die Summe aus $lmi$- und $lmn$-Kosten.
+Wie wird in der Prozesskostenrechnung (PKR) der Umlagesatz für leistungsmengenneutrale Kosten (lmn) berechnet?,100 \cdot (\text{lmn-Kosten} / \text{Summe lmi-Kosten})
+Was ist in der PKR die Berechnungsgrundlage für die 'Gesamtkosten der Funktion'?,Die Summe aus lmi- und lmn-Kosten.
 Welcher Kennwert der PKR wird durch 'Gesamtprozesskosten / Kostentreiber' ermittelt?,Die Kosten pro Durchführung.
 Nenne zwei Vorteile einer Paketfilter-Firewall.,Hohe Geschwindigkeit/Effizienz beim Scannen und geringe Kosten.
 Warum ist die Payload-Manipulation bei Paketfilter-Firewalls ein Problem?,"Weil diese Firewalls nur Header-Informationen (IP, Port) prüfen und den Inhalt der Datenpakete ignorieren."
@@ -91,7 +91,7 @@ Warum muss jede Station auf dem Weg zum Ziel die 'Header Checksum' im IPv4 Heade
 "Welches Feld im IPv4 Header gibt an, welches Transportprotokoll (z. B. TCP oder UDP) folgt?",Das Protokoll-Feld (8 Bit).
 Ethernet Frame: Wie lang ist die Präambel und welche Funktion hat sie?,Sie ist 8 Byte lang und dient der Synchronisation der Empfänger.
 Was markiert der 'Start Frame Delimiter' (SFD) im Ethernet-Datenstrom?,"Die Bitfolge, die das eigentliche Ethernet-Frame einleitet."
-Wie groß ist die zeitliche Pause des 'Inter Frame Gap' nach dem Senden eines Ethernet-Frames?,"$9,6 \, \mu s$."
+Wie groß ist die zeitliche Pause des 'Inter Frame Gap' nach dem Senden eines Ethernet-Frames?,"9,6 \, \mu s."
 IPv6 Header: Welchen Zweck erfüllt das 20 Bit große Feld 'Flow Label'?,Es kennzeichnet Pakete für ein beschleunigtes Routing (wird oft durch MPLS ersetzt).
 Welches IPv4-Feld entspricht funktional dem 'Hop Limit' im IPv6-Header?,Das TTL-Feld (Time to Live).
 Was ist ein 'Next Header' im Kontext von IPv6?,"Ein Feld, das entweder das nächste Transportprotokoll oder optionale Header-Erweiterungen angibt."
@@ -109,7 +109,7 @@ In welchem Fall wird ein 'vertikaler E2E-Test' gegenüber einem horizontalen bev
 Was ist die Folge von 'Flaky Tests' für die CI/CD-Pipeline?,Sie verlangsamen die Pipeline und untergraben das Vertrauen in die Testergebnisse.
 SQL: Welcher Befehl löscht eine gesamte Tabelle inklusive ihrer Struktur dauerhaft?,DROP TABLE tabellenname;
 SQL: Was bewirkt der Platzhalter '%' im Zusammenhang mit dem 'LIKE'-Operator?,"Er steht für null, ein oder mehrere beliebige Zeichen."
-SQL: Welcher Wildcard-Operator sucht nach einem einzelnen Zeichen innerhalb eines definierten Bereichs?,"Das Muster in eckigen Klammern mit Bindestrich, z. B. $[a-c]$."
+SQL: Welcher Wildcard-Operator sucht nach einem einzelnen Zeichen innerhalb eines definierten Bereichs?,"Das Muster in eckigen Klammern mit Bindestrich, z. B. [a-c]."
 SQL: Wie unterscheidet sich ein 'RIGHT JOIN' von einem 'LEFT JOIN'?,Ein RIGHT JOIN gibt alle Datensätze der rechten Tabelle und nur die passenden der linken Tabelle zurück.
 Was ist der Anwendungszweck eines 'Self Joins'?,"Die Verknüpfung einer Tabelle mit sich selbst, um hierarchische Daten (z. B. Mitarbeiter und ihre Vorgesetzten) abzufragen."
 SQL: Nenne die Bedingung für die Verwendung von 'UNION ALL' bei zwei SELECT-Statements.,"Beide Abfragen müssen die gleiche Anzahl an Spalten, die gleichen Datentypen und die gleiche Reihenfolge haben."
@@ -117,11 +117,11 @@ SQL: Warum kann die 'WHERE'-Klausel nicht für Filterungen auf Basis von 'COUNT(
 "SQL: Was gibt der 'EXISTS'-Operator zurück, wenn die Unterabfrage (Subquery) Treffer liefert?",Den Wahrheitswert TRUE.
 Wie unterscheidet sich 'SELECT INTO' von 'INSERT INTO SELECT'?,"SELECT INTO erstellt automatisch eine neue Zieltabelle, während INSERT INTO SELECT eine bereits existierende Tabelle voraussetzt."
 SQL: Mit welchem Schlüsselwort schließt man eine 'CASE'-Anweisung ab?,END (optional mit einem Alias via AS).
-"SQL: Welcher Constraint stellt sicher, dass ein Wert in einer Spalte eine spezifische Bedingung erfüllt (z. B. Alter $\ge 18$)?",CHECK-Constraint.
+"SQL: Welcher Constraint stellt sicher, dass ein Wert in einer Spalte eine spezifische Bedingung erfüllt (z. B. Alter \ge 18)?",CHECK-Constraint.
 SQL: Welches Format nutzt der Datentyp 'DATETIME' standardmäßig?,YYYY-MM-DD-HH:MI:SS.
-Logik: Wie lautet die Funktionsgleichung für ein NICHT (NOT)-Gatter mit Eingang $A$?,$X = \overline{A}$
-Wahrheitstabelle: Wann liefert ein NAND-Gatter den Ausgang $0$?,"Nur dann, wenn alle Eingänge den Wert $1$ haben."
-Logik: Welches Gatter entspricht der Funktionsgleichung $X = \overline{A \vee B}$?,Das NOR-Gatter.
+Logik: Wie lautet die Funktionsgleichung für ein NICHT (NOT)-Gatter mit Eingang A?,X = \overline{A}
+Wahrheitstabelle: Wann liefert ein NAND-Gatter den Ausgang 0?,"Nur dann, wenn alle Eingänge den Wert 1 haben."
+Logik: Welches Gatter entspricht der Funktionsgleichung X = \overline{A \vee B}?,Das NOR-Gatter.
 Netzwerk: Was ist ein 'One Armed Router'?,"Ein Router mit nur einem aktiven physischen Interface, das über VLANs oder Subinterfaces eingebunden ist."
 Was ist die Gefahr bei einem 'Router on a Stick'-Setup?,Das einzige physische Interface kann zum Flaschenhals (Bottleneck) für den gesamten Datenverkehr werden.
 Nenne die drei typischen Zonen einer 'Three-Legged Firewall'.,"WAN (Internet), DMZ (öffentliche Server) und LAN (internes Netz)."
@@ -142,196 +142,196 @@ Kano-Modell: Welchen Effekt haben 'Begeisterungsanforderungen' auf den Wettbewer
 Wofür steht die Abkürzung 'EFQM' im Qualitätsmanagement?,European Foundation for Quality Management (Excellence Modell).
 Was ist der Unterschied zwischen einem 'Standard-SLA' und einem 'kundenspezifischen SLA'?,"Das Standard-SLA stammt aus dem Portfolio, das kundenspezifische SLA erlaubt individuelle Abweichungen für den Kunden."
 "SQL: Welchen Standard-Wert setzt ein Constraint, wenn beim Einfügen kein Wert angegeben wird?",Den DEFAULT-Wert.
-Wie lautet die Binärdarstellung der maximalen Header-Länge im IPv4-Header (IHL)?,"Binär $1111$ (dezimal 15), was $60$ Byte entspricht."
+Wie lautet die Binärdarstellung der maximalen Header-Länge im IPv4-Header (IHL)?,"Binär 1111 (dezimal 15), was 60 Byte entspricht."
 Wozu dient das Feld 'Type of Service' (ToS) im IP-Header?,Es legt die Qualität (Priorität und Übertragungseigenschaften) des angeforderten Dienstes fest.
 Was ist die 'Frame Check Sequence' (FCS) im Ethernet-Frame?,Eine 32-Bit-CRC-Prüfsumme zur Sicherstellung der Korrektheit des empfangenen Pakets.
 Was bedeutet 'Hardening' (Härtung) im Kontext eines Bastion Hosts?,"Das Entfernen unnötiger Dienste, Nutzerkonten und das Einrichten starker Firewalls/Updates zur Sicherheitsmaximierung."
 Netzwerk: Welche Reichweite deckt ein 'Metropolitan Area Network' (MAN) typischerweise ab?,Geografisch nahe beieinander liegende Standorte innerhalb einer Stadt oder ländlichen Region.
 Was ist die Besonderheit der 'Next-Generation Firewall' gegenüber der 'Stateful Inspection'?,"Die Integration von IPS, Malware-Filtern und Deep Packet Inspection (DPI) über alle Schichten hinweg."
-Welchen UDP-Port nutzt das Netzwerk-Authentifizierungsprotokoll Kerberos standardmÃ¤ÃŸig?,Kerberos nutzt den Port UDP 88.	
-Auf welcher Schicht des OSI-Modells operiert das Kerberos-Protokoll?,Es operiert auf der Schicht 7 (Anwendungsschicht).	
-Welches System nutzt Kerberos, um Benutzersitzungen in unsicheren Netzwerken sicher zu authentifizieren?,Kerberos nutzt ein Ticket-basiertes System mit starker Kryptografie.	
-Wie nennt man die zentrale Instanz bei Kerberos, von der Benutzer zeitlich begrenzte Tickets erhalten?,Diese Instanz wird Key Distribution Center (KDC) genannt.	
-Welches Protokoll dient als offener Netzwerkstandard zum Abfragen und Verwalten verteilter Verzeichnisdienste?,Das Lightweight Directory Access Protocol (LDAP).	
-Welchen TCP-Port verwendet LDAP fÃ¼r verschlÃ¼sselte Verbindungen (LDAPS) Ã¼blicherweise?,LDAP verwendet den Port TCP 636.	
-Welchen spezifischen Algorithmus verwendet das Routingprotokoll OSPF zur Pfadbestimmung?,OSPF verwendet den Shortest Path First (SPF) Algorithmus (Dijkstra).	
-Zu welcher Kategorie von Routingprotokollen gehÃ¶rt OSPF aufgrund seiner Funktionsweise?,Es ist ein Link-State-Routing-Protokoll.	
-In welcher OSI-Schicht ist OSPF angesiedelt?,OSPF operiert auf Schicht 3 (Vermittlungsschicht).	
-Was ist die maximale Hop-Anzahl, die das Routing Information Protocol (RIP) unterstÃ¼tzt?,Die maximale Hop-Anzahl ist auf 15 begrenzt.	
-In welchem zeitlichen Intervall versendet RIP standardmÃ¤ÃŸig seine gesamte Routing-Tabelle?,Die Routing-Tabelle wird alle 30 Sekunden versendet.	
-Welchen UDP-Port verwendet das Protokoll RIP?,RIP verwendet den Port UDP 520.	
-Wie hoch ist die administrative Distanz von OSPF im Vergleich zu RIP?,"OSPF hat eine administrative Distanz von 110, wÃ¤hrend RIP 120 hat."	
-Welches Transportprotokoll wird fÃ¼r SMTP Ã¼ber STARTTLS (aktueller Standard) empfohlen?,Es wird der Port 587 verwendet.	
-Was ist der wesentliche funktionale Unterschied zwischen IMAP und POP3 beim E-Mail-Abruf?,"IMAP synchronisiert Mails auf dem Server, wÃ¤hrend POP3 sie herunterlÃ¤dt und dort meist lÃ¶scht."	
-Welchen Port nutzt IMAP fÃ¼r verschlÃ¼sselte Verbindungen via SSL/TLS?,IMAP nutzt den Port 993.	
-Wie werden unvorhersehbare Ereignisse von einem SNMP-Agenten an den Manager gemeldet?,Diese Ereignisse werden mittels Traps gemeldet.	
-Welchen Port verwendet ein SNMP-Agent fÃ¼r den Empfang von Anfragen?,Der SNMP-Agent verwendet Port 161.	
-Welcher Port ist fÃ¼r den sicheren Fernzugriff via SSH reserviert?,SSH reserviert den Port 22.	
-Auf welcher OSI-Schicht arbeiten die Transportprotokolle TCP und UDP?,Sie arbeiten auf Schicht 4 (Transportschicht).	
-Welchen Port nutzt das Microsoft-Protokoll RDP fÃ¼r den Fernzugriff auf grafische BenutzeroberflÃ¤chen?,RDP nutzt den Port TCP 3389.	
-Welches Routingprotokoll wird primÃ¤r verwendet, um unterschiedliche Autonome Systeme (AS) im Internet zu verbinden?,Das Border Gateway Protocol (BGP).	
-Welchen TCP-Port nutzt BGP fÃ¼r die Kommunikation?,BGP nutzt den Port TCP 179.	
-Welcher Algorithmus sorgt bei EIGRP fÃ¼r schleifenfreie Pfade in groÃŸen Netzwerken?,Der Diffusing Update Algorithm (DUAL).	
-Welches veraltete Protokoll fÃ¼r den Fernzugriff Ã¼bertrÃ¤gt Daten unverschlÃ¼sselt Ã¼ber Port 23?,Das Telnet-Protokoll.	
-Welchen Zweck erfÃ¼llt das Network Time Protocol (NTP) in einem Netzwerk?,NTP dient der Synchronisierung der Uhrzeit von Computersystemen.	
-Was versteht man im ITSM unter einem Configuration Item (CI)?,"Ein CI ist jede Komponente, die verwaltet werden muss, um einen IT-Service bereitzustellen."	
-Welche Datenbank erfasst alle CIs und deren gegenseitige Beziehungen?,Die Configuration Management Database (CMDB).	
-Was ist das Hauptziel des Availability Managements?,"Sicherstellung, dass die vereinbarte VerfÃ¼gbarkeit der IT-Services (SLA-KonformitÃ¤t) erreicht wird."	
-Nenne die vier Phasen des Deming-Kreises (PDCA).,"Plan, Do, Check und Act."	
-Welche ISO-Norm zertifiziert ein systematisches IT Service Management (ITSM)?,Die ISO 20.000.	
-Was ist der Unterschied zwischen einem SLA und einem OLA?,"Ein SLA besteht zwischen Provider und Kunde, ein OLA ist eine interne Vereinbarung zur UnterstÃ¼tzung des SLA."	
-Wie berechnet man die Prozesskosten (lmi) in der Prozesskostenrechnung?,Prozesskosten (lmi) = Personenjahre $\cdot$ Jahresarbeitslohn.	
-Was definiert der 'FrÃ¼heste Endzeitpunkt' (FEZ) in der Netzplantechnik?,FEZ = FrÃ¼hester Anfangszeitpunkt (FAZ) + Dauer des Vorgangs.	
-Welcher Firewall-Typ Ã¼berwacht TCP-Handshakes, ohne die Inhalte der Pakete selbst zu prÃ¼fen?,Das Circuit-Level-Gateway (Verbindungs-Gateway).	
-Was kennzeichnet eine 'Stateful Inspection Firewall'?,Sie verfolgt den Zustand aktiver Sitzungen und entscheidet basierend auf dem Kontext frÃ¼herer Pakete.	
-Welche Funktion ermÃ¶glicht einer Next-Generation Firewall (NGFW) die Analyse der eigentlichen Nutzdaten?,Die Deep Packet Inspection (DPI).	
-Welches Feld im IPv4-Header verhindert, dass Pakete unendlich lange im Netzwerk kreisen?,Das Time-to-Live (TTL) Feld.	
-Wie groÃŸ ist der Adressraum (in Bit) einer IPv6-Adresse?,Eine IPv6-Adresse umfasst 128 Bit.	
-Welche Technologie nutzt 'Labels' zur schnellen Weiterleitung von Datenpaketen in WANs?,Multiprotocol Label Switching (MPLS).	
-Beschreibe das Grundprinzip von Bubble Sort.,"Benachbarte Elemente werden verglichen und bei falscher Sortierung getauscht, bis das grÃ¶ÃŸte Element nach oben wandert."	
-Wie geht der Selection Sort Algorithmus vor?,Er sucht wiederholt das kleinste Element im unsortierten Teil und setzt es an die erste freie Position.	
-Was ist die Kernidee von Test Driven Development (TDD)?,Softwaretests werden konsequent vor der eigentlichen Implementierung des Codes geschrieben.	
-Was unterscheidet einen Integrationstest von einem Unit-Test?,"Ein Unit-Test prÃ¼ft isolierte Funktionen, wÃ¤hrend ein Integrationstest das Zusammenspiel mehrerer Module prÃ¼ft."	
-Was definiert einen 'Flaky-Test' in der Softwareentwicklung?,"Ein Test, der bei identischem Code instabile Ergebnisse (erfolgreich/fehlgeschlagen) liefert."	
-Mit welchem SQL-Befehl entfernt man Duplikate aus einer Ergebnismenge?,Mit dem SchlÃ¼sselwort DISTINCT.	
-Was ist der Unterschied zwischen einem INNER JOIN und einem LEFT JOIN?,"INNER JOIN gibt nur passende Zeilen beider Tabellen zurÃ¼ck, LEFT JOIN alle Zeilen der linken Tabelle."	
-Welche Klausel muss in SQL verwendet werden, um Filterbedingungen auf aggregierte Daten anzuwenden?,Die HAVING-Klausel.	
-Was ist eine Stored Procedure in SQL?,"Ein vorbereiteter und auf dem Datenbankserver gespeicherter SQL-Codeblock, der Ã¼ber einen Namen aufgerufen werden kann."	
-Wann liefert ein XOR-Gatter am Ausgang den Wert 1?,Wenn genau einer der beiden EingÃ¤nge den Wert 1 hat.	
-Was beschreibt das Konzept 'Router on a Stick'?,"Ein Router nutzt ein einziges physisches Interface und logische Subinterfaces, um zwischen verschiedenen VLANs zu routen."	
-Was ist ein 'Bastion Host' im Sicherheitskonzept?,"Ein speziell gehÃ¤rteter Server, der als sicherer Zugangspunkt von auÃŸen in ein internes Netzwerk dient."	
-Welche Technik ermÃ¶glicht es vielen GerÃ¤ten im LAN, Ã¼ber eine einzige Ã¶ffentliche IP-Adresse zu kommunizieren?,Port Address Translation (PAT).	
-Welchen Reichweitentyp hat ein Metropolitan Area Network (MAN)?,Es verbindet LANs innerhalb einer Stadt oder einer grÃ¶ÃŸeren geografischen Region.	
-In welcher Phase des DHCP-Prozesses sendet der Server eine konkrete IP-Adresse als Angebot an den Client?,In der 'Offer'-Phase.	
-Welche Aufgabe Ã¼bernimmt ein Reverse Proxy?,Er nimmt Anfragen aus dem Internet entgegen und leitet sie an interne Server im Backend weiter.	
-Was gibt die 'Internet Header Length' (IHL) im IPv4-Header an?,Die LÃ¤nge des Headers als Vielfaches von 32 Bit.	
-Welches Protokoll wird fÃ¼r die Ãœbertragung von Dateien zwischen Client und Server auf Port 21 genutzt?,Das File Transfer Protocol (FTP).	
-Welche Metrik verwendet das Routingprotokoll RIP zur Pfadbewertung?,RIP verwendet die Anzahl der SprÃ¼nge (Hop-Count) als Metrik.	
-Was ist der Zweck eines 'Trunk'-Ports an einem Switch?,Die Ãœbertragung von Datenverkehr mehrerer VLANs Ã¼ber eine einzige physische Verbindung mittels Tagging.	
-Wie heiÃŸt die logische Einheit bei BGP, die eine Sammlung von IP-Netzen unter einer gemeinsamen Verwaltung darstellt?,Ein Autonomes System (AS).	
-Welches OSI-Layer-4-Protokoll ist verbindungslos und bietet keine Fehlerkorrektur?,Das User Datagram Protocol (UDP).	
-Was ist das Hauptmerkmal des 'Kano-Modells' in Bezug auf Kundenzufriedenheit?,"Die Einteilung von Kundenanforderungen in Basis-, Leistungs- und Begeisterungsfaktoren."	
-Welche Bedeutung hat 'MTBF' im IT-Service-Management?,Mean Time Between Failures (durchschnittliche Zeit zwischen AusfÃ¤llen).	
-Was versteht man unter 'Kaizen'?,Ein Konzept der kontinuierlichen Verbesserung unter Einbeziehung aller Mitarbeiter.	
-Welche SQL-Funktion wird genutzt, um die Anzahl der DatensÃ¤tze in einer Gruppe zu ermitteln?,Die COUNT()-Funktion.	
-Was bewirkt der SQL-Befehl 'DROP TABLE'?,Er lÃ¶scht eine Tabelle inklusive aller darin enthaltenen Daten und der Struktur dauerhaft.	
-Wie lautet das Ergebnis der logischen Operation $1 \text{ NAND } 1$?,Das Ergebnis ist 0.	
-Welche Schicht des OSI-Modells ist fÃ¼r die BitÃ¼bertragung (Hardware, Kabel, Stecker) zustÃ¤ndig?,Schicht 1 (Physikalische Schicht).	
-Welches Datenformat nutzt IPv6 fÃ¼r die Darstellung von IP-Adressen?,Hexadezimal-Format.	
-Was ist ein 'Three-legged Firewall'-Setup?,"Eine Firewall mit drei Interfaces: eines fÃ¼r das Internet, eines fÃ¼r das LAN und eines fÃ¼r die DMZ."	
-Welches SQL-SchlÃ¼sselwort wird verwendet, um eine Ergebnismenge nach einer oder mehreren Spalten zu gruppieren?,GROUP BY.	
-Welches OSI-Protokoll sorgt fÃ¼r eine verbindungsorientierte und zuverlÃ¤ssige DatenÃ¼bertragung?,Transmission Control Protocol (TCP).	
-Welchen Standard nutzt VLAN-Tagging auf Trunk-Verbindungen?,Den Standard IEEE 802.1Q.	
-Was ist die Funktion des 'Flow Labels' im IPv6-Header?,Kennzeichnung von Paketen eines spezifischen Datenflusses fÃ¼r effizienteres Routing.	
-Welcher SQL-Datentyp wird typischerweise fÃ¼r Texte mit variabler LÃ¤nge bis zu einem Limit verwendet?,VARCHAR.	
-Was bedeutet 'SSO' im Kontext von Kerberos?,Single Sign-On (einmalige Anmeldung fÃ¼r Zugriff auf mehrere Dienste).	
-Wie nennt man die ÃœberprÃ¼fung eines Services nach seiner Wiederherstellung im ITSM?,Service Validation Testing (SVT).	
-Was ist ein 'Underpinning Contract' (UC)?,"Ein Vertrag mit einem externen Dienstleister, der die Einhaltung eines SLA unterstÃ¼tzt."	
-Welcher Firewall-Typ arbeitet auf der Anwendungsschicht und wird oft als Proxy bezeichnet?,Das Application Level Gateway.	
-In welchem OSI-Layer arbeitet ein klassischer Router?,In Layer 3 (Vermittlungsschicht).	
-Wie lautet die Funktionsgleichung eines UND-Gatters mit den EingÃ¤ngen A und B?,$X = A \wedge B$.	
-Was bewirkt der SQL-Befehl 'ROLLBACK'?,Er macht alle Ã„nderungen einer aktuellen Transaktion ungeschehen.	
-Welches Feld im Ethernet-Frame dient der Fehlererkennung mittels CRC-PrÃ¼fsumme?,Die Frame Check Sequence (FCS).	
-Welcher Port wird fÃ¼r verschlÃ¼sseltes Webbrowsing (HTTPS) verwendet?,Port 443.	
+Welchen UDP-Port nutzt das Netzwerk-Authentifizierungsprotokoll Kerberos standardmÃ¤ÃŸig?,Kerberos nutzt den Port UDP 88.
+Auf welcher Schicht des OSI-Modells operiert das Kerberos-Protokoll?,Es operiert auf der Schicht 7 (Anwendungsschicht).
+Welches System nutzt Kerberos,um Benutzersitzungen in unsicheren Netzwerken sicher zu authentifizieren?
+Wie nennt man die zentrale Instanz bei Kerberos,von der Benutzer zeitlich begrenzte Tickets erhalten?
+Welches Protokoll dient als offener Netzwerkstandard zum Abfragen und Verwalten verteilter Verzeichnisdienste?,Das Lightweight Directory Access Protocol (LDAP).
+Welchen TCP-Port verwendet LDAP fÃ¼r verschlÃ¼sselte Verbindungen (LDAPS) Ã¼blicherweise?,LDAP verwendet den Port TCP 636.
+Welchen spezifischen Algorithmus verwendet das Routingprotokoll OSPF zur Pfadbestimmung?,OSPF verwendet den Shortest Path First (SPF) Algorithmus (Dijkstra).
+Zu welcher Kategorie von Routingprotokollen gehÃ¶rt OSPF aufgrund seiner Funktionsweise?,Es ist ein Link-State-Routing-Protokoll.
+In welcher OSI-Schicht ist OSPF angesiedelt?,OSPF operiert auf Schicht 3 (Vermittlungsschicht).
+Was ist die maximale Hop-Anzahl,die das Routing Information Protocol (RIP) unterstÃ¼tzt?
+In welchem zeitlichen Intervall versendet RIP standardmÃ¤ÃŸig seine gesamte Routing-Tabelle?,Die Routing-Tabelle wird alle 30 Sekunden versendet.
+Welchen UDP-Port verwendet das Protokoll RIP?,RIP verwendet den Port UDP 520.
+Wie hoch ist die administrative Distanz von OSPF im Vergleich zu RIP?,"OSPF hat eine administrative Distanz von 110, wÃ¤hrend RIP 120 hat."
+Welches Transportprotokoll wird fÃ¼r SMTP Ã¼ber STARTTLS (aktueller Standard) empfohlen?,Es wird der Port 587 verwendet.
+Was ist der wesentliche funktionale Unterschied zwischen IMAP und POP3 beim E-Mail-Abruf?,"IMAP synchronisiert Mails auf dem Server, wÃ¤hrend POP3 sie herunterlÃ¤dt und dort meist lÃ¶scht."
+Welchen Port nutzt IMAP fÃ¼r verschlÃ¼sselte Verbindungen via SSL/TLS?,IMAP nutzt den Port 993.
+Wie werden unvorhersehbare Ereignisse von einem SNMP-Agenten an den Manager gemeldet?,Diese Ereignisse werden mittels Traps gemeldet.
+Welchen Port verwendet ein SNMP-Agent fÃ¼r den Empfang von Anfragen?,Der SNMP-Agent verwendet Port 161.
+Welcher Port ist fÃ¼r den sicheren Fernzugriff via SSH reserviert?,SSH reserviert den Port 22.
+Auf welcher OSI-Schicht arbeiten die Transportprotokolle TCP und UDP?,Sie arbeiten auf Schicht 4 (Transportschicht).
+Welchen Port nutzt das Microsoft-Protokoll RDP fÃ¼r den Fernzugriff auf grafische BenutzeroberflÃ¤chen?,RDP nutzt den Port TCP 3389.
+Welches Routingprotokoll wird primÃ¤r verwendet,um unterschiedliche Autonome Systeme (AS) im Internet zu verbinden?
+Welchen TCP-Port nutzt BGP fÃ¼r die Kommunikation?,BGP nutzt den Port TCP 179.
+Welcher Algorithmus sorgt bei EIGRP fÃ¼r schleifenfreie Pfade in groÃŸen Netzwerken?,Der Diffusing Update Algorithm (DUAL).
+Welches veraltete Protokoll fÃ¼r den Fernzugriff Ã¼bertrÃ¤gt Daten unverschlÃ¼sselt Ã¼ber Port 23?,Das Telnet-Protokoll.
+Welchen Zweck erfÃ¼llt das Network Time Protocol (NTP) in einem Netzwerk?,NTP dient der Synchronisierung der Uhrzeit von Computersystemen.
+Was versteht man im ITSM unter einem Configuration Item (CI)?,"Ein CI ist jede Komponente, die verwaltet werden muss, um einen IT-Service bereitzustellen."
+Welche Datenbank erfasst alle CIs und deren gegenseitige Beziehungen?,Die Configuration Management Database (CMDB).
+Was ist das Hauptziel des Availability Managements?,"Sicherstellung, dass die vereinbarte VerfÃ¼gbarkeit der IT-Services (SLA-KonformitÃ¤t) erreicht wird."
+Nenne die vier Phasen des Deming-Kreises (PDCA).,"Plan, Do, Check und Act."
+Welche ISO-Norm zertifiziert ein systematisches IT Service Management (ITSM)?,Die ISO 20.000.
+Was ist der Unterschied zwischen einem SLA und einem OLA?,"Ein SLA besteht zwischen Provider und Kunde, ein OLA ist eine interne Vereinbarung zur UnterstÃ¼tzung des SLA."
+Wie berechnet man die Prozesskosten (lmi) in der Prozesskostenrechnung?,Prozesskosten (lmi) = Personenjahre \cdot Jahresarbeitslohn.
+Was definiert der 'FrÃ¼heste Endzeitpunkt' (FEZ) in der Netzplantechnik?,FEZ = FrÃ¼hester Anfangszeitpunkt (FAZ) + Dauer des Vorgangs.
+Welcher Firewall-Typ Ã¼berwacht TCP-Handshakes,ohne die Inhalte der Pakete selbst zu prÃ¼fen?
+Was kennzeichnet eine 'Stateful Inspection Firewall'?,Sie verfolgt den Zustand aktiver Sitzungen und entscheidet basierend auf dem Kontext frÃ¼herer Pakete.
+Welche Funktion ermÃ¶glicht einer Next-Generation Firewall (NGFW) die Analyse der eigentlichen Nutzdaten?,Die Deep Packet Inspection (DPI).
+Welches Feld im IPv4-Header verhindert,dass Pakete unendlich lange im Netzwerk kreisen?
+Wie groÃŸ ist der Adressraum (in Bit) einer IPv6-Adresse?,Eine IPv6-Adresse umfasst 128 Bit.
+Welche Technologie nutzt 'Labels' zur schnellen Weiterleitung von Datenpaketen in WANs?,Multiprotocol Label Switching (MPLS).
+Beschreibe das Grundprinzip von Bubble Sort.,"Benachbarte Elemente werden verglichen und bei falscher Sortierung getauscht, bis das grÃ¶ÃŸte Element nach oben wandert."
+Wie geht der Selection Sort Algorithmus vor?,Er sucht wiederholt das kleinste Element im unsortierten Teil und setzt es an die erste freie Position.
+Was ist die Kernidee von Test Driven Development (TDD)?,Softwaretests werden konsequent vor der eigentlichen Implementierung des Codes geschrieben.
+Was unterscheidet einen Integrationstest von einem Unit-Test?,"Ein Unit-Test prÃ¼ft isolierte Funktionen, wÃ¤hrend ein Integrationstest das Zusammenspiel mehrerer Module prÃ¼ft."
+Was definiert einen 'Flaky-Test' in der Softwareentwicklung?,"Ein Test, der bei identischem Code instabile Ergebnisse (erfolgreich/fehlgeschlagen) liefert."
+Mit welchem SQL-Befehl entfernt man Duplikate aus einer Ergebnismenge?,Mit dem SchlÃ¼sselwort DISTINCT.
+Was ist der Unterschied zwischen einem INNER JOIN und einem LEFT JOIN?,"INNER JOIN gibt nur passende Zeilen beider Tabellen zurÃ¼ck, LEFT JOIN alle Zeilen der linken Tabelle."
+Welche Klausel muss in SQL verwendet werden,um Filterbedingungen auf aggregierte Daten anzuwenden?
+Was ist eine Stored Procedure in SQL?,"Ein vorbereiteter und auf dem Datenbankserver gespeicherter SQL-Codeblock, der Ã¼ber einen Namen aufgerufen werden kann."
+Wann liefert ein XOR-Gatter am Ausgang den Wert 1?,Wenn genau einer der beiden EingÃ¤nge den Wert 1 hat.
+Was beschreibt das Konzept 'Router on a Stick'?,"Ein Router nutzt ein einziges physisches Interface und logische Subinterfaces, um zwischen verschiedenen VLANs zu routen."
+Was ist ein 'Bastion Host' im Sicherheitskonzept?,"Ein speziell gehÃ¤rteter Server, der als sicherer Zugangspunkt von auÃŸen in ein internes Netzwerk dient."
+Welche Technik ermÃ¶glicht es vielen GerÃ¤ten im LAN,Ã¼ber eine einzige Ã¶ffentliche IP-Adresse zu kommunizieren?
+Welchen Reichweitentyp hat ein Metropolitan Area Network (MAN)?,Es verbindet LANs innerhalb einer Stadt oder einer grÃ¶ÃŸeren geografischen Region.
+In welcher Phase des DHCP-Prozesses sendet der Server eine konkrete IP-Adresse als Angebot an den Client?,In der 'Offer'-Phase.
+Welche Aufgabe Ã¼bernimmt ein Reverse Proxy?,Er nimmt Anfragen aus dem Internet entgegen und leitet sie an interne Server im Backend weiter.
+Was gibt die 'Internet Header Length' (IHL) im IPv4-Header an?,Die LÃ¤nge des Headers als Vielfaches von 32 Bit.
+Welches Protokoll wird fÃ¼r die Ãœbertragung von Dateien zwischen Client und Server auf Port 21 genutzt?,Das File Transfer Protocol (FTP).
+Welche Metrik verwendet das Routingprotokoll RIP zur Pfadbewertung?,RIP verwendet die Anzahl der SprÃ¼nge (Hop-Count) als Metrik.
+Was ist der Zweck eines 'Trunk'-Ports an einem Switch?,Die Ãœbertragung von Datenverkehr mehrerer VLANs Ã¼ber eine einzige physische Verbindung mittels Tagging.
+Wie heiÃŸt die logische Einheit bei BGP,die eine Sammlung von IP-Netzen unter einer gemeinsamen Verwaltung darstellt?
+Welches OSI-Layer-4-Protokoll ist verbindungslos und bietet keine Fehlerkorrektur?,Das User Datagram Protocol (UDP).
+Was ist das Hauptmerkmal des 'Kano-Modells' in Bezug auf Kundenzufriedenheit?,"Die Einteilung von Kundenanforderungen in Basis-, Leistungs- und Begeisterungsfaktoren."
+Welche Bedeutung hat 'MTBF' im IT-Service-Management?,Mean Time Between Failures (durchschnittliche Zeit zwischen AusfÃ¤llen).
+Was versteht man unter 'Kaizen'?,Ein Konzept der kontinuierlichen Verbesserung unter Einbeziehung aller Mitarbeiter.
+Welche SQL-Funktion wird genutzt,um die Anzahl der DatensÃ¤tze in einer Gruppe zu ermitteln?
+Was bewirkt der SQL-Befehl 'DROP TABLE'?,Er lÃ¶scht eine Tabelle inklusive aller darin enthaltenen Daten und der Struktur dauerhaft.
+Wie lautet das Ergebnis der logischen Operation 1 \text{ NAND } 1?,Das Ergebnis ist 0.
+Welche Schicht des OSI-Modells ist fÃ¼r die BitÃ¼bertragung (Hardware,Kabel
+Welches Datenformat nutzt IPv6 fÃ¼r die Darstellung von IP-Adressen?,Hexadezimal-Format.
+Was ist ein 'Three-legged Firewall'-Setup?,"Eine Firewall mit drei Interfaces: eines fÃ¼r das Internet, eines fÃ¼r das LAN und eines fÃ¼r die DMZ."
+Welches SQL-SchlÃ¼sselwort wird verwendet,um eine Ergebnismenge nach einer oder mehreren Spalten zu gruppieren?
+Welches OSI-Protokoll sorgt fÃ¼r eine verbindungsorientierte und zuverlÃ¤ssige DatenÃ¼bertragung?,Transmission Control Protocol (TCP).
+Welchen Standard nutzt VLAN-Tagging auf Trunk-Verbindungen?,Den Standard IEEE 802.1Q.
+Was ist die Funktion des 'Flow Labels' im IPv6-Header?,Kennzeichnung von Paketen eines spezifischen Datenflusses fÃ¼r effizienteres Routing.
+Welcher SQL-Datentyp wird typischerweise fÃ¼r Texte mit variabler LÃ¤nge bis zu einem Limit verwendet?,VARCHAR.
+Was bedeutet 'SSO' im Kontext von Kerberos?,Single Sign-On (einmalige Anmeldung fÃ¼r Zugriff auf mehrere Dienste).
+Wie nennt man die ÃœberprÃ¼fung eines Services nach seiner Wiederherstellung im ITSM?,Service Validation Testing (SVT).
+Was ist ein 'Underpinning Contract' (UC)?,"Ein Vertrag mit einem externen Dienstleister, der die Einhaltung eines SLA unterstÃ¼tzt."
+Welcher Firewall-Typ arbeitet auf der Anwendungsschicht und wird oft als Proxy bezeichnet?,Das Application Level Gateway.
+In welchem OSI-Layer arbeitet ein klassischer Router?,In Layer 3 (Vermittlungsschicht).
+Wie lautet die Funktionsgleichung eines UND-Gatters mit den EingÃ¤ngen A und B?,X = A \wedge B.
+Was bewirkt der SQL-Befehl 'ROLLBACK'?,Er macht alle Ã„nderungen einer aktuellen Transaktion ungeschehen.
+Welches Feld im Ethernet-Frame dient der Fehlererkennung mittels CRC-PrÃ¼fsumme?,Die Frame Check Sequence (FCS).
+Welcher Port wird fÃ¼r verschlÃ¼sseltes Webbrowsing (HTTPS) verwendet?,Port 443.
 Was ist der Unterschied zwischen einem 'Inline'-GerÃ¤t und einem 'Passiven' NetzwerkgerÃ¤t?,Inline-GerÃ¤te sitzen direkt im Datenpfad und kÃ¶nnen Traffic blockieren	 passive GerÃ¤te erhalten nur eine Kopie.
-Welches Routingprotokoll nutzt den Bellman-Ford-Algorithmus?,Das Routing Information Protocol (RIP).	
-Was versteht man unter 'Horizontalem E2E-Testing'?,Das Testen eines kompletten GeschÃ¤ftsprozesses Ã¼ber alle beteiligten Anwendungen und Schichten hinweg.	
-Welches SQL-Kommando Ã¤ndert die Struktur einer bestehenden Tabelle, z.B. das HinzufÃ¼gen einer Spalte?,ALTER TABLE.	
-Was ist die primÃ¤re Aufgabe des DNS-Recursors?,"Er empfÃ¤ngt Anfragen von Clients und fragt andere DNS-Server ab, um die IP-Adresse aufzulÃ¶sen."	
-Welche Reichweite deckt ein 'Personal Area Network' (PAN) typischerweise ab?,"Einen Bereich von wenigen Metern, oft fÃ¼r die Verbindung persÃ¶nlicher GerÃ¤te (z.B. Bluetooth)."	
-Was ist der Zweck eines 'Default'-Constraints in SQL?,"Er legt einen Standardwert fÃ¼r eine Spalte fest, falls beim EinfÃ¼gen kein Wert angegeben wird."	
-Welchen UDP-Port nutzt das Netzwerk-Authentifizierungsprotokoll Kerberos standardmÃ¤ÃŸig?,Kerberos nutzt den Port UDP 88.	
-Auf welcher Schicht des OSI-Modells operiert das Kerberos-Protokoll?,Es operiert auf der Schicht 7 (Anwendungsschicht).	
-Welches System nutzt Kerberos, um Benutzersitzungen in unsicheren Netzwerken sicher zu authentifizieren?,Kerberos nutzt ein Ticket-basiertes System mit starker Kryptografie.	
-Wie nennt man die zentrale Instanz bei Kerberos, von der Benutzer zeitlich begrenzte Tickets erhalten?,Diese Instanz wird Key Distribution Center (KDC) genannt.	
-Welches Protokoll dient als offener Netzwerkstandard zum Abfragen und Verwalten verteilter Verzeichnisdienste?,Das Lightweight Directory Access Protocol (LDAP).	
-Welchen TCP-Port verwendet LDAP fÃ¼r verschlÃ¼sselte Verbindungen (LDAPS) Ã¼blicherweise?,LDAP verwendet den Port TCP 636.	
-Welchen spezifischen Algorithmus verwendet das Routingprotokoll OSPF zur Pfadbestimmung?,OSPF verwendet den Shortest Path First (SPF) Algorithmus (Dijkstra).	
-Zu welcher Kategorie von Routingprotokollen gehÃ¶rt OSPF aufgrund seiner Funktionsweise?,Es ist ein Link-State-Routing-Protokoll.	
-In welcher OSI-Schicht ist OSPF angesiedelt?,OSPF operiert auf Schicht 3 (Vermittlungsschicht).	
-Was ist die maximale Hop-Anzahl, die das Routing Information Protocol (RIP) unterstÃ¼tzt?,Die maximale Hop-Anzahl ist auf 15 begrenzt.	
-In welchem zeitlichen Intervall versendet RIP standardmÃ¤ÃŸig seine gesamte Routing-Tabelle?,Die Routing-Tabelle wird alle 30 Sekunden versendet.	
-Welchen UDP-Port verwendet das Protokoll RIP?,RIP verwendet den Port UDP 520.	
-Wie hoch ist die administrative Distanz von OSPF im Vergleich zu RIP?,"OSPF hat eine administrative Distanz von 110, wÃ¤hrend RIP 120 hat."	
-Welches Transportprotokoll wird fÃ¼r SMTP Ã¼ber STARTTLS (aktueller Standard) empfohlen?,Es wird der Port 587 verwendet.	
-Was ist der wesentliche funktionale Unterschied zwischen IMAP und POP3 beim E-Mail-Abruf?,"IMAP synchronisiert Mails auf dem Server, wÃ¤hrend POP3 sie herunterlÃ¤dt und dort meist lÃ¶scht."	
-Welchen Port nutzt IMAP fÃ¼r verschlÃ¼sselte Verbindungen via SSL/TLS?,IMAP nutzt den Port 993.	
-Wie werden unvorhersehbare Ereignisse von einem SNMP-Agenten an den Manager gemeldet?,Diese Ereignisse werden mittels Traps gemeldet.	
-Welchen Port verwendet ein SNMP-Agent fÃ¼r den Empfang von Anfragen?,Der SNMP-Agent verwendet Port 161.	
-Welcher Port ist fÃ¼r den sicheren Fernzugriff via SSH reserviert?,SSH reserviert den Port 22.	
-Auf welcher OSI-Schicht arbeiten die Transportprotokolle TCP und UDP?,Sie arbeiten auf Schicht 4 (Transportschicht).	
-Welchen Port nutzt das Microsoft-Protokoll RDP fÃ¼r den Fernzugriff auf grafische BenutzeroberflÃ¤chen?,RDP nutzt den Port TCP 3389.	
-Welches Routingprotokoll wird primÃ¤r verwendet, um unterschiedliche Autonome Systeme (AS) im Internet zu verbinden?,Das Border Gateway Protocol (BGP).	
-Welchen TCP-Port nutzt BGP fÃ¼r die Kommunikation?,BGP nutzt den Port TCP 179.	
-Welcher Algorithmus sorgt bei EIGRP fÃ¼r schleifenfreie Pfade in groÃŸen Netzwerken?,Der Diffusing Update Algorithm (DUAL).	
-Welches veraltete Protokoll fÃ¼r den Fernzugriff Ã¼bertrÃ¤gt Daten unverschlÃ¼sselt Ã¼ber Port 23?,Das Telnet-Protokoll.	
-Welchen Zweck erfÃ¼llt das Network Time Protocol (NTP) in einem Netzwerk?,NTP dient der Synchronisierung der Uhrzeit von Computersystemen.	
-Was versteht man im ITSM unter einem Configuration Item (CI)?,"Ein CI ist jede Komponente, die verwaltet werden muss, um einen IT-Service bereitzustellen."	
-Welche Datenbank erfasst alle CIs und deren gegenseitige Beziehungen?,Die Configuration Management Database (CMDB).	
-Was ist das Hauptziel des Availability Managements?,"Sicherstellung, dass die vereinbarte VerfÃ¼gbarkeit der IT-Services (SLA-KonformitÃ¤t) erreicht wird."	
-Nenne die vier Phasen des Deming-Kreises (PDCA).,"Plan, Do, Check und Act."	
-Welche ISO-Norm zertifiziert ein systematisches IT Service Management (ITSM)?,Die ISO 20.000.	
-Was ist der Unterschied zwischen einem SLA und einem OLA?,"Ein SLA besteht zwischen Provider und Kunde, ein OLA ist eine interne Vereinbarung zur UnterstÃ¼tzung des SLA."	
-Wie berechnet man die Prozesskosten (lmi) in der Prozesskostenrechnung?,Prozesskosten (lmi) = Personenjahre $\cdot$ Jahresarbeitslohn.	
-Was definiert der 'FrÃ¼heste Endzeitpunkt' (FEZ) in der Netzplantechnik?,FEZ = FrÃ¼hester Anfangszeitpunkt (FAZ) + Dauer des Vorgangs.	
-Welcher Firewall-Typ Ã¼berwacht TCP-Handshakes, ohne die Inhalte der Pakete selbst zu prÃ¼fen?,Das Circuit-Level-Gateway (Verbindungs-Gateway).	
-Was kennzeichnet eine 'Stateful Inspection Firewall'?,Sie verfolgt den Zustand aktiver Sitzungen und entscheidet basierend auf dem Kontext frÃ¼herer Pakete.	
-Welche Funktion ermÃ¶glicht einer Next-Generation Firewall (NGFW) die Analyse der eigentlichen Nutzdaten?,Die Deep Packet Inspection (DPI).	
-Welches Feld im IPv4-Header verhindert, dass Pakete unendlich lange im Netzwerk kreisen?,Das Time-to-Live (TTL) Feld.	
-Wie groÃŸ ist der Adressraum (in Bit) einer IPv6-Adresse?,Eine IPv6-Adresse umfasst 128 Bit.	
-Welche Technologie nutzt 'Labels' zur schnellen Weiterleitung von Datenpaketen in WANs?,Multiprotocol Label Switching (MPLS).	
-Beschreibe das Grundprinzip von Bubble Sort.,"Benachbarte Elemente werden verglichen und bei falscher Sortierung getauscht, bis das grÃ¶ÃŸte Element nach oben wandert."	
-Wie geht der Selection Sort Algorithmus vor?,Er sucht wiederholt das kleinste Element im unsortierten Teil und setzt es an die erste freie Position.	
-Was ist die Kernidee von Test Driven Development (TDD)?,Softwaretests werden konsequent vor der eigentlichen Implementierung des Codes geschrieben.	
-Was unterscheidet einen Integrationstest von einem Unit-Test?,"Ein Unit-Test prÃ¼ft isolierte Funktionen, wÃ¤hrend ein Integrationstest das Zusammenspiel mehrerer Module prÃ¼ft."	
-Was definiert einen 'Flaky-Test' in der Softwareentwicklung?,"Ein Test, der bei identischem Code instabile Ergebnisse (erfolgreich/fehlgeschlagen) liefert."	
-Mit welchem SQL-Befehl entfernt man Duplikate aus einer Ergebnismenge?,Mit dem SchlÃ¼sselwort DISTINCT.	
-Was ist der Unterschied zwischen einem INNER JOIN und einem LEFT JOIN?,"INNER JOIN gibt nur passende Zeilen beider Tabellen zurÃ¼ck, LEFT JOIN alle Zeilen der linken Tabelle."	
-Welche Klausel muss in SQL verwendet werden, um Filterbedingungen auf aggregierte Daten anzuwenden?,Die HAVING-Klausel.	
-Was ist eine Stored Procedure in SQL?,"Ein vorbereiteter und auf dem Datenbankserver gespeicherter SQL-Codeblock, der Ã¼ber einen Namen aufgerufen werden kann."	
-Wann liefert ein XOR-Gatter am Ausgang den Wert 1?,Wenn genau einer der beiden EingÃ¤nge den Wert 1 hat.	
-Was beschreibt das Konzept 'Router on a Stick'?,"Ein Router nutzt ein einziges physisches Interface und logische Subinterfaces, um zwischen verschiedenen VLANs zu routen."	
-Was ist ein 'Bastion Host' im Sicherheitskonzept?,"Ein speziell gehÃ¤rteter Server, der als sicherer Zugangspunkt von auÃŸen in ein internes Netzwerk dient."	
-Welche Technik ermÃ¶glicht es vielen GerÃ¤ten im LAN, Ã¼ber eine einzige Ã¶ffentliche IP-Adresse zu kommunizieren?,Port Address Translation (PAT).	
-Welchen Reichweitentyp hat ein Metropolitan Area Network (MAN)?,Es verbindet LANs innerhalb einer Stadt oder einer grÃ¶ÃŸeren geografischen Region.	
-In welcher Phase des DHCP-Prozesses sendet der Server eine konkrete IP-Adresse als Angebot an den Client?,In der 'Offer'-Phase.	
-Welche Aufgabe Ã¼bernimmt ein Reverse Proxy?,Er nimmt Anfragen aus dem Internet entgegen und leitet sie an interne Server im Backend weiter.	
-Was gibt die 'Internet Header Length' (IHL) im IPv4-Header an?,Die LÃ¤nge des Headers als Vielfaches von 32 Bit.	
-Welches Protokoll wird fÃ¼r die Ãœbertragung von Dateien zwischen Client und Server auf Port 21 genutzt?,Das File Transfer Protocol (FTP).	
-Welche Metrik verwendet das Routingprotokoll RIP zur Pfadbewertung?,RIP verwendet die Anzahl der SprÃ¼nge (Hop-Count) als Metrik.	
-Was ist der Zweck eines 'Trunk'-Ports an einem Switch?,Die Ãœbertragung von Datenverkehr mehrerer VLANs Ã¼ber eine einzige physische Verbindung mittels Tagging.	
-Wie heiÃŸt die logische Einheit bei BGP, die eine Sammlung von IP-Netzen unter einer gemeinsamen Verwaltung darstellt?,Ein Autonomes System (AS).	
-Welches OSI-Layer-4-Protokoll ist verbindungslos und bietet keine Fehlerkorrektur?,Das User Datagram Protocol (UDP).	
-Was ist das Hauptmerkmal des 'Kano-Modells' in Bezug auf Kundenzufriedenheit?,"Die Einteilung von Kundenanforderungen in Basis-, Leistungs- und Begeisterungsfaktoren."	
-Welche Bedeutung hat 'MTBF' im IT-Service-Management?,Mean Time Between Failures (durchschnittliche Zeit zwischen AusfÃ¤llen).	
-Was versteht man unter 'Kaizen'?,Ein Konzept der kontinuierlichen Verbesserung unter Einbeziehung aller Mitarbeiter.	
-Welche SQL-Funktion wird genutzt, um die Anzahl der DatensÃ¤tze in einer Gruppe zu ermitteln?,Die COUNT()-Funktion.	
-Was bewirkt der SQL-Befehl 'DROP TABLE'?,Er lÃ¶scht eine Tabelle inklusive aller darin enthaltenen Daten und der Struktur dauerhaft.	
-Wie lautet das Ergebnis der logischen Operation $1 \text{ NAND } 1$?,Das Ergebnis ist 0.	
-Welche Schicht des OSI-Modells ist fÃ¼r die BitÃ¼bertragung (Hardware, Kabel, Stecker) zustÃ¤ndig?,Schicht 1 (Physikalische Schicht).	
-Welches Datenformat nutzt IPv6 fÃ¼r die Darstellung von IP-Adressen?,Hexadezimal-Format.	
-Was ist ein 'Three-legged Firewall'-Setup?,"Eine Firewall mit drei Interfaces: eines fÃ¼r das Internet, eines fÃ¼r das LAN und eines fÃ¼r die DMZ."	
-Welches SQL-SchlÃ¼sselwort wird verwendet, um eine Ergebnismenge nach einer oder mehreren Spalten zu gruppieren?,GROUP BY.	
-Welches OSI-Protokoll sorgt fÃ¼r eine verbindungsorientierte und zuverlÃ¤ssige DatenÃ¼bertragung?,Transmission Control Protocol (TCP).	
-Welchen Standard nutzt VLAN-Tagging auf Trunk-Verbindungen?,Den Standard IEEE 802.1Q.	
-Was ist die Funktion des 'Flow Labels' im IPv6-Header?,Kennzeichnung von Paketen eines spezifischen Datenflusses fÃ¼r effizienteres Routing.	
-Welcher SQL-Datentyp wird typischerweise fÃ¼r Texte mit variabler LÃ¤nge bis zu einem Limit verwendet?,VARCHAR.	
-Was bedeutet 'SSO' im Kontext von Kerberos?,Single Sign-On (einmalige Anmeldung fÃ¼r Zugriff auf mehrere Dienste).	
-Wie nennt man die ÃœberprÃ¼fung eines Services nach seiner Wiederherstellung im ITSM?,Service Validation Testing (SVT).	
-Was ist ein 'Underpinning Contract' (UC)?,"Ein Vertrag mit einem externen Dienstleister, der die Einhaltung eines SLA unterstÃ¼tzt."	
-Welcher Firewall-Typ arbeitet auf der Anwendungsschicht und wird oft als Proxy bezeichnet?,Das Application Level Gateway.	
-In welchem OSI-Layer arbeitet ein klassischer Router?,In Layer 3 (Vermittlungsschicht).	
-Wie lautet die Funktionsgleichung eines UND-Gatters mit den EingÃ¤ngen A und B?,$X = A \wedge B$.	
-Was bewirkt der SQL-Befehl 'ROLLBACK'?,Er macht alle Ã„nderungen einer aktuellen Transaktion ungeschehen.	
-Welches Feld im Ethernet-Frame dient der Fehlererkennung mittels CRC-PrÃ¼fsumme?,Die Frame Check Sequence (FCS).	
-Welcher Port wird fÃ¼r verschlÃ¼sseltes Webbrowsing (HTTPS) verwendet?,Port 443.	
+Welches Routingprotokoll nutzt den Bellman-Ford-Algorithmus?,Das Routing Information Protocol (RIP).
+Was versteht man unter 'Horizontalem E2E-Testing'?,Das Testen eines kompletten GeschÃ¤ftsprozesses Ã¼ber alle beteiligten Anwendungen und Schichten hinweg.
+Welches SQL-Kommando Ã¤ndert die Struktur einer bestehenden Tabelle,z.B. das HinzufÃ¼gen einer Spalte?
+Was ist die primÃ¤re Aufgabe des DNS-Recursors?,"Er empfÃ¤ngt Anfragen von Clients und fragt andere DNS-Server ab, um die IP-Adresse aufzulÃ¶sen."
+Welche Reichweite deckt ein 'Personal Area Network' (PAN) typischerweise ab?,"Einen Bereich von wenigen Metern, oft fÃ¼r die Verbindung persÃ¶nlicher GerÃ¤te (z.B. Bluetooth)."
+Was ist der Zweck eines 'Default'-Constraints in SQL?,"Er legt einen Standardwert fÃ¼r eine Spalte fest, falls beim EinfÃ¼gen kein Wert angegeben wird."
+Welchen UDP-Port nutzt das Netzwerk-Authentifizierungsprotokoll Kerberos standardmÃ¤ÃŸig?,Kerberos nutzt den Port UDP 88.
+Auf welcher Schicht des OSI-Modells operiert das Kerberos-Protokoll?,Es operiert auf der Schicht 7 (Anwendungsschicht).
+Welches System nutzt Kerberos,um Benutzersitzungen in unsicheren Netzwerken sicher zu authentifizieren?
+Wie nennt man die zentrale Instanz bei Kerberos,von der Benutzer zeitlich begrenzte Tickets erhalten?
+Welches Protokoll dient als offener Netzwerkstandard zum Abfragen und Verwalten verteilter Verzeichnisdienste?,Das Lightweight Directory Access Protocol (LDAP).
+Welchen TCP-Port verwendet LDAP fÃ¼r verschlÃ¼sselte Verbindungen (LDAPS) Ã¼blicherweise?,LDAP verwendet den Port TCP 636.
+Welchen spezifischen Algorithmus verwendet das Routingprotokoll OSPF zur Pfadbestimmung?,OSPF verwendet den Shortest Path First (SPF) Algorithmus (Dijkstra).
+Zu welcher Kategorie von Routingprotokollen gehÃ¶rt OSPF aufgrund seiner Funktionsweise?,Es ist ein Link-State-Routing-Protokoll.
+In welcher OSI-Schicht ist OSPF angesiedelt?,OSPF operiert auf Schicht 3 (Vermittlungsschicht).
+Was ist die maximale Hop-Anzahl,die das Routing Information Protocol (RIP) unterstÃ¼tzt?
+In welchem zeitlichen Intervall versendet RIP standardmÃ¤ÃŸig seine gesamte Routing-Tabelle?,Die Routing-Tabelle wird alle 30 Sekunden versendet.
+Welchen UDP-Port verwendet das Protokoll RIP?,RIP verwendet den Port UDP 520.
+Wie hoch ist die administrative Distanz von OSPF im Vergleich zu RIP?,"OSPF hat eine administrative Distanz von 110, wÃ¤hrend RIP 120 hat."
+Welches Transportprotokoll wird fÃ¼r SMTP Ã¼ber STARTTLS (aktueller Standard) empfohlen?,Es wird der Port 587 verwendet.
+Was ist der wesentliche funktionale Unterschied zwischen IMAP und POP3 beim E-Mail-Abruf?,"IMAP synchronisiert Mails auf dem Server, wÃ¤hrend POP3 sie herunterlÃ¤dt und dort meist lÃ¶scht."
+Welchen Port nutzt IMAP fÃ¼r verschlÃ¼sselte Verbindungen via SSL/TLS?,IMAP nutzt den Port 993.
+Wie werden unvorhersehbare Ereignisse von einem SNMP-Agenten an den Manager gemeldet?,Diese Ereignisse werden mittels Traps gemeldet.
+Welchen Port verwendet ein SNMP-Agent fÃ¼r den Empfang von Anfragen?,Der SNMP-Agent verwendet Port 161.
+Welcher Port ist fÃ¼r den sicheren Fernzugriff via SSH reserviert?,SSH reserviert den Port 22.
+Auf welcher OSI-Schicht arbeiten die Transportprotokolle TCP und UDP?,Sie arbeiten auf Schicht 4 (Transportschicht).
+Welchen Port nutzt das Microsoft-Protokoll RDP fÃ¼r den Fernzugriff auf grafische BenutzeroberflÃ¤chen?,RDP nutzt den Port TCP 3389.
+Welches Routingprotokoll wird primÃ¤r verwendet,um unterschiedliche Autonome Systeme (AS) im Internet zu verbinden?
+Welchen TCP-Port nutzt BGP fÃ¼r die Kommunikation?,BGP nutzt den Port TCP 179.
+Welcher Algorithmus sorgt bei EIGRP fÃ¼r schleifenfreie Pfade in groÃŸen Netzwerken?,Der Diffusing Update Algorithm (DUAL).
+Welches veraltete Protokoll fÃ¼r den Fernzugriff Ã¼bertrÃ¤gt Daten unverschlÃ¼sselt Ã¼ber Port 23?,Das Telnet-Protokoll.
+Welchen Zweck erfÃ¼llt das Network Time Protocol (NTP) in einem Netzwerk?,NTP dient der Synchronisierung der Uhrzeit von Computersystemen.
+Was versteht man im ITSM unter einem Configuration Item (CI)?,"Ein CI ist jede Komponente, die verwaltet werden muss, um einen IT-Service bereitzustellen."
+Welche Datenbank erfasst alle CIs und deren gegenseitige Beziehungen?,Die Configuration Management Database (CMDB).
+Was ist das Hauptziel des Availability Managements?,"Sicherstellung, dass die vereinbarte VerfÃ¼gbarkeit der IT-Services (SLA-KonformitÃ¤t) erreicht wird."
+Nenne die vier Phasen des Deming-Kreises (PDCA).,"Plan, Do, Check und Act."
+Welche ISO-Norm zertifiziert ein systematisches IT Service Management (ITSM)?,Die ISO 20.000.
+Was ist der Unterschied zwischen einem SLA und einem OLA?,"Ein SLA besteht zwischen Provider und Kunde, ein OLA ist eine interne Vereinbarung zur UnterstÃ¼tzung des SLA."
+Wie berechnet man die Prozesskosten (lmi) in der Prozesskostenrechnung?,Prozesskosten (lmi) = Personenjahre \cdot Jahresarbeitslohn.
+Was definiert der 'FrÃ¼heste Endzeitpunkt' (FEZ) in der Netzplantechnik?,FEZ = FrÃ¼hester Anfangszeitpunkt (FAZ) + Dauer des Vorgangs.
+Welcher Firewall-Typ Ã¼berwacht TCP-Handshakes,ohne die Inhalte der Pakete selbst zu prÃ¼fen?
+Was kennzeichnet eine 'Stateful Inspection Firewall'?,Sie verfolgt den Zustand aktiver Sitzungen und entscheidet basierend auf dem Kontext frÃ¼herer Pakete.
+Welche Funktion ermÃ¶glicht einer Next-Generation Firewall (NGFW) die Analyse der eigentlichen Nutzdaten?,Die Deep Packet Inspection (DPI).
+Welches Feld im IPv4-Header verhindert,dass Pakete unendlich lange im Netzwerk kreisen?
+Wie groÃŸ ist der Adressraum (in Bit) einer IPv6-Adresse?,Eine IPv6-Adresse umfasst 128 Bit.
+Welche Technologie nutzt 'Labels' zur schnellen Weiterleitung von Datenpaketen in WANs?,Multiprotocol Label Switching (MPLS).
+Beschreibe das Grundprinzip von Bubble Sort.,"Benachbarte Elemente werden verglichen und bei falscher Sortierung getauscht, bis das grÃ¶ÃŸte Element nach oben wandert."
+Wie geht der Selection Sort Algorithmus vor?,Er sucht wiederholt das kleinste Element im unsortierten Teil und setzt es an die erste freie Position.
+Was ist die Kernidee von Test Driven Development (TDD)?,Softwaretests werden konsequent vor der eigentlichen Implementierung des Codes geschrieben.
+Was unterscheidet einen Integrationstest von einem Unit-Test?,"Ein Unit-Test prÃ¼ft isolierte Funktionen, wÃ¤hrend ein Integrationstest das Zusammenspiel mehrerer Module prÃ¼ft."
+Was definiert einen 'Flaky-Test' in der Softwareentwicklung?,"Ein Test, der bei identischem Code instabile Ergebnisse (erfolgreich/fehlgeschlagen) liefert."
+Mit welchem SQL-Befehl entfernt man Duplikate aus einer Ergebnismenge?,Mit dem SchlÃ¼sselwort DISTINCT.
+Was ist der Unterschied zwischen einem INNER JOIN und einem LEFT JOIN?,"INNER JOIN gibt nur passende Zeilen beider Tabellen zurÃ¼ck, LEFT JOIN alle Zeilen der linken Tabelle."
+Welche Klausel muss in SQL verwendet werden,um Filterbedingungen auf aggregierte Daten anzuwenden?
+Was ist eine Stored Procedure in SQL?,"Ein vorbereiteter und auf dem Datenbankserver gespeicherter SQL-Codeblock, der Ã¼ber einen Namen aufgerufen werden kann."
+Wann liefert ein XOR-Gatter am Ausgang den Wert 1?,Wenn genau einer der beiden EingÃ¤nge den Wert 1 hat.
+Was beschreibt das Konzept 'Router on a Stick'?,"Ein Router nutzt ein einziges physisches Interface und logische Subinterfaces, um zwischen verschiedenen VLANs zu routen."
+Was ist ein 'Bastion Host' im Sicherheitskonzept?,"Ein speziell gehÃ¤rteter Server, der als sicherer Zugangspunkt von auÃŸen in ein internes Netzwerk dient."
+Welche Technik ermÃ¶glicht es vielen GerÃ¤ten im LAN,Ã¼ber eine einzige Ã¶ffentliche IP-Adresse zu kommunizieren?
+Welchen Reichweitentyp hat ein Metropolitan Area Network (MAN)?,Es verbindet LANs innerhalb einer Stadt oder einer grÃ¶ÃŸeren geografischen Region.
+In welcher Phase des DHCP-Prozesses sendet der Server eine konkrete IP-Adresse als Angebot an den Client?,In der 'Offer'-Phase.
+Welche Aufgabe Ã¼bernimmt ein Reverse Proxy?,Er nimmt Anfragen aus dem Internet entgegen und leitet sie an interne Server im Backend weiter.
+Was gibt die 'Internet Header Length' (IHL) im IPv4-Header an?,Die LÃ¤nge des Headers als Vielfaches von 32 Bit.
+Welches Protokoll wird fÃ¼r die Ãœbertragung von Dateien zwischen Client und Server auf Port 21 genutzt?,Das File Transfer Protocol (FTP).
+Welche Metrik verwendet das Routingprotokoll RIP zur Pfadbewertung?,RIP verwendet die Anzahl der SprÃ¼nge (Hop-Count) als Metrik.
+Was ist der Zweck eines 'Trunk'-Ports an einem Switch?,Die Ãœbertragung von Datenverkehr mehrerer VLANs Ã¼ber eine einzige physische Verbindung mittels Tagging.
+Wie heiÃŸt die logische Einheit bei BGP,die eine Sammlung von IP-Netzen unter einer gemeinsamen Verwaltung darstellt?
+Welches OSI-Layer-4-Protokoll ist verbindungslos und bietet keine Fehlerkorrektur?,Das User Datagram Protocol (UDP).
+Was ist das Hauptmerkmal des 'Kano-Modells' in Bezug auf Kundenzufriedenheit?,"Die Einteilung von Kundenanforderungen in Basis-, Leistungs- und Begeisterungsfaktoren."
+Welche Bedeutung hat 'MTBF' im IT-Service-Management?,Mean Time Between Failures (durchschnittliche Zeit zwischen AusfÃ¤llen).
+Was versteht man unter 'Kaizen'?,Ein Konzept der kontinuierlichen Verbesserung unter Einbeziehung aller Mitarbeiter.
+Welche SQL-Funktion wird genutzt,um die Anzahl der DatensÃ¤tze in einer Gruppe zu ermitteln?
+Was bewirkt der SQL-Befehl 'DROP TABLE'?,Er lÃ¶scht eine Tabelle inklusive aller darin enthaltenen Daten und der Struktur dauerhaft.
+Wie lautet das Ergebnis der logischen Operation 1 \text{ NAND } 1?,Das Ergebnis ist 0.
+Welche Schicht des OSI-Modells ist fÃ¼r die BitÃ¼bertragung (Hardware,Kabel
+Welches Datenformat nutzt IPv6 fÃ¼r die Darstellung von IP-Adressen?,Hexadezimal-Format.
+Was ist ein 'Three-legged Firewall'-Setup?,"Eine Firewall mit drei Interfaces: eines fÃ¼r das Internet, eines fÃ¼r das LAN und eines fÃ¼r die DMZ."
+Welches SQL-SchlÃ¼sselwort wird verwendet,um eine Ergebnismenge nach einer oder mehreren Spalten zu gruppieren?
+Welches OSI-Protokoll sorgt fÃ¼r eine verbindungsorientierte und zuverlÃ¤ssige DatenÃ¼bertragung?,Transmission Control Protocol (TCP).
+Welchen Standard nutzt VLAN-Tagging auf Trunk-Verbindungen?,Den Standard IEEE 802.1Q.
+Was ist die Funktion des 'Flow Labels' im IPv6-Header?,Kennzeichnung von Paketen eines spezifischen Datenflusses fÃ¼r effizienteres Routing.
+Welcher SQL-Datentyp wird typischerweise fÃ¼r Texte mit variabler LÃ¤nge bis zu einem Limit verwendet?,VARCHAR.
+Was bedeutet 'SSO' im Kontext von Kerberos?,Single Sign-On (einmalige Anmeldung fÃ¼r Zugriff auf mehrere Dienste).
+Wie nennt man die ÃœberprÃ¼fung eines Services nach seiner Wiederherstellung im ITSM?,Service Validation Testing (SVT).
+Was ist ein 'Underpinning Contract' (UC)?,"Ein Vertrag mit einem externen Dienstleister, der die Einhaltung eines SLA unterstÃ¼tzt."
+Welcher Firewall-Typ arbeitet auf der Anwendungsschicht und wird oft als Proxy bezeichnet?,Das Application Level Gateway.
+In welchem OSI-Layer arbeitet ein klassischer Router?,In Layer 3 (Vermittlungsschicht).
+Wie lautet die Funktionsgleichung eines UND-Gatters mit den EingÃ¤ngen A und B?,X = A \wedge B.
+Was bewirkt der SQL-Befehl 'ROLLBACK'?,Er macht alle Ã„nderungen einer aktuellen Transaktion ungeschehen.
+Welches Feld im Ethernet-Frame dient der Fehlererkennung mittels CRC-PrÃ¼fsumme?,Die Frame Check Sequence (FCS).
+Welcher Port wird fÃ¼r verschlÃ¼sseltes Webbrowsing (HTTPS) verwendet?,Port 443.
 Was ist der Unterschied zwischen einem 'Inline'-GerÃ¤t und einem 'Passiven' NetzwerkgerÃ¤t?,Inline-GerÃ¤te sitzen direkt im Datenpfad und kÃ¶nnen Traffic blockieren	 passive GerÃ¤te erhalten nur eine Kopie.
-Welches Routingprotokoll nutzt den Bellman-Ford-Algorithmus?,Das Routing Information Protocol (RIP).	
-Was versteht man unter 'Horizontalem E2E-Testing'?,Das Testen eines kompletten GeschÃ¤ftsprozesses Ã¼ber alle beteiligten Anwendungen und Schichten hinweg.	
-Welches SQL-Kommando Ã¤ndert die Struktur einer bestehenden Tabelle, z.B. das HinzufÃ¼gen einer Spalte?,ALTER TABLE.	
-Was ist die primÃ¤re Aufgabe des DNS-Recursors?,"Er empfÃ¤ngt Anfragen von Clients und fragt andere DNS-Server ab, um die IP-Adresse aufzulÃ¶sen."	
-Welche Reichweite deckt ein 'Personal Area Network' (PAN) typischerweise ab?,"Einen Bereich von wenigen Metern, oft fÃ¼r die Verbindung persÃ¶nlicher GerÃ¤te (z.B. Bluetooth)."	
-Was ist der Zweck eines 'Default'-Constraints in SQL?,"Er legt einen Standardwert fÃ¼r eine Spalte fest, falls beim EinfÃ¼gen kein Wert angegeben wird."	
+Welches Routingprotokoll nutzt den Bellman-Ford-Algorithmus?,Das Routing Information Protocol (RIP).
+Was versteht man unter 'Horizontalem E2E-Testing'?,Das Testen eines kompletten GeschÃ¤ftsprozesses Ã¼ber alle beteiligten Anwendungen und Schichten hinweg.
+Welches SQL-Kommando Ã¤ndert die Struktur einer bestehenden Tabelle,z.B. das HinzufÃ¼gen einer Spalte?
+Was ist die primÃ¤re Aufgabe des DNS-Recursors?,"Er empfÃ¤ngt Anfragen von Clients und fragt andere DNS-Server ab, um die IP-Adresse aufzulÃ¶sen."
+Welche Reichweite deckt ein 'Personal Area Network' (PAN) typischerweise ab?,"Einen Bereich von wenigen Metern, oft fÃ¼r die Verbindung persÃ¶nlicher GerÃ¤te (z.B. Bluetooth)."
+Was ist der Zweck eines 'Default'-Constraints in SQL?,"Er legt einen Standardwert fÃ¼r eine Spalte fest, falls beim EinfÃ¼gen kein Wert angegeben wird."
 Welchen UDP-Port nutzt das Netzwerk-Authentifizierungsprotokoll Kerberos standardmäßig?,Kerberos nutzt den Port UDP 88.
 Auf welcher Schicht des OSI-Modells operiert das Kerberos-Protokoll?,Es operiert auf der Schicht 7 (Anwendungsschicht).
 "Welches System nutzt Kerberos, um Benutzersitzungen in unsicheren Netzwerken sicher zu authentifizieren?",Kerberos nutzt ein Ticket-basiertes System mit starker Kryptografie.
@@ -364,7 +364,7 @@ Was ist das Hauptziel des Availability Managements?,"Sicherstellung, dass die ve
 Nenne die vier Phasen des Deming-Kreises (PDCA).,"Plan, Do, Check und Act."
 Welche ISO-Norm zertifiziert ein systematisches IT Service Management (ITSM)?,Die ISO 20.000.
 Was ist der Unterschied zwischen einem SLA und einem OLA?,"Ein SLA besteht zwischen Provider und Kunde, ein OLA ist eine interne Vereinbarung zur Unterstützung des SLA."
-Wie berechnet man die Prozesskosten (lmi) in der Prozesskostenrechnung?,Prozesskosten (lmi) = Personenjahre $\cdot$ Jahresarbeitslohn.
+Wie berechnet man die Prozesskosten (lmi) in der Prozesskostenrechnung?,Prozesskosten (lmi) = Personenjahre \cdot Jahresarbeitslohn.
 Was definiert der 'Früheste Endzeitpunkt' (FEZ) in der Netzplantechnik?,FEZ = Frühester Anfangszeitpunkt (FAZ) + Dauer des Vorgangs.
 "Welcher Firewall-Typ überwacht TCP-Handshakes, ohne die Inhalte der Pakete selbst zu prüfen?",Das Circuit-Level-Gateway (Verbindungs-Gateway).
 Was kennzeichnet eine 'Stateful Inspection Firewall'?,Sie verfolgt den Zustand aktiver Sitzungen und entscheidet basierend auf dem Kontext früherer Pakete.
@@ -399,7 +399,7 @@ Welche Bedeutung hat 'MTBF' im IT-Service-Management?,Mean Time Between Failures
 Was versteht man unter 'Kaizen'?,Ein Konzept der kontinuierlichen Verbesserung unter Einbeziehung aller Mitarbeiter.
 "Welche SQL-Funktion wird genutzt, um die Anzahl der Datensätze in einer Gruppe zu ermitteln?",Die COUNT()-Funktion.
 Was bewirkt der SQL-Befehl 'DROP TABLE'?,Er löscht eine Tabelle inklusive aller darin enthaltenen Daten und der Struktur dauerhaft.
-Wie lautet das Ergebnis der logischen Operation $1 \text{ NAND } 1$?,Das Ergebnis ist 0.
+Wie lautet das Ergebnis der logischen Operation 1 \text{ NAND } 1?,Das Ergebnis ist 0.
 "Welche Schicht des OSI-Modells ist für die Bitübertragung (Hardware, Kabel, Stecker) zuständig?",Schicht 1 (Physikalische Schicht).
 Welches Datenformat nutzt IPv6 für die Darstellung von IP-Adressen?,Hexadezimal-Format.
 Was ist ein 'Three-legged Firewall'-Setup?,"Eine Firewall mit drei Interfaces: eines für das Internet, eines für das LAN und eines für die DMZ."
@@ -413,7 +413,7 @@ Wie nennt man die Überprüfung eines Services nach seiner Wiederherstellung im 
 Was ist ein 'Underpinning Contract' (UC)?,"Ein Vertrag mit einem externen Dienstleister, der die Einhaltung eines SLA unterstützt."
 Welcher Firewall-Typ arbeitet auf der Anwendungsschicht und wird oft als Proxy bezeichnet?,Das Application Level Gateway.
 In welchem OSI-Layer arbeitet ein klassischer Router?,In Layer 3 (Vermittlungsschicht).
-Wie lautet die Funktionsgleichung eines UND-Gatters mit den Eingängen A und B?,$X = A \wedge B$.
+Wie lautet die Funktionsgleichung eines UND-Gatters mit den Eingängen A und B?,X = A \wedge B.
 Was bewirkt der SQL-Befehl 'ROLLBACK'?,Er macht alle Änderungen einer aktuellen Transaktion ungeschehen.
 Welches Feld im Ethernet-Frame dient der Fehlererkennung mittels CRC-Prüfsumme?,Die Frame Check Sequence (FCS).
 Welcher Port wird für verschlüsseltes Webbrowsing (HTTPS) verwendet?,Port 443.
@@ -424,3 +424,261 @@ Was versteht man unter 'Horizontalem E2E-Testing'?,Das Testen eines kompletten G
 Was ist die primäre Aufgabe des DNS-Recursors?,"Er empfängt Anfragen von Clients und fragt andere DNS-Server ab, um die IP-Adresse aufzulösen."
 Welche Reichweite deckt ein 'Personal Area Network' (PAN) typischerweise ab?,"Einen Bereich von wenigen Metern, oft für die Verbindung persönlicher Geräte (z.B. Bluetooth)."
 Was ist der Zweck eines 'Default'-Constraints in SQL?,"Er legt einen Standardwert für eine Spalte fest, falls beim Einfügen kein Wert angegeben wird."
+Welchen Port nutzt das Network Time Protocol (NTP) für die Synchronisierung?,NTP nutzt den Port UDP 123.
+Welcher Port ist standardmäßig für das Post Office Protocol Version 3 (POP3) unverschlüsselt vorgesehen?,POP3 nutzt unverschlüsselt den Port 110.
+Welchen Port nutzt POP3 über eine SSL/TLS-verschlüsselte Verbindung?,Für verschlüsseltes POP3 wird der Port 995 verwendet.
+Welchen Port nutzt SMTP für die Kommunikation von Mailserver zu Mailserver?,Für die Server-zu-Server-Kommunikation wird Port 25 genutzt.
+Welcher Port ist der aktuelle Standard für SMTP über STARTTLS?,Der Standardport für SMTP über STARTTLS ist 587.
+Wie schützt Kerberos Benutzersitzungen vor dem Ausspähen von Zugangsdaten im Netzwerk?,Es vermeidet das Senden von Passwörtern über das Netzwerk durch die Nutzung eines Ticket-Systems.
+In welcher hierarchischen Struktur werden Daten im LDAP-Protokoll üblicherweise organisiert?,Daten in LDAP werden in einer Baumstruktur (hierarchisch) organisiert.
+Welches Routing-Verfahren nutzt OSPF zur Berechnung des besten Pfades?,OSPF ist ein Link-State-Routing-Protokoll.
+"Welche Metrik verwendet das Routing Information Protocol (RIP), um die beste Route zu ermitteln?",RIP verwendet die Hop-Anzahl als Metrik.
+Auf welcher Schicht des OSI-Modells operiert das Border Gateway Protocol (BGP)?,BGP operiert auf Schicht 7.
+Was unterscheidet eBGP von iBGP im Border Gateway Protocol?,"eBGP verbindet unterschiedliche autonome Systeme, während iBGP Routen innerhalb eines Systems verbreitet."
+"Welcher Algorithmus wird von EIGRP verwendet, um schleifenfreie Pfade zu garantieren?",EIGRP nutzt den Diffusing Update Algorithm (DUAL).
+Welchen Portbereich umfasst die Kategorie der 'Well Known Ports' (System Ports)?,Dieser Bereich umfasst die Ports 0 bis 1023.
+In welchem Portbereich liegen die 'Dynamischen' oder 'Privaten' Ports laut IANA?,Diese liegen im Bereich von 49152 bis 65535.
+Wie viele Bit umfasst das Feld 'Identification' im IPv4-Header?,Das Identification-Feld ist 16 Bit lang.
+Welche Aufgabe hat das Feld 'Flags' (3 Bit) im IPv4-Header?,Es steuert und identifiziert die Fragmentierung von Datenpaketen.
+Was bedeutet ein gesetztes 'MF-Flag' (More Fragments) im IPv4-Header?,"Es zeigt an, dass weitere Fragmente des ursprünglichen Pakets folgen."
+"Welche Konsequenz hat es, wenn der TTL-Wert eines IPv4-Pakets den Wert 0 erreicht?",Das Datenpaket wird verworfen.
+Wie groß ist der IPv6-Header im Vergleich zum IPv4-Header standardmäßig?,Der IPv6-Header hat eine feste Länge von 40 Byte.
+Wozu dient das Feld 'Traffic Class' (8 Bit) im IPv6-Header?,Es dient der Priorisierung des Datenpakets.
+In welcher Einheit wird das Feld 'Payload Length' im IPv6-Header angegeben?,Die Payload Length wird in Byte angegeben.
+Wie lang ist die Präambel eines Ethernet-Frames?,Die Präambel ist 8 Byte lang.
+Wie groß ist die zeitliche Pause des 'Inter Frame Gap' nach dem Senden eines Ethernet-Frames?,"Die Pause beträgt 9,6 \, \mu s."
+Was ist die Abbruchbedingung für einen Durchlauf im Bubble-Sort-Algorithmus?,"Ein Element wird so lange verglichen, bis der höchste Wert an die letzte Stelle 'gebubbelt' ist."
+Welches Ziel verfolgt der Selection-Sort-Algorithmus im ersten Schritt?,"Er sucht den kleinsten Wert im gesamten Array, um ihn an die erste Position zu setzen."
+Wofür steht das 'A' in der Assert-Phase des AAA-Schemas bei Unit-Tests?,Assert steht für das Prüfen des Ergebnisses gegen den erwarteten Zustand.
+Was ist das Hauptziel der 'Green'-Phase im Test-Driven Development (TDD)?,"Minimalen Code zu schreiben, damit der zuvor geschriebene Test erfolgreich besteht."
+Wie funktioniert der 'Big Bang'-Ansatz bei Integrationstests?,Alle einzeln getesteten Module werden gleichzeitig zusammengeführt und als Ganzes getestet.
+Aus welcher Perspektive werden horizontale End-to-End-Tests (E2E) durchgeführt?,Sie werden aus der Benutzerperspektive über mehrere Komponenten hinweg durchgeführt.
+Was ist der Fokus eines vertikalen End-to-End-Tests?,Der Fokus liegt auf kritischen technischen Schichten eines Systems ohne Benutzerschnittstellen (z. B. APIs).
+Welchen Zweck erfüllt das Schlüsselwort 'DISTINCT' in einer SQL-Abfrage?,"Es entfernt Duplikate aus der Ergebnismenge, sodass jeder Wert nur einmal ausgegeben wird."
+Wofür wird der 'BETWEEN'-Operator in einer SQL-WHERE-Klausel verwendet?,Um Werte innerhalb eines bestimmten Bereichs (inklusive der Grenzwerte) zu filtern.
+Was bewirkt das Muster '%a' bei der Verwendung des SQL-Operators 'LIKE'?,"Es sucht nach Datensätzen, die mit dem Buchstaben 'a' enden."
+Welche Bedeutung hat der Unterstrich '_' als Wildcard in SQL?,Er dient als Platzhalter für genau ein beliebiges Zeichen.
+Warum ist die Verwendung des 'IN'-Operators in SQL oft effizienter als 'OR'?,Er dient als kompakte Abkürzung für das Prüfen eines Wertes gegen eine Liste von mehreren Optionen.
+Wie lautet das SQL-Schlüsselwort zum Erstellen eines Spalten-Alias für die Anzeige?,Das Schlüsselwort lautet 'AS'.
+Was ist die Standard-Sortierreihenfolge beim SQL-Befehl 'ORDER BY'?,Die Standardsortierung ist aufsteigend (ASC).
+Welche SQL-Aggregatfunktion berechnet den Durchschnittswert einer numerischen Spalte?,Die Funktion lautet 'AVG()'.
+Welche SQL-Aggregatfunktion addiert alle Werte einer numerischen Spalte auf?,Die Funktion lautet 'SUM()'.
+Was ist das Ergebnis eines INNER JOIN in SQL?,"Es werden nur die Datensätze zurückgegeben, die in beiden Tabellen eine Übereinstimmung haben."
+Was kennzeichnet einen LEFT JOIN in SQL?,"Alle Datensätze der linken Tabelle werden ausgegeben, ergänzt um passende Daten der rechten Tabelle (falls vorhanden)."
+Welche Anforderung müssen Spalten bei der Nutzung von 'UNION ALL' erfüllen?,"Sie müssen in der gleichen Anzahl, Reihenfolge und mit kompatiblen Datentypen vorliegen."
+"Was gibt der SQL-Operator 'EXISTS' zurück, wenn die Unterabfrage mindestens einen Datensatz findet?",Der Operator gibt den Wahrheitswert 'TRUE' zurück.
+Wann gibt der SQL-Operator 'ANY' den Wert 'TRUE' zurück?,Wenn irgendeiner der Werte der Unterabfrage die angegebene Bedingung erfüllt.
+Wofür wird der SQL-Befehl 'SELECT INTO' primär verwendet?,"Um Daten aus einer bestehenden Tabelle in eine neue, gleichzeitig erstellte Tabelle zu kopieren."
+Was ist die Voraussetzung für die Nutzung von 'INSERT INTO SELECT'?,Die Zieltabelle muss bereits in der Datenbank existieren.
+Mit welchem Schlüsselwort wird eine SQL-'CASE'-Anweisung formal abgeschlossen?,Sie wird mit dem Schlüsselwort 'END' abgeschlossen.
+Welchen Zweck hat der 'UNIQUE'-Constraint in einer SQL-Tabelle?,"Er stellt sicher, dass alle Werte in einer Spalte voneinander verschieden sind."
+Was bewirkt ein 'CHECK'-Constraint in einer SQL-Spalte?,"Er erzwingt, dass alle Werte in der Spalte eine spezifische Bedingung erfüllen (z. B. Age \ge 18)."
+Welcher SQL-Datentyp speichert ein Datum ohne Zeitangabe?,Der Datentyp lautet 'DATE'.
+Welches mathematische Symbol wird in Logikplänen für das UND-Gatter verwendet?,Es wird das Symbol \wedge (oder ein kaufmännisches '&') verwendet.
+Welches Symbol repräsentiert das ODER-Gatter in Funktionsgleichungen?,Das Symbol lautet \vee.
+Wie lautet das Symbol für die logische Operation 'Exklusives ODER' (XOR)?,Das Symbol lautet \oplus.
+Was ist das Ergebnis der logischen Operation 1 XOR 1?,Das Ergebnis ist 0.
+Wie lautet das Ergebnis der logischen Operation 0 NAND 1?,Das Ergebnis ist 1.
+Wie lautet das Ergebnis der logischen Operation 1 NOR 0?,Das Ergebnis ist 0.
+Was ist das primäre Merkmal eines 'VPN-Routers'?,Er baut verschlüsselte VPN-Tunnel für die Standortvernetzung oder das Homeoffice auf.
+Welche Aufgabe übernimmt ein 'Edge-Router' im Netzwerk?,Er sitzt am Rand eines Netzwerks und verbindet das interne Netz mit dem externen Netz (Internet).
+Was kennzeichnet ein 'Passives Netzwerkgerät' (Out-of-Band) im Vergleich zu Inline-Geräten?,Es erhält nur eine Kopie des Datenverkehrs und kann diesen nicht blockieren.
+Was ist der Zweck eines 'Subinterfaces' auf einem Router?,Es dient der logischen Aufteilung eines physischen Ports für das Routing zwischen verschiedenen VLANs.
+Welche geografische Reichweite deckt ein 'Personal Area Network' (PAN) ab?,Ein PAN deckt nur eine sehr kleine Distanz von wenigen Metern ab (z. B. via Bluetooth).
+Welche Formel wird zur Berechnung der 'lmi-Prozesskosten' (leistungsmengeninduziert) verwendet?,\text{Personenjahre} \times \text{Jahresarbeitslohn}.
+Wie berechnet man den 'lmn-Umlagesatz' in der Prozesskostenrechnung?,100 \times (\text{lmn-Kosten} / \text{Summe lmi-Kosten}).
+Wie ermittelt man den 'Zeitbedarf gesamt' für einen Prozess in der PKR?,\text{Prozessmenge} \times \text{Zeit pro Durchführung}.
+Welches Ziel verfolgt das 'Capacity Management' im ITSM?,Die Bereitstellung optimaler Kapazitäten zur Vermeidung von Engpässen oder Überbeständen.
+Was kennzeichnet ein 'Leistungsmerkmal' im Kano-Modell?,Die Kundenzufriedenheit steigt linear mit dem Grad der Erfüllung dieses Merkmals.
+Was kennzeichnet ein 'Begeisterungsmerkmal' im Kano-Modell?,Es übertrifft die Kundenerwartungen und dient als Unique Selling Point (USP).
+In welchem Rhythmus muss die Zertifizierung nach ISO 20.000 wiederholt werden?,Die Zertifizierung muss alle 3 Jahre wiederholt werden.
+Welchen Fokus hat die Norm ISO 9.000 ff.?,Sie definiert Grundsätze und Maßnahmen für das Qualitätsmanagement.
+Was ist die Kernphilosophie des 'Total Quality Management' (TQM)?,Die Einbeziehung aller Mitarbeiter des Unternehmens zur Erreichung bestmöglicher Qualität.
+Welches Recht wird in der DSGVO als 'Informationelle Selbstbestimmung' bezeichnet?,"Das Recht des Betroffenen, selbst über die Preisgabe und Verwendung seiner Daten zu entscheiden."
+Was bedeutet die Abkürzung 'FAZ' in der Netzplantechnik?,FAZ steht für Frühester Anfangszeitpunkt.
+Was versteht man unter dem 'Gesamtpuffer' (GP) in einem Netzplan?,"Die Zeitspanne, um die ein Vorgang verschoben werden kann, ohne das Projektende zu verzögern."
+Welche Komponenten integriert eine Next-Generation Firewall (NGFW) zusätzlich zur klassischen Filterung?,"Sie umfasst oft Deep Packet Inspection (DPI), IDS/IPS, Malware-Filter und Antivirus."
+Welchen Vorteil bietet eine Hardware-Firewall gegenüber einer Software-Lösung?,Sie beansprucht keine Rechenleistung (CPU/RAM) der zu schützenden Host-Geräte.
+Wie verbirgt ein Proxy die Identität eines Nutzers im Internet?,Die IP-Adresse des Nutzers wird durch die IP-Adresse des Proxys ersetzt.
+Was ist die primäre Aufgabe des DNS-'Root-Namenservers'?,Er ist die erste Instanz bei der Namensauflösung und verweist auf die zuständigen TLD-Server.
+Welchen Port nutzt das Common Internet File System (CIFS) über TCP?,CIFS nutzt den Port TCP 445.
+Was beschreibt das 'Piconet' im Kontext von PAN-Netzwerken?,Ein über Bluetooth aufgebautes Netzwerk zwischen Geräten auf sehr kurzer Distanz.
+Welches symmetrische Verschlüsselungsverfahren wird laut Quellmaterial standardmäßig von Kerberos zur Sicherung der Kommunikation verwendet?,Advanced Encryption Standard (AES).
+"In welcher spezifischen hierarchischen Struktur werden Daten im LDAP-Protokoll organisiert, um schnelle Lesezugriffe zu ermöglichen?",Baumstruktur.
+Welcher mathematische Algorithmus bildet die Grundlage für den Shortest Path First (SPF) Mechanismus in OSPF?,Dijkstra-Algorithmus.
+Warum kann das Routing Information Protocol (RIP) in einem Netzwerk zu kritischen Verkehrsengpässen führen?,Weil alle 30 Sekunden die gesamte Routing-Tabelle an alle aktiven Schnittstellen gesendet wird.
+Welches Kriterium nutzt das Border Gateway Protocol (BGP) primär für die Pfadauswahl anstelle von Hop-Counts?,"Pfadattribute, Richtlinien oder Netzwerkregeln."
+Warum wird das EIGRP-Protokoll in der Netzwerktechnik oft als 'Hybrid-Protokoll' bezeichnet?,Es vereint die Merkmale von Distanzvektor- und Link-State-Protokollen.
+Welches Protokoll ist im E-Mail-Verkehr ausschließlich für den Transport von Nachrichten zum Zielserver zuständig?,Simple Mail Transfer Protocol (SMTP).
+Wie nennt man die zentrale Management-Anwendung innerhalb einer SNMP-Architektur?,Manager.
+Auf welcher Schicht des OSI-Modells wird das HTTPS-Protokoll durch die SSL/TLS-Verschlüsselung eingeordnet?,Schicht 6 (Darstellungsschicht).
+Welcher Portbereich ist laut IANA-Standard für die sogenannten 'Registrierten Ports' definiert?,1024 bis 49151.
+Warum ist das User Datagram Protocol (UDP) besonders für das Streaming von Medieninhalten geeignet?,Es verzichtet auf Kontrollfunktionen und ermöglicht so eine schnellere Verarbeitung trotz möglicher Paketverluste.
+Welchen monetären Aspekt spiegelt ein 'Asset' im Vergleich zu einem Configuration Item (CI) wider?,Den Vermögenswert einer Komponente.
+Wie definiert sich die Kostenkomponente 'leistungsmengeninduziert' (lmi) in der Prozesskostenrechnung?,"Kosten, die direkt von der Häufigkeit der Prozessausführung abhängen."
+Welche Anforderungen im Kano-Modell dienen als 'Unique Selling Point' (USP) zur Abgrenzung vom Wettbewerb?,Begeisterungsanforderungen.
+Welche ISO-Norm definiert die Grundsätze für ein systematisches Qualitätsmanagement?,ISO 9000 ff.
+Warum bietet eine Paketfilter-Firewall keinen Schutz vor Manipulationen innerhalb der Nutzdaten (Payload)?,Weil sie lediglich die Header-Informationen wie IP-Adressen und Portnummern überprüft.
+"Wie wird ein Application Level Gateway technisch bezeichnet, wenn es als Vermittlungsinstanz zwischen Netzen agiert?",Proxy oder Proxy-Firewall.
+Welche Information liefert das Feld 'IHL' (Internet Header Length) im IPv4-Header?,Die Länge des IP-Headers als Vielfaches von 32 Bit.
+Welche Konsequenz hat ein Time-to-Live (TTL) Wert von 0 für ein IPv4-Datenpaket?,Das Paket wird vom Router verworfen.
+Wie viele Bytes umfasst der IPv6-Header im Gegensatz zum variablen IPv4-Header standardmäßig?,40 Byte.
+An welcher Stelle im Netzwerk wird einem Datenpaket in einer MPLS-Umgebung ein 'Label' zugewiesen?,Am Eingang des MPLS-Netzwerks.
+Unter welcher logischen Bedingung erfolgt ein Tausch benachbarter Elemente im Bubble-Sort-Algorithmus?,Wenn der aktuelle Wert größer ist als sein direkter Nachfolger.
+Was ist der erste operative Schritt des Selection-Sort-Algorithmus innerhalb eines Arrays?,Die Suche nach dem kleinsten Wert im gesamten Array.
+Welches Ziel verfolgt die 'Refactor'-Phase innerhalb des Test-Driven Development (TDD) Zyklus?,Die Verbesserung der Codequalität und Struktur ohne Änderung des funktionalen Verhaltens.
+Welche Komponenten stehen im Fokus der Überprüfung während eines Integrationstests?,Die Schnittstellen und der Datenfluss zwischen verschiedenen Modulen.
+Was wird durch einen horizontalen End-to-End-Test (E2E) aus Sicht des Nutzers validiert?,Der gesamte Workflow einer Anwendung über alle Schichten und Komponenten hinweg.
+Welches SQL-Schlüsselwort unterdrückt die Ausgabe von Duplikaten in einer Ergebnismenge?,DISTINCT.
+Welches Sonderzeichen dient in einer SQL-LIKE-Abfrage als Platzhalter für beliebig viele Zeichen?,Das Prozentzeichen (%).
+"Welcher SQL-Join-Typ liefert ausschließlich Datensätze zurück, die in beiden Tabellen eine Übereinstimmung besitzen?",INNER JOIN.
+Mit welcher SQL-Funktion wird der arithmetische Mittelwert einer numerischen Spalte ermittelt?,AVG().
+Unter welcher Bedingung liefert ein NAND-Gatter am Ausgang den logischen Wert 0?,Nur wenn alle Eingänge den logischen Wert 1 haben.
+Wie lautet die logische Funktionsgleichung für ein XOR-Gatter mit den Eingängen A und B?,X = A \oplus B.
+"Welche Konfiguration des Switch-Ports ist zwingend erforderlich, um ein 'Router on a Stick' Setup zu betreiben?",Konfiguration als Trunk-Port.
+Was versteht man unter dem Prozess des 'Härtens' (Hardening) bei einem Bastion Host?,"Die Minimierung der Angriffsfläche durch das Entfernen unnötiger Dienste, Konten und Ports."
+Welches Infrastrukturproblem wird durch Network Address Translation (NAT) primär gelöst?,Die Knappheit öffentlicher IPv4-Adressen.
+Welche Aktion führt der Client im 'Request'-Schritt des DHCP-DORA-Verfahrens aus?,Er akzeptiert ein spezifisches IP-Angebot und bittet den Server um die offizielle Zuweisung.
+Wie berechnet man in der Prozesskostenrechnung (PKR) die 'Personenjahre' für eine bestimmte Aktivität?,Zeitbedarf gesamt dividiert durch die Jahresarbeitsminuten.
+Welche vertragliche Vereinbarung regelt die Zusammenarbeit interner Abteilungen zur Einhaltung eines SLAs?,Operational Level Agreement (OLA).
+Welches funktionale Merkmal unterscheidet die Stateful Inspection Firewall von einem einfachen Paketfilter?,Die Überwachung und Nachverfolgung des Zustands aktiver Netzwerksitzungen.
+Warum ist eine Neuberechnung der Header-Checksumme eines IPv4-Pakets an jedem Hop zwingend erforderlich?,Weil sich das Time-to-Live (TTL) Feld bei jeder Weiterleitung ändert.
+In welcher Einheit wird die Größe der transportierten Daten im Feld 'Payload Length' des IPv6-Headers angegeben?,In Byte.
+Wie wird ein neues Element aus dem unsortierten Teil beim Insertion-Sort-Algorithmus verarbeitet?,Es wird an der logisch korrekten Stelle in den bereits sortierten Teil des Arrays eingefügt.
+"Wie stellt man in einem Unit-Test sicher, dass die zu prüfende Einheit vollständig isoliert von externen Systemen getestet wird?",Durch den Einsatz von Mocks oder Platzhaltern.
+"Warum ist die WHERE-Klausel in SQL ungeeignet, um Ergebnisse von Aggregatfunktionen wie COUNT() zu filtern?",Weil die WHERE-Klausel keine Aggregatfunktionen verarbeiten kann; stattdessen muss HAVING genutzt werden.
+Wie lautet die logische Funktionsgleichung für ein NOR-Gatter mit den Eingängen A und B?,X = \overline{A \vee B}.
+Was ist das kennzeichnende physische Merkmal eines 'One Armed Routers'?,Er ist über nur ein einziges aktives physisches Interface in das Netzwerk eingebunden.
+Welches ITSM-System dient als zentrale Datenquelle für alle verwalteten IT-Komponenten und deren Abhängigkeiten?,Configuration Management Database (CMDB).
+Wie verändert sich die Kundenzufriedenheit im Kano-Modell bei einer Übererfüllung von Basiserwartungen?,"Die Zufriedenheit steigt nicht weiter an, da diese Merkmale als selbstverständlich vorausgesetzt werden."
+Was umfasst die 'Deep Packet Inspection' (DPI) einer Next-Generation Firewall über die Header-Prüfung hinaus?,Die Untersuchung der konkreten Nutzdaten (Payload) auf zulässige Inhalte und Formate.
+In welchem Zahlensystem und Vielfachen wird die Header-Länge im IHL-Feld des IPv4-Headers angegeben?,Als Vielfaches von 32 Bit.
+Welche Präzision wird bei der Zeitsynchronisation durch das Network Time Protocol (NTP) üblicherweise erreicht?,Präzision im Millisekundenbereich.
+Wie wird eine organisatorische Einheit von IP-Netzen unter gemeinsamer Verwaltung im Border Gateway Protocol (BGP) genannt?,Autonomes System (AS).
+Welchem Zweck dienen 'Traps' innerhalb der SNMP-Architektur?,Der unaufgeforderten Meldung unvorhersehbarer oder kritischer Ereignisse vom Agenten an den Manager.
+Welche Kosten fallen in der Prozesskostenrechnung (PKR) unter die Kategorie 'leistungsmengenneutral' (lmn)?,"Kosten, die unabhängig von der Durchführungsmenge eines Prozesses anfallen (Fixkosten)."
+Wie lautet die Gültigkeitsdauer einer ISO 20.000 Zertifizierung für das IT Service Management?,3 Jahre.
+Mit welchem SQL-Statement lässt sich die Struktur einer existierenden Tabelle durch Hinzufügen einer Spalte modifizieren?,ALTER TABLE.
+"Welche logische Bedingung müssen alle Eingänge eines UND-Gatters erfüllen, damit der Ausgang den Wert 1 annimmt?",Sämtliche Eingänge müssen den logischen Wert 1 aufweisen.
+Wie realisiert ein Router beim 'Router on a Stick' Verfahren logisch getrennte Layer-3-Netze über einen physischen Port?,Durch die Einrichtung von Subinterfaces mit individuellen IP-Adressen und VLAN-IDs.
+Welche spezifische Rolle nimmt ein TLD-Nameserver innerhalb der DNS-Hierarchie ein?,Er hostet Informationen für die obersten Domain-Endungen wie .com oder .de.
+Welcher Bestandteil einer HTTP-Nachricht transportiert Metadaten wie Statuscodes oder den Browsertyp?,HTTP-Header.
+Welchen Zustand definiert die 'Red'-Phase im Test-Driven Development (TDD)?,Einen fehlschlagenden automatisierten Test für eine neue Funktionalität.
+Nach welchem hierarchischen Prinzip erfolgt die Modulprüfung bei einem 'Bottom-Up'-Integrationstest?,Die Prüfung startet bei den Modulen der untersten Ebene und arbeitet sich schrittweise nach oben vor.
+"Welche drei Bedingungen müssen erfüllt sein, um zwei SELECT-Statements mittels UNION ALL kombinieren zu können?","Gleiche Anzahl an Spalten, kompatible Datentypen und identische Reihenfolge der Spalten."
+"Welchen logischen Wert liefert ein XOR-Gatter am Ausgang, wenn beide Eingänge auf 1 gesetzt sind?",0.
+Welche Aufgabe übernimmt das 'MF-Flag' (More Fragments) im IPv4-Header?,"Es zeigt an, dass das Paket ein Fragment ist und weitere Fragmente folgen."
+Wofür steht das Akronym 'CSI' im Kontext der kontinuierlichen Qualitätsverbesserung von Services?,Continual Service Improvement.
+Welchen Teil der Netzwerkkommunikation überwacht ein Circuit Level Gateway zur Identifizierung zulässiger Sitzungen?,Den TCP-Handshake.
+Wozu dient das 20 Bit große Feld 'Flow Label' im IPv6-Header?,Der Kennzeichnung von Datenflüssen zur Beschleunigung des Routings.
+Warum gilt der Bubble-Sort-Algorithmus bei der Verarbeitung großer Datenmengen als ineffizient?,Aufgrund des hohen Rechenaufwands durch die quadratische Anzahl an Vergleichen.
+Unter welcher Bedingung liefert der SQL-Operator 'EXISTS' den Wahrheitswert TRUE?,Wenn die Unterabfrage (Subquery) mindestens einen Datensatz als Ergebnis zurückgibt.
+Wie lautet die logische Funktionsgleichung für ein NICHT-Gatter mit dem Eingang A?,X = \overline{A}.
+Welche drei logischen Bereiche werden typischerweise durch eine 'Three-Legged Firewall' voneinander isoliert?,"WAN (Internet), DMZ (öffentliche Server) und LAN (internes Netz)."
+"Welcher Server bildet im DNS-System die erste Anlaufstelle für eine Namensauflösung, wenn keine Cache-Daten vorliegen?",Root-Namenserver (Stamm-Namenserver).
+Wie berechnet man die 'Gesamtkosten einer Funktion' innerhalb der Prozesskostenrechnung?,Durch die Summe der lmi-Kosten und der lmn-Kosten.
+Nennen Sie drei typische Beispiele für Configuration Items (CI) in einer IT-Infrastruktur.,"Hardware (Router), Software (Betriebssystem) und Mitarbeiter."
+Welchen Vorteil bietet eine Hardware-Firewall gegenüber einer Software-Lösung im Hinblick auf die Systemstabilität des Hosts?,Sie beansprucht keine Rechenleistung (CPU/RAM) des zu schützenden Endgeräts.
+Welche Information liefert das Feld 'Fragment-Offset' im IPv4-Header für die Reassemblierung?,Die exakte Position des Fragments innerhalb des ursprünglichen Datenpakets.
+Mit welchem Schlüsselwort wird eine CASE-Anweisung in SQL abgeschlossen?,END.
+Welches mathematische Prüfverfahren wird zur Ermittlung der Frame Check Sequence (FCS) im Ethernet-Frame genutzt?,Cyclic Redundancy Check (CRC).
+Welches übergeordnete Ziel verfolgt das Capacity Management in Bezug auf die Vermeidung von Engpässen?,Die Bereitstellung der optimalen Kapazität zur Gewährleistung der Service-Leistung.
+Mit welchem SQL-Befehl lässt sich die Ergebnismenge auf die ersten drei Datensätze begrenzen?,SELECT TOP 3.
+Wann liefert ein logisches ODER-Gatter am Ausgang den Wert 0?,Nur wenn sämtliche Eingänge den logischen Wert 0 aufweisen.
+"In welcher Netzwerkzone wird ein Bastion Host positioniert, um interne Server vor direktem Internetzugriff zu schützen?",In der Demilitarized Zone (DMZ).
+Welcher Typ von DNS-Server liefert als letzte Instanz die endgültige IP-Adresse für eine Anfrage zurück?,Autoritativer Namenserver.
+Wie werden die 'Kosten pro Durchführung' eines Prozesses in der PKR ermittelt?,Gesamtprozesskosten dividiert durch die Prozessmenge (Kostentreiber).
+Was beschreibt das Feld 'Next Header' im IPv6-Header?,Das folgende Transportprotokoll oder einen optionalen Erweiterungs-Header.
+Welche Integritätsbedingung stellt der 'UNIQUE'-Constraint in einer SQL-Tabelle sicher?,Dass alle Werte innerhalb einer Spalte eindeutig (verschieden voneinander) sind.
+Wie lautet die logische Funktionsgleichung für ein NAND-Gatter mit den Eingängen A und B?,X = \overline{A \wedge B}.
+Wie nennt man im ITSM die strukturierte Überprüfung eines IT-Services unmittelbar nach dessen Wiederherstellung?,Service Validation Testing (SVT).
+Was ist der strukturelle Unterschied zwischen dem SQL-Befehl DROP TABLE und DELETE?,"DROP löscht die gesamte Tabellenstruktur, während DELETE lediglich die Dateninhalte entfernt."
+Auf welcher Schicht des OSI-Modells operiert eine Proxy-Firewall im Gegensatz zum einfachen Paketfilter?,Anwendungsschicht (Schicht 7).
+Wie viele Bits umfasst das Feld zur Angabe der IP-Protokollversion im Header?,4 Bit.
+In welchem Fall liefert der SQL-Operator 'ANY' den Wahrheitswert TRUE?,Wenn mindestens ein Wert der Unterabfrage die angegebene Bedingung erfüllt.
+Was bedeutet das Präfix 'X' in der Bezeichnung des XOR-Gatters?,Exklusiv (Exclusive).
+Welche Kennzahl beschreibt im Availability Management die durchschnittliche Zeit bis zur vollständigen Wiederherstellung eines Dienstes?,Mean Time To Recovery (MTTR).
+Was ist die Abkürzung FPS ausgeschrieben?,Frames Per Second
+Was ist die Abkürzung KPI ausgeschrieben?,Key Performance Indicator
+Was ist die Abkürzung MTBI ausgeschrieben?,Mean Time Between Incidents
+Was ist die Abkürzung KVP ausgeschrieben?,Kontinuierlicher Verbesserungsprozess
+Was ist die Abkürzung BPMN ausgeschrieben?,Business Process Model and Notation
+Was ist die Abkürzung FP ausgeschrieben?,freier Puffer
+Was ist die Abkürzung ACL ausgeschrieben?,Access Control List
+Was ist die Abkürzung MSSP ausgeschrieben?,Managed Security Service Provider
+Was ist die Abkürzung SOHO ausgeschrieben?,"Small Office, Home Office"
+Was ist die Abkürzung NIC ausgeschrieben?,Network Interface Card
+Was ist die Abkürzung WPAN ausgeschrieben?,Wireless Personal Area Network
+Was ist die Abkürzung MEN ausgeschrieben?,Metro-Ethernet-Netze
+Was ist die Abkürzung CE ausgeschrieben?,Carrier Ethernet
+Was ist die Abkürzung WMAN ausgeschrieben?,Wireless Metropolitan Area Network
+Was ist die Abkürzung WiMAX ausgeschrieben?,Worldwide Interoperability for Microwave Access
+Was ist die Abkürzung IPC ausgeschrieben?,Interprozesskommunikation
+Was ist die Abkürzung SSO ausgeschrieben?,Single Sign-On
+Was ist die Abkürzung IGP ausgeschrieben?,Interior Gateway Protocol
+Was ist die Abkürzung IANA ausgeschrieben?,Internet Assigned Numbers Authority
+Was ist die Abkürzung EIGRP ausgeschrieben?,Enhanced Interior Gateway Routing Protocol
+Was ist die Abkürzung SCOM ausgeschrieben?,System Center Operations Manager
+Was ist die Abkürzung IEEE ausgeschrieben?,Institute of Electrical and Electronics Engineers
+Was ist die Abkürzung AGB ausgeschrieben?,Allgemeine Geschäftsbedingungen
+Was ist die Abkürzung SVT ausgeschrieben?,Service Validation Testing
+Was ist die Abkürzung PKR ausgeschrieben?,Prozesskostenrechnung
+Was ist die Abkürzung CMS ausgeschrieben?,Configuration Management System
+Was ist die Abkürzung AD im Kontext von Routingprotokollen ausgeschrieben?,Administrative Distanz
+Was ist die Abkürzung SPF ausgeschrieben?,Shortest Path First
+Was ist die Abkürzung SMB ausgeschrieben?,Server Message Block
+Was ist die Abkürzung LDAP ausgeschrieben?,Lightweight Directory Access Protocol
+Was ist die Abkürzung SNMP ausgeschrieben?,Simple Network Management Protocol
+Was ist die Abkürzung NTP ausgeschrieben?,Network Time Protocol
+Was ist die Abkürzung SSO ausgeschrieben?,Single Sign-On
+In welchem OSI-Layer operiert das Protokoll Kerberos?,Layer 7 (Anwendungsschicht).
+Welchen UDP-Port nutzt Kerberos standardmäßig?,Port 88.
+Warum gilt RIP als ungeeignet für das Routing über das Internet?,Es skaliert nicht bei zunehmender Routeranzahl und ist auf 15 Hops begrenzt.
+Wie oft versendet RIP standardmäßig die gesamte Routing-Tabelle an alle aktiven Schnittstellen?,Alle 30 Sekunden.
+Welche Administrative Distanz (AD) hat das Protokoll OSPF laut Quellmaterial?,110.
+Welches Peering-Verfahren nutzt BGP zum Austausch von Routing-Informationen?,Austausch via Peering zur Ermittlung effizienter Pfade.
+Welches Protokoll dient heute primär zur Diagnose von Netzwerkverbindungen und zum Testen offener Ports?,Telnet.
+Welche Präzision erreicht NTP bei der Zeitsynchronisation üblicherweise?,Präzision im Millisekundenbereich.
+Für welche drei Bereiche ist eine genaue Zeitsynchronisation via NTP essenziell?,"Log-Dateien, Sicherheits-Zertifikate und verteilte Datenbanken."
+Welchen Standard nutzt das VLAN-Tagging auf Trunk-Verbindungen?,IEEE 802.1Q.
+Was versteht man unter 'SSO' im Kontext von Kerberos?,Single Sign-On ermöglicht den Zugriff auf mehrere Dienste nach einmaliger Anmeldung.
+Warum verursacht RIP einen hohen Bandbreitenverbrauch?,Weil jede Routing-Aktualisierung alle 30 Sekunden die gesamte Tabelle überträgt.
+"Welches Protokoll wird als 'Wegweiser' bezeichnet, der Datenpakete durch das Internet leitet?",Border Gateway Protocol (BGP).
+In welchem OSI-Layer operiert das Routingprotokoll EIGRP?,Layer 3 (Vermittlungsschicht).
+Über welche Adressierungsart findet die Kommunikation bei EIGRP statt?,Multicast-Adressen.
+Welches Protokoll wurde durch SSH aufgrund seiner unsicheren Klartextübertragung weitgehend ersetzt?,Telnet.
+Welche zwei Protokollschichten überwacht eine Multilayer Inspection Firewall?,Sie überwacht Transaktionen über mehrere Protokollschichten des OSI-Modells.
+Was ist der Vorteil von Cloud-basierten Firewalls für verteilte Unternehmen?,Sie können vollständig von einem Managed Security Service Provider (MSSP) verwaltet werden.
+Wie viele Bits umfasst das Feld 'Version' im IPv4-Header?,4 Bit.
+Wie ist das Feld 'Type of Service' (ToS) im IPv4-Header unterteilt?,Priorität (3 Bit) und Übertragungseigenschaften (5 Bit).
+Was ist die maximale Länge des IPv4-Headers in Byte inklusive Optionen?,60 Byte.
+Welche typischen Werte werden für die 'Time to Live' (TTL) in IPv4 verwendet?,Werte zwischen 30 und 64.
+In welcher Einheit wird die Header-Länge im IHL-Feld des IPv4-Headers angegeben?,Als Vielfaches von 32 Bit.
+Was ist die Aufgabe des 'Frame Check Sequence' (FCS) Feldes im Ethernet-Frame?,Es dient der Fehlererkennung mittels einer 32-Bit-CRC-Prüfsumme.
+Wie groß ist die zeitliche Pause des 'Inter Frame Gaps' laut Ethernet-Standard?,"9,6 \, \mu s."
+Wie viele Bits umfasst ein IPv6-Erweiterungsheader üblicherweise?,Jeweils 64 Bit.
+Welche Anwendung profitiert bei MPLS besonders von der 'Quality of Service' (QoS)?,Leitkritische Anwendungen wie VoIP.
+"Was passiert beim Bubble-Sort-Algorithmus, wenn ein Wert höher ist als sein Nachfolger?","Die Werte werden getauscht, sodass der höchste Wert nach hinten rückt."
+Was ist der entscheidende Schritt in der 'Arrange'-Phase des AAA-Schemas bei Unit Tests?,Das Setzen des Ausgangszustands und der Eingaben.
+Wie viele Assertions sollte ein guter Unit-Test idealerweise enthalten?,Nur eine einzige Assertion (oder logisch zusammenhängende Assertions).
+Was ist das Ziel eines Integrationstests im Vergleich zu einem Unit-Test?,Prüfung des Zusammenspiels und der Schnittstellen zwischen Komponenten statt isolierter Funktionen.
+Was wird bei einem horizontalen E2E-Test primär überprüft?,Ob der Benutzer den Gesamtprozess über mehrere Schichten hinweg erfolgreich durchlaufen kann.
+Wie oft sollte eine Zertifizierung nach ISO 20.000 wiederholt werden?,Alle 3 Jahre.
+"Welches SQL-Schlüsselwort wird verwendet, um nur eindeutige Werte ohne Duplikate auszugeben?",DISTINCT.
+"Wie lautet die SQL-Syntax, um die Ergebnismenge auf die ersten 3 Zeilen zu begrenzen?",SELECT TOP 3.
+Welcher SQL-Operator dient als Kurzform für mehrere OR-Bedingungen?,Der IN-Operator.
+Welche Wildcard in SQL steht für genau ein beliebiges Zeichen?,Der Unterstrich (_).
+In welcher Reihenfolge werden Ergebnisse bei 'ORDER BY' standardmäßig sortiert?,Aufsteigend.
+"Welche Aggregatfunktion wird in der HAVING-Klausel oft verwendet, um Gruppen zu filtern?",COUNT().
+"Was liefert der SQL-Operator ANY zurück, wenn mindestens ein Unterabfragewert die Bedingung erfüllt?",True (Boolescher Wert).
+"Welches Gatter liefert nur dann eine 1, wenn alle Eingänge 1 sind?",UND-Gatter (AND).
+Was ist das Ergebnis von 1 XOR 1 in der Digitaltechnik?,0.
+Wie viele Wertekombinationen hat eine Wahrheitstabelle mit 3 Eingangsvariablen?,2^3 = 8 Kombinationen.
+Wie viele Wertekombinationen hat eine Wahrheitstabelle mit 4 Eingangsvariablen?,2^4 = 16 Kombinationen.
+Was ist ein 'One Armed Router'?,"Ein Router mit nur einem aktiven physischen Interface, das über VLANs eingebunden ist."
+Welche Gefahr besteht beim 'Router on a Stick' Verfahren?,Das einzige Interface kann zum Flaschenhals (Bottleneck) werden.
+Welche drei Zonen verbindet eine 'Three-legged Firewall' typischerweise?,"WAN (Internet), DMZ (öffentliche Server) und LAN (internes Netz)."
+Was ist das Merkmal eines Inline-Geräts im Netzwerk?,"Es sitzt direkt im Datenpfad, sodass der gesamte Verkehr hindurchfließen muss."
+Wie berechnet man in der PKR die Prozesskosten (lmi)?,Personenjahre \cdot Jahresarbeitslohn.
+Wie lautet die Formel zur Berechnung des lmn-Umlagesatzes in der PKR?,100 \cdot (lmn\text{-Kosten} / \text{Summe } lmi\text{-Kosten}).
+Wie werden in der PKR die 'Kosten pro Durchführung' ermittelt?,Gesamtprozesskosten / Kostentreiber.

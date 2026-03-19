@@ -1,0 +1,15 @@
+Was ist das zentrale Merkmal der direkten Rekursion?,Eine Funktion ruft sich innerhalb ihres eigenen Rumpfes unmittelbar selbst auf.
+Was ist das entscheidende Merkmal der indirekten (wechselseitigen) Rekursion?,Eine Funktion A ruft eine Funktion B auf, welche wiederum Funktion A (oder eine weitere Kette) aufruft.
+Was ist die notwendige Voraussetzung, damit eine Rekursion terminiert?,Es muss zwingend eine Abbruchbedingung (Basisfall) geben, die den rekursiven Aufruf beendet.
+Was passiert bei einer Rekursion ohne Basisfall?,Das Programm stürzt aufgrund eines Stack-Überlaufs (StackOverflowError) ab.
+Was kennzeichnet eine Rekursion 1. Grades?,Die Funktion ruft sich innerhalb eines Durchlaufs genau einmal selbst auf (lineares Wachstum).
+Was kennzeichnet eine Rekursion 2. Grades?,Die Funktion ruft sich innerhalb eines Durchlaufs zweimal selbst auf (typisch für Binärbäume).
+Warum führt eine Rekursion 2. Grades oft zu exponentiellem Rechenaufwand?,Da die Anzahl der Funktionsaufrufe mit jedem Schritt verdoppelt wird (O(2^n)).
+Wie unterscheidet sich die "Tiefe" vom "Grad" der Rekursion?,Der Grad bestimmt die Anzahl der Verzweigungen pro Schritt, die Tiefe bestimmt die Anzahl der Verschachtelungen bis zum Basisfall.
+Was ist der Vorteil von Rekursion gegenüber Iteration?,Komplexe, baumartige Datenstrukturen lassen sich oft eleganter und kürzer programmieren.
+Was ist ein Nachteil der Rekursion bei großen Datenmengen?,Der hohe Speicherverbrauch durch die ständige Anlage neuer Stacks-Frames im Arbeitsspeicher.
+Welchen Vorteil bietet die indirekte Rekursion in der Softwarearchitektur?,Sie ermöglicht die Trennung von Zustandslogiken in verschiedene Funktionen (modulare Programmierung).
+Was beschreibt ein 'Stack-Frame' bei einem rekursiven Aufruf?,Einen Bereich im Speicher, der die lokalen Variablen und Rücksprungadressen für einen Funktionsaufruf speichert.
+Was versteht man unter 'Tail Recursion' (Endrekursion)?,Eine spezielle Form der Rekursion, bei der der rekursive Aufruf die letzte Aktion der Funktion ist, was Optimierungen durch den Compiler erlaubt.
+Warum ist ein 'Zyklus' in der Rekursion gefährlich?,Ohne Abbruchbedingung führt ein zyklischer Aufruf A -> B -> A sofort in eine Endlosschleife.
+Für welche Art von Problemen ist eine Rekursion 3. Grades (ternär) besonders geeignet?,Für Algorithmen, die einen Datensatz in drei Teilprobleme aufspalten (z. B. bestimmte fraktale Berechnungen).

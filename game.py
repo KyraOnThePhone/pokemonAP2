@@ -108,6 +108,11 @@ def fit_img(path, max_w, max_h):
 ITEM_IMAGES = {
     "balls":                "assets/pokeball.png",
     "master_balls":         "assets/meisterball.png",
+    "super_balls":          "assets/superball.png",
+    "hyper_balls":          "assets/hyperball.png",
+    "quick_balls":          "assets/quickball.png",
+    "heavy_balls":          "assets/schwerball.png",
+    "heal_balls":           "assets/heilball.png",
     "potions":              "assets/trank.png",
     "super_potions":        "assets/supertrank.png",
     "hyper_potions":        "assets/hypertrank.png",
@@ -147,6 +152,65 @@ def load_flashcards(path):
         print(f"Flashcard load error: {e}")
     return cards
 
+def scan_csv_files():
+    """Scan the game root directory (BASE) for CSV files. Returns list of (filename, display_name)."""
+    results = []
+    try:
+        for fname in sorted(os.listdir(BASE)):
+            if fname.lower().endswith(".csv") and os.path.isfile(os.path.join(BASE, fname)):
+                display = "AP2 Lernkarten" if fname == "flashcards.csv" else os.path.splitext(fname)[0]
+                results.append((fname, display))
+    except Exception as e:
+        print(f"CSV scan error: {e}")
+    # Always ensure flashcards.csv is listed first
+    results.sort(key=lambda x: (0 if x[0]=="flashcards.csv" else 1, x[0]))
+    return results
+
+def get_active_csv_files(save):
+    """Returns list of (filename, display_name) that are currently enabled."""
+    all_csvs = scan_csv_files()
+    disabled = set(save.get("disabled_csvs", []))
+    # flashcards.csv is ON by default; others are OFF by default unless explicitly enabled
+    enabled_extra = set(save.get("enabled_csvs", []))
+    active = []
+    for fname, display in all_csvs:
+        if fname == "flashcards.csv":
+            active.append((fname, display))  # always on by default (unless disabled)
+        else:
+            if fname in enabled_extra:
+                active.append((fname, display))
+    # Remove any explicitly disabled
+    active = [(f,d) for f,d in active if f not in disabled]
+    return active
+
+def load_active_flashcards(save):
+    """Load and merge all currently active CSV files into one card list."""
+    active = get_active_csv_files(save)
+    # Load persisted SRS state from save
+    srs_store = save.get("srs_state", {})
+    all_cards = []
+    for fname, display in active:
+        path = os.path.join(BASE, fname)
+        cards = load_flashcards(path)
+        for c in cards:
+            c.setdefault("_src", fname)
+            # Restore SRS state using (fname, question) as key
+            srs_key = fname + "||" + c["q"][:80]
+            if srs_key in srs_store:
+                saved = srs_store[srs_key]
+                c.update({k: saved[k] for k in ("known","ease","interval","due","reps","streak") if k in saved})
+        all_cards.extend(cards)
+    return all_cards
+
+def persist_srs_state(save, cards):
+    """Write SRS state back to save dict so it survives CSV reloads."""
+    srs_store = save.setdefault("srs_state", {})
+    for c in cards:
+        fname = c.get("_src","flashcards.csv")
+        srs_key = fname + "||" + c["q"][:80]
+        srs_store[srs_key] = {k: c[k] for k in ("known","ease","interval","due","reps","streak") if k in c}
+    save["srs_state"] = srs_store
+
 # ── Save / Load ────────────────────────────────────────────────────────────────
 SAVE_FILE = os.path.join(BASE, "savegame.json")
 
@@ -154,7 +218,7 @@ def default_save():
     return {
         "trainer": 0, "name": "Spieler",
         "team": [], "pc_box": [],
-        "balls": 10, "master_balls": 0, "coins": 0,
+        "balls": 10, "master_balls": 0, "super_balls": 0, "hyper_balls": 0, "quick_balls": 3, "heavy_balls": 0, "heal_balls": 0, "coins": 0,
         "potions": 3, "super_potions": 0, "hyper_potions": 0,
         "sonderbonbons": 0, "beleber": 0, "top_beleber": 0,
         "raid_passes": 0, "premium_raid_passes": 0, "redbull": 0,
@@ -635,6 +699,7 @@ class FlashcardGame:
         self.feedback = ""
         self.feedback_color = C_WHITE
         self.done = False
+        self._last_correct = False
         self.pick_card()
         self.cursor_blink = 0
 
@@ -674,16 +739,46 @@ class FlashcardGame:
                     self.feedback = "Übersprungen!"
                     self.feedback_color = C_GRAY
                     self.state = "result"
+                    self._last_correct = False
                 elif len(self.input_text) < 200:
                     self.input_text += event.unicode
         elif self.state == "result":
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
-                self.answered += 1
-                if self.answered >= self.n_required:
-                    self.done = True
-                    self.reward_cb(self.correct, self.n_required)
-                else:
-                    self.pick_card()
+            if event.type == pygame.KEYDOWN:
+                # If correct, allow self-rating 1=Leicht 2=Mittel 3=Schwer before advancing
+                if self._last_correct and event.key in (pygame.K_1, pygame.K_2, pygame.K_3,
+                                                         pygame.K_KP1, pygame.K_KP2, pygame.K_KP3):
+                    quality_map = {pygame.K_1: 5, pygame.K_KP1: 5,   # Leicht → q=5
+                                   pygame.K_2: 4, pygame.K_KP2: 4,   # Mittel → q=4
+                                   pygame.K_3: 3, pygame.K_KP3: 3}   # Schwer → q=3
+                    self._apply_sm2(self.card, quality_map[event.key])
+                    self._advance()
+                elif event.key == pygame.K_RETURN:
+                    if self._last_correct:
+                        self._apply_sm2(self.card, 4)  # default Mittel
+                    self._advance()
+
+    def _advance(self):
+        self.answered += 1
+        if self.answered >= self.n_required:
+            self.done = True
+            self.reward_cb(self.correct, self.n_required)
+        else:
+            self.pick_card()
+
+    def _apply_sm2(self, c, quality):
+        """Apply SM-2 algorithm with given quality (3=hard,4=ok,5=easy)."""
+        ease = max(1.3, c.get("ease", 2.5) + 0.1 - (5-quality)*(0.08+(5-quality)*0.02))
+        reps = c.get("reps", 0) + 1
+        if quality < 3:   # wrong
+            interval = 0
+            reps = 0
+        elif reps == 1:   interval = 1
+        elif reps == 2:   interval = 6
+        else:             interval = max(1, round(c.get("interval", 1) * ease))
+        interval = min(interval, 60)
+        due_date = (_dt.date.today() + _dt.timedelta(days=interval)).isoformat() if interval > 0 else _today_str()
+        c["ease"] = ease; c["reps"] = reps; c["interval"] = interval
+        c["due"] = due_date; c["known"] = (quality >= 3)
 
     def check_answer(self):
         if not self.card:
@@ -694,21 +789,12 @@ class FlashcardGame:
         matches = sum(1 for w in key_words if w in user)
         threshold = max(1, len(key_words) // 2)
         correct = (matches >= threshold or user in answer or answer in user)
-        today = _today_str()
         c = self.card
+        self._last_correct = correct
         if correct:
-            # SM-2 algorithm
-            q = 4  # quality: 4=correct, 5=easy
-            ease = max(1.3, c.get("ease", 2.5) + 0.1 - (5-q)*(0.08+(5-q)*0.02))
-            reps = c.get("reps", 0) + 1
-            interval = 1 if reps == 1 else (6 if reps == 2 else
-                       max(1, round(c.get("interval",1) * ease)))
-            interval = min(interval, 30)  # cap at 30 days
-            due_date = (_dt.date.today() + _dt.timedelta(days=interval)).isoformat()
-            c["ease"] = ease; c["reps"] = reps; c["interval"] = interval
-            c["due"] = due_date; c["known"] = True
+            # Don't apply SM-2 yet — wait for self-rating in result state
             c["streak"] = c.get("streak", 0) + 1
-            interval_txt = f"  (nächste Review: {interval}d)" if interval > 1 else "  (morgen wieder)"
+            interval_txt = f"  (Bewerte: 1=Leicht  2=Mittel  3=Schwer)"
             self.feedback = "✓ Richtig! " + c["a"] + interval_txt
             self.feedback_color = C_GREEN
             self.correct += 1
@@ -720,10 +806,9 @@ class FlashcardGame:
                 if s["cards_current_streak"] > s.get("cards_best_streak", 0):
                     s["cards_best_streak"] = s["cards_current_streak"]
         else:
-            # Wrong: reset interval, lower ease
-            c["ease"] = max(1.3, c.get("ease", 2.5) - 0.3)
-            c["interval"] = 0; c["due"] = today; c["reps"] = 0
-            c["streak"] = 0; c["known"] = False
+            # Wrong: apply immediately with quality=2 (fail)
+            self._apply_sm2(c, 2)
+            c["streak"] = 0
             self.feedback = "✗ Falsch. Antwort: " + c["a"]
             self.feedback_color = C_RED
             if FlashcardGame._save_ref is not None:
@@ -734,40 +819,85 @@ class FlashcardGame:
         overlay = pygame.Surface((SW, SH), pygame.SRCALPHA)
         overlay.fill((10, 12, 20, 230))
         surf.blit(overlay, (0, 0))
-        pw, ph = 780, 440
+        pw, ph = 820, 480
         px, py = SW//2 - pw//2, SH//2 - ph//2
-        draw_rounded_rect(surf, C_PANEL, (px, py, pw, ph), 18, 2, C_BLUE)
+        panel_border = C_GREEN if (self.state=="result" and self.feedback_color==C_GREEN) \
+                  else C_RED   if (self.state=="result" and self.feedback_color==C_RED) \
+                  else C_BLUE
+        draw_rounded_rect(surf, C_PANEL, (px, py, pw, ph), 18, 2, panel_border)
+        # Progress bar across top
+        prog_pct = self.answered / max(1, self.n_required)
+        pygame.draw.rect(surf, (40,50,80), (px, py, pw, 8), border_radius=18)
+        if prog_pct > 0:
+            pygame.draw.rect(surf, C_GREEN, (px, py, int(pw*prog_pct), 8), border_radius=18)
         hdr = "📚 Lernkarte – Frage" if self.state == "question" else \
-              "📝 Deine Antwort" if self.state == "answer" else "✅ Ergebnis"
-        draw_text(surf, hdr, F_BIG, C_YELLOW, SW//2, py+18, center=True, shadow=True)
-        prog = f"Frage {self.answered+1} / {self.n_required}   Richtig: {self.correct}"
-        draw_text(surf, prog, F_SMALL, C_GRAY, SW//2, py+60, center=True)
+              "📝 Deine Antwort" if self.state == "answer" else \
+              ("✅ Richtig!" if self.feedback_color == C_GREEN else ("✗ Falsch" if self.feedback_color == C_RED else "⏭ Übersprungen"))
+        draw_text(surf, hdr, F_BIG, C_YELLOW, SW//2, py+14, center=True, shadow=True)
+        draw_text(surf, f"Frage {self.answered+1}/{self.n_required}", F_SMALL, C_GRAY, px+20, py+52)
+        correct_col = C_GREEN if self.correct > max(0, self.answered-1)//2 else C_ORANGE
+        draw_text(surf, f"✓ {self.correct} richtig", F_SMALL, correct_col, px+pw-130, py+52)
         if self.card:
-            q_lines = wrap_text(self.card["q"], F_MED, pw-60)
-            qy = py + 95
+            c = self.card
+            # SRS badge
+            reps = c.get("reps",0); ease = c.get("ease",2.5); interval = c.get("interval",0)
+            due = c.get("due",""); today = _today_str()
+            if reps == 0:       srs_lbl,srs_col = "🆕 Neu",     (160,160,180)
+            elif due <= today:  srs_lbl,srs_col = "📅 Fällig",  (255,130,40)
+            elif ease < 1.8:    srs_lbl,srs_col = "😓 Schwer",  (220,80,80)
+            elif ease > 2.8:    srs_lbl,srs_col = "😊 Gut",     (80,200,120)
+            else:               srs_lbl,srs_col = f"📆 {interval}d", (120,180,220)
+            draw_rounded_rect(surf, (30,36,55), (SW//2-65, py+48, 130, 22), 8)
+            draw_text(surf, srs_lbl, F_TINY, srs_col, SW//2, py+52, center=True)
+            pygame.draw.line(surf, (50,58,85), (px+20, py+78), (px+pw-20, py+78), 1)
+            q_lines = wrap_text(c["q"], F_MED, pw-80)
+            qy = py + 90
             for line in q_lines:
                 draw_text(surf, line, F_MED, C_WHITE, SW//2, qy, center=True)
-                qy += 30
+                qy += 32
             if self.state == "question":
-                draw_text(surf, "[ ENTER ] um Antwort einzugeben", F_SMALL, C_GRAY, SW//2, py+ph-60, center=True)
+                kw = [w for w in c["a"].lower().split() if len(w)>3]
+                hint = f"Tipp: ~{len(kw)} Schlüsselwort(e)" if kw else ""
+                draw_text(surf, hint, F_TINY, (100,110,140), SW//2, qy+10, center=True)
+                draw_text(surf, "[ ENTER ] Antwort eingeben", F_SMALL, C_GRAY, SW//2, py+ph-46, center=True)
             elif self.state == "answer":
-                ify = qy + 20
-                draw_rounded_rect(surf, C_DARK, (px+30, ify, pw-60, 44), 8, 2, C_BLUE)
+                ify = max(qy+16, py+230)
+                draw_rounded_rect(surf, C_DARK, (px+30, ify, pw-60, 80), 8, 2, C_BLUE)
+                draw_text(surf, "Deine Antwort:", F_TINY, C_GRAY, px+40, ify+4)
                 self.cursor_blink = (self.cursor_blink+1) % 60
                 cursor = "|" if self.cursor_blink < 30 else " "
                 inp_lines = wrap_text(self.input_text + cursor, F_MED, pw-80)
-                iy = ify + 8
+                iy = ify + 22
                 for ln in inp_lines[:2]:
                     draw_text(surf, ln, F_MED, C_WHITE, px+40, iy)
-                    iy += 26
-                draw_text(surf, "[ ENTER ] Bestätigen  [ ESC ] Überspringen", F_TINY, C_GRAY, SW//2, py+ph-35, center=True)
+                    iy += 28
+                draw_text(surf, "[ ENTER ] Bestätigen  •  [ ESC ] Überspringen", F_TINY, C_GRAY, SW//2, py+ph-28, center=True)
             elif self.state == "result":
-                fb_lines = wrap_text(self.feedback, F_MED, pw-60)
-                fy = qy + 25
-                for line in fb_lines:
-                    draw_text(surf, line, F_MED, self.feedback_color, SW//2, fy, center=True)
-                    fy += 30
-                draw_text(surf, "[ ENTER ] Weiter", F_SMALL, C_GRAY, SW//2, py+ph-35, center=True)
+                fy = max(qy+14, py+228)
+                draw_rounded_rect(surf, (20,35,20) if self.feedback_color==C_GREEN else (35,20,20),
+                                  (px+24, fy, pw-48, 90), 10, 2,
+                                  C_GREEN if self.feedback_color==C_GREEN else C_RED)
+                fb_lines = wrap_text(self.feedback, F_SMALL, pw-70)
+                for li,line in enumerate(fb_lines[:3]):
+                    draw_text(surf, line, F_SMALL, self.feedback_color, SW//2, fy+8+li*22, center=True)
+                ivl = c.get("interval",0)
+                if self.feedback_color == C_GREEN and ivl > 0:
+                    draw_text(surf, f"⏱ Nächste Review in {ivl} Tag(en)", F_TINY, (120,200,120), SW//2, fy+78, center=True)
+                # Self-rating buttons for correct answers
+                if self._last_correct:
+                    btn_y = fy + 106
+                    draw_text(surf, "Wie schwer war das?", F_TINY, C_GRAY, SW//2, btn_y, center=True)
+                    ratings = [("1  Leicht", (80,200,100)), ("2  Mittel", (220,180,50)), ("3  Schwer", (220,80,80))]
+                    bw3 = 140; gap3 = 14
+                    total_bw = len(ratings)*bw3 + (len(ratings)-1)*gap3
+                    bx3 = SW//2 - total_bw//2
+                    for ri,(rlbl,rcol) in enumerate(ratings):
+                        draw_rounded_rect(surf, (20,26,40), (bx3,btn_y+18,bw3,32), 8, 2, rcol)
+                        draw_text(surf, f"[{rlbl}]", F_SMALL, rcol, bx3+bw3//2, btn_y+22, center=True)
+                        bx3 += bw3 + gap3
+                    draw_text(surf, "ENTER = Mittel", F_TINY, (80,90,110), SW//2, btn_y+58, center=True)
+                else:
+                    draw_text(surf, "[ ENTER ] Weiter", F_SMALL, C_GRAY, SW//2, py+ph-26, center=True)
         update_particles(surf)
 
 # ── Battle system ──────────────────────────────────────────────────────────────
@@ -1104,35 +1234,61 @@ class Battle:
 
     def _get_available_balls(self, save_data):
         balls = []
+        # Masterball: 100% catch
         if save_data.get("master_balls", 0) > 0:
-            balls.append(("Meisterball", "100% Fangchance!", "master_balls", 1.0))
+            balls.append(("Meisterball", "100% Fangchance!", "master_balls", "override", 1.0))
+        # Hyperball: 2× Fangrate
+        if save_data.get("hyper_balls", 0) > 0:
+            balls.append(("Hyperball", "2× Fangrate", "hyper_balls", "multiplier", 2.0))
+        # Superball: 1.5× Fangrate
+        if save_data.get("super_balls", 0) > 0:
+            balls.append(("Superball", "1.5× Fangrate", "super_balls", "multiplier", 1.5))
+        # Schnellball: 4× in Runde 1, sonst 1×
+        if save_data.get("quick_balls", 0) > 0:
+            rounds = self.balls_used
+            eff = "4× (Runde 1!)" if rounds == 0 else "1× (zu spät)"
+            balls.append(("Schnellball", eff, "quick_balls", "quick", 4.0 if rounds == 0 else 1.0))
+        # Schwerball: besser gegen seltene/schwere Pokémon (+20% je Seltenheitsstufe)
+        if save_data.get("heavy_balls", 0) > 0:
+            em = self.enemy_moonie
+            rarity = getattr(em, "rarity", "common") if em else "common"
+            heavy_mult = {"common": 1.0, "uncommon": 1.5, "rare": 2.2, "legendary": 3.0}.get(rarity, 1.0)
+            balls.append(("Schwerball", f"{heavy_mult:.1f}× (vs. {rarity})", "heavy_balls", "multiplier", heavy_mult))
+        # Heilball: normale Fangrate, aber heilt das gefangene Pokémon auf voll HP
+        if save_data.get("heal_balls", 0) > 0:
+            balls.append(("Heilball", "Normal + heilt auf voll HP", "heal_balls", "heal", 1.0))
+        # Pokéball: standard
         if save_data.get("balls", 0) > 0:
-            balls.append(("Pokéball", "Normaler Ball", "balls", None))
+            balls.append(("Pokéball", "Normaler Ball", "balls", "standard", 1.0))
         return balls
 
     def _throw_ball(self, ball_entry, save_data):
-        name, desc, key, catch_override = ball_entry
+        name, desc, key, ball_type, ball_val = ball_entry
         em = self.enemy_moonie
         if not em or not em.is_alive():
             return
         self.state = "player_turn"
         save_data[key] -= 1
         self.balls_used += 1
+        # Psycho Andreas steals standard Pokéballs occasionally
         if key == "balls" and random.random() < 0.08:
             self.state = "andreas_steal"
             self.andreas_anim_t = 0
             self.push_log("Psycho Andreas taucht auf!!!")
             return
-        if catch_override is not None:
-            chance = catch_override
+        # Calculate catch chance based on ball type
+        if ball_type == "override":
+            chance = ball_val   # e.g. Masterball = 1.0
         else:
             hp_factor = 0.3 + 0.7 * (1 - em.current_hp / max(1, em.max_hp))
             base = max(0.35, getattr(em, "catch_rate", 0.35))
-            chance = min(0.95, base * hp_factor * 1.6)
+            chance = min(0.95, base * hp_factor * 1.6 * ball_val)
         self.state = "catch_anim"
         self.catch_anim_t = 0
         self.catch_result = (random.random() < chance)
-        self._catch_ball_key = "master_balls" if key == "master_balls" else "balls"
+        # Store ball type so end_battle can apply heal effect
+        self._catch_ball_key  = key
+        self._catch_ball_type = ball_type
         self.push_log(f"{name} geworfen! ({save_data.get(key,0)} übrig)")
 
     def _enemy_faint(self):
@@ -1146,6 +1302,14 @@ class Battle:
             self.state = "result"; self.result = "win"
             pm = self.player_moonie
             boosted_xp, streak_pct = apply_streak_xp_bonus(self.save_data_ref, self.xp_gained)
+            # Held-Bonus: +20% XP if winning pokémon is the Held
+            held = self.save_data_ref.get("held_moonie","") if self.save_data_ref else ""
+            if held and self.player_team and self.player_team[self.player_idx].name == held:
+                held_bonus = int(boosted_xp * 0.2)
+                boosted_xp += held_bonus
+                if held_bonus > 0 and not hasattr(self,'_held_notified_turn'):
+                    self._held_notified_turn = True
+                    self._log(f"⭐ Held-Bonus: +{held_bonus} XP!")
             if streak_pct > 0: notify(f"🔥 Streak-Bonus: +{streak_pct}% XP!", C_ORANGE, 120)
             self.xp_gained = boosted_xp
             leveled, evos = pm.gain_xp(self.xp_gained)
@@ -1373,7 +1537,7 @@ class Battle:
         hud_items = [
             ("↑↓←→ wählen", C_GRAY),
             ("ENTER/Z Aktion", C_GRAY),
-            (f"🎯 {self.save_data_ref.get('balls',0) if hasattr(self,'save_data_ref') else '?'} Bälle", C_GREEN),
+            (f"🎯 {sum(self.save_data_ref.get(k,0) for k in ('balls','super_balls','hyper_balls','quick_balls','heavy_balls','heal_balls','master_balls')) if hasattr(self,'save_data_ref') else '?'} Bälle", C_GREEN),
             (f"💊 {self.save_data_ref.get('potions',0) if hasattr(self,'save_data_ref') else '?'} / {self.save_data_ref.get('super_potions',0) if hasattr(self,'save_data_ref') else '?'} Tränke", (180,230,180)),
             (f"💰 {self.save_data_ref.get('coins',0) if hasattr(self,'save_data_ref') else '?'}", C_YELLOW),
         ]
@@ -1567,7 +1731,7 @@ class Battle:
             if not balls:
                 draw_text(surf, "Keine Bälle!", F_SMALL, C_GRAY, px2+pw//2, py2+80, center=True)
             else:
-                for i, (name, desc, key, _) in enumerate(balls):
+                for i, (name, desc, key, ball_type, ball_val) in enumerate(balls):
                     sel = (i == self.ball_pick_sel)
                     ibg = (50,80,130) if sel else (30,36,55)
                     ibc = (255,215,0) if (sel and key=="master_balls") else (C_YELLOW if sel else (50,55,75))
@@ -1943,13 +2107,37 @@ class PokedexScreen:
                 if fs_val > 0:
                     pygame.draw.rect(surf, fs_col, (rx, py+194, int(360*fs_val/255), 8), border_radius=4)
 
-        # ── Pokédex entry ──
+        # ── Evolution chain ──
         pygame.draw.line(surf, (55,60,85), (rx, py+210), (px+pw-16, py+210), 1)
+        chain = get_evolution_chain(m.name)
+        if len(chain) > 1:
+            draw_text(surf, "🔗 Entwicklungskette:", F_TINY, C_GRAY, rx, py+215)
+            cx2 = rx + 130
+            for ci, cname in enumerate(chain):
+                is_this = (cname == m.name)
+                cm = ALL_MOONIES_DICT.get(cname)
+                cimg_col = C_YELLOW if is_this else ((80,200,120) if cname in self.caught_set else (80,80,100))
+                draw_rounded_rect(surf, (30,36,55) if not is_this else (50,55,30), (cx2-2, py+210, 52, 52), 6, 2 if is_this else 1, cimg_col)
+                if cm:
+                    try:
+                        cimg = load_img(cm.image, (40,40))
+                        if cname not in self.caught_set and cname not in self.seen_set:
+                            sil2 = cimg.copy(); d2=pygame.Surface(sil2.get_size(),pygame.SRCALPHA); d2.fill((0,0,0,255)); sil2.blit(d2,(0,0),special_flags=pygame.BLEND_RGB_MULT); cimg=sil2
+                        surf.blit(cimg, (cx2+4, py+212))
+                    except: pass
+                draw_text(surf, cname if cname in self.seen_set else "???", F_TINY, cimg_col, cx2+24, py+263, center=True)
+                cx2 += 62
+                if ci < len(chain)-1:
+                    draw_text(surf, "→", F_SMALL, C_GRAY, cx2-4, py+230)
+                    cx2 += 20
+
+        # ── Pokédex entry ──
+        pygame.draw.line(surf, (55,60,85), (rx, py+278), (px+pw-16, py+278), 1)
         desc = get_pokedex_entry(m.name) if is_caught else "Dieses Pokémon wurde gesehen, aber noch nicht gefangen. Details unbekannt."
         desc_lines = wrap_text(desc, F_SMALL, pw - 250)
-        draw_text(surf, "📖 Pokédex-Eintrag", F_SMALL, C_YELLOW, rx, py+216)
-        for li, line in enumerate(desc_lines[:3]):
-            draw_text(surf, line, F_SMALL, (195,205,220), rx, py+238+li*24)
+        draw_text(surf, "📖 Pokédex-Eintrag", F_SMALL, C_YELLOW, rx, py+284)
+        for li, line in enumerate(desc_lines[:2]):
+            draw_text(surf, line, F_SMALL, (195,205,220), rx, py+302+li*22)
 
         # ── Type matchup chart ──
         pygame.draw.line(surf, (55,60,85), (px+16, py+310), (px+pw-16, py+310), 1)
@@ -2184,6 +2372,17 @@ class TeamScreen:
                 self.sel = min(len(self.team)-1, self.sel + 1)
             elif event.key in (pygame.K_ESCAPE, pygame.K_x, pygame.K_t):
                 return "close"
+            elif event.key == pygame.K_h:
+                # Set/unset Held-Pokémon
+                if 0 <= self.sel < len(self.team):
+                    chosen = self.team[self.sel].name
+                    current_held = self.save.get("held_moonie","")
+                    if current_held == chosen:
+                        self.save["held_moonie"] = ""
+                        notify(f"{chosen} ist kein Held mehr.", C_GRAY, 140)
+                    else:
+                        self.save["held_moonie"] = chosen
+                        notify(f"⭐ {chosen} ist jetzt dein Held! +20% XP", C_YELLOW, 180)
         return None
 
     def draw(self, surf):
@@ -2191,19 +2390,22 @@ class TeamScreen:
         surf.fill((12, 16, 28))
         draw_rounded_rect(surf, C_PANEL, (0, 0, SW, 44), 0)
         draw_text(surf, "Dein Team", F_BIG, C_YELLOW, SW//2, 6, center=True, shadow=True)
-        draw_text(surf, "[ T / ESC ] zurück   ↑↓ navigieren", F_TINY, C_GRAY, SW//2, 32, center=True)
+        draw_text(surf, "[ T / ESC ] zurück   ↑↓ navigieren   [ H ] Held markieren", F_TINY, C_GRAY, SW//2, 32, center=True)
         if not self.team:
             draw_text(surf, "Kein Team!", F_MED, C_GRAY, SW//2, SH//2, center=True)
             return
+        held_name = self.save.get("held_moonie","")
         for i, m in enumerate(self.team):
             y = 54 + i * 90
             sel = (i == self.sel)
-            bg = (40,60,100) if sel else C_PANEL
-            border = C_YELLOW if sel else (60,65,80)
+            is_held = (m.name == held_name)
+            bg = (40,60,100) if sel else ((40,50,20) if is_held else C_PANEL)
+            border = C_YELLOW if sel else (C_YELLOW if is_held else (60,65,80))
             draw_rounded_rect(surf, bg, (12, y, 280, 82), 10, 2, border)
             img = load_img(m.image, (56, 56))
             surf.blit(img, (18, y + 13))
-            draw_text(surf, m.name, F_MED, C_WHITE, 82, y + 10, shadow=True)
+            held_tag = " ⭐" if is_held else ""
+            draw_text(surf, m.name + held_tag, F_MED, C_YELLOW if is_held else C_WHITE, 82, y + 10, shadow=True)
             draw_text(surf, f"Lv {m.level}", F_TINY, C_GRAY, 82, y + 33)
             draw_hp_bar(surf, 82, y + 52, 190, 10, m.current_hp, m.max_hp)
             tx = 82
@@ -2253,6 +2455,22 @@ class TeamScreen:
                 if m.level >= m.evolutionLevel:
                     cy += 22
                     draw_text(surf, "Bereit zur Entwicklung!", F_SMALL, C_GREEN, px + pw//2, cy, center=True)
+            # Freundschafts-Entwicklung hint
+            fs_evos = FRIENDSHIP_EVOLUTIONS.get(m.name, [])
+            for (fevo_name, fevo_min, fevo_phase) in fs_evos:
+                cy += 10
+                fs_val = get_friendship(self.save, m.name)
+                pct = min(100, int(fs_val / fevo_min * 100))
+                hint_col = C_GREEN if fs_val >= fevo_min else C_ORANGE
+                phase_hint = f" (nachts)" if fevo_phase else ""
+                draw_text(surf, f"💖 {fevo_name}{phase_hint}: {pct}%", F_TINY, hint_col, px+16, cy)
+                cy += 14
+                pygame.draw.rect(surf, (40,40,60), (px+16, cy, pw-32, 8), border_radius=4)
+                pygame.draw.rect(surf, hint_col, (px+16, cy, int((pw-32)*min(1.0,fs_val/fevo_min)), 8), border_radius=4)
+                cy += 12
+                if fs_val >= fevo_min:
+                    draw_text(surf, "✨ Freundschaftsentwicklung möglich!", F_TINY, C_GREEN, px+pw//2, cy, center=True)
+                    cy += 14
         draw_notifications(surf)
 
 # ── Item bag screen ────────────────────────────────────────────────────────────
@@ -2407,6 +2625,88 @@ class ItemBagScreen:
 
 
 # ── Evolution screen ───────────────────────────────────────────────────────────
+class NewDexEntryScreen:
+    """Brief celebratory screen when a NEW pokémon is caught for the first time."""
+    def __init__(self, caught_name, dex_caught, dex_total, save):
+        self.caught_name = caught_name
+        self.dex_caught  = dex_caught
+        self.dex_total   = dex_total
+        self.save        = save
+        self.anim_t      = 0
+        self.done        = False
+
+    def update(self):
+        self.anim_t += 1
+        if self.anim_t > 280:   # auto-advance after ~4.7s
+            self.done = True
+
+    def handle_event(self, event):
+        if event.type == pygame.KEYDOWN:
+            self.done = True
+        return "done" if self.done else None
+
+    def draw(self, surf):
+        t = self.anim_t
+        # Dark overlay
+        surf.fill((5, 8, 18))
+        # Animated star burst
+        for i in range(24):
+            angle = (i / 24) * math.pi * 2 + t * 0.02
+            dist  = 130 + 20 * math.sin(t * 0.05 + i)
+            sx    = int(SW//2 + math.cos(angle) * dist)
+            sy    = int(SH//2 - 60 + math.sin(angle) * dist * 0.6)
+            alpha = int(120 + 80 * math.sin(t * 0.08 + i * 0.5))
+            s2 = pygame.Surface((6,6), pygame.SRCALPHA)
+            pygame.draw.circle(s2, (255, 215, 0, alpha), (3,3), 3)
+            surf.blit(s2, (sx-3, sy-3))
+
+        # Pokédex icon + flash
+        flash_alpha = max(0, int(180 * (1 - t / 60))) if t < 60 else 0
+        if flash_alpha > 0:
+            fl = pygame.Surface((SW, SH), pygame.SRCALPHA)
+            fl.fill((255,255,255, flash_alpha))
+            surf.blit(fl, (0,0))
+
+        # Big title
+        draw_text(surf, "📖 NEUER POKÉDEX-EINTRAG!", F_BIG, C_YELLOW, SW//2, 80, center=True, shadow=True)
+
+        # Pokémon image
+        m = ALL_MOONIES_DICT.get(self.caught_name)
+        if m:
+            bob = int(math.sin(t * 0.07) * 10)
+            img = load_img(m.image, (200, 200))
+            surf.blit(img, (SW//2 - 100, 140 + bob))
+            # Glow ring
+            glow = pygame.Surface((240, 240), pygame.SRCALPHA)
+            pulse = abs(math.sin(t * 0.05))
+            pygame.draw.circle(glow, (255,215,50, int(60 + 60*pulse)), (120, 120), 120)
+            surf.blit(glow, (SW//2 - 120, 130))
+
+            # Name
+            draw_text(surf, self.caught_name, F_HUGE, C_YELLOW, SW//2, 370, center=True, shadow=True)
+            # Rarity
+            r_col = m.get_rarity_color()
+            draw_text(surf, m.rarity.capitalize(), F_MED, r_col, SW//2, 415, center=True)
+            # Type badges
+            tw = len(m.types) * 74
+            tx = SW//2 - tw//2
+            for typ in m.types:
+                draw_type_badge(surf, typ, tx, 445)
+                tx += 74
+
+        # Progress counter
+        pct = self.dex_caught / max(1, self.dex_total)
+        bar_w = 360
+        pygame.draw.rect(surf, (30,36,55), (SW//2 - bar_w//2, 500, bar_w, 14), border_radius=7)
+        pygame.draw.rect(surf, (255,215,0), (SW//2 - bar_w//2, 500, int(bar_w*pct), 14), border_radius=7)
+        draw_text(surf, f"Pokédex: {self.dex_caught} / {self.dex_total} gefangen",
+                  F_SMALL, C_GRAY, SW//2, 522, center=True)
+
+        draw_text(surf, "[ beliebige Taste ] weiter", F_TINY, C_GRAY, SW//2, SH-28, center=True)
+        add_particles(SW//2, SH//2, (255,215,0), n=2, size=4)
+        update_particles(surf)
+
+
 class EvolutionScreen:
     def __init__(self, old_name, new_name, team):
         self.old_name = old_name
@@ -2946,6 +3246,47 @@ MOONIE_SIZE_WEIGHT = {
 def get_moonie_size_weight(name):
     return MOONIE_SIZE_WEIGHT.get(name, ("?m", "?kg"))
 
+def get_evolution_chain(name):
+    """Returns the full evolution chain containing 'name' as a list of names."""
+    # Build forward chains: start from base forms
+    visited = set()
+    chains = []
+
+    def build_chain(start):
+        chain = []
+        current = start
+        while current and current not in visited:
+            visited.add(current)
+            chain.append(current)
+            m = ALL_MOONIES_DICT.get(current)
+            if not m: break
+            nxt = m.nextEvolution
+            if not nxt or not isinstance(nxt, str): break
+            # handle branching (Evoli) — just follow first branch for chain display
+            if isinstance(nxt, list): nxt = nxt[0]
+            current = nxt
+        return chain
+
+    # Find the base form of 'name'
+    def find_base(n):
+        for candidate, mo in ALL_MOONIES_DICT.items():
+            nxt = mo.nextEvolution
+            if isinstance(nxt, str) and nxt == n: return candidate
+            if isinstance(nxt, list) and n in nxt: return candidate
+        return None
+
+    # Walk back to base
+    base = name
+    seen_back = set()
+    while True:
+        prev = find_base(base)
+        if not prev or prev in seen_back: break
+        seen_back.add(prev)
+        base = prev
+
+    chain = build_chain(base)
+    return chain if name in chain else [name]
+
 POKEDEX_ENTRIES = {
     "Bisasam":    "Ein seltsames Samenkorn wurde bei seiner Geburt auf seinen Rücken gepflanzt. Es kann einige Zeit dauern, bis es keimt.",
     "Bisaknosp":  "Wenn die Blütenknospe auf seinem Rücken zu erblühen beginnt, wird sein Körpergeruch schärfer und stärker.",
@@ -3056,6 +3397,29 @@ def friendship_dmg_bonus(save, name):
     """Return damage multiplier based on friendship (1.0 - 1.25)."""
     val = get_friendship(save, name)
     return 1.0 + (val / 255) * 0.25
+
+# Pokémon that evolve via friendship (name → (evo_name, min_friendship, optional_phase))
+FRIENDSHIP_EVOLUTIONS = {
+    "Evoli":      [("Feelinara", 220, None), ("Nachtara", 160, "night")],
+    "Pichu":      [("Pikachu",   160, None)],
+    "Mauzi":      [("Snobilikat",180, None)],
+    "Pummeluff":  [("Knuddeluff",160, None)],
+}
+
+def check_friendship_evolution(save, team):
+    """Check team for friendship evolutions. Returns list of (moonie, evo_name) tuples."""
+    results = []
+    for m in team:
+        evos = FRIENDSHIP_EVOLUTIONS.get(m.name)
+        if not evos: continue
+        fs = get_friendship(save, m.name)
+        phase, _, _ = get_time_of_day()
+        for evo_name, min_fs, req_phase in evos:
+            if fs >= min_fs:
+                if req_phase is None or phase in (req_phase, "evening"):
+                    results.append((m, evo_name))
+                    break
+    return results
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -3533,37 +3897,57 @@ class PassiveCatchBattle(Battle):
 # GILDEN-SCREEN
 # ══════════════════════════════════════════════════════════════════════════════
 class CardEditorScreen:
-    """In-game flashcard editor: add, edit, delete cards."""
+    """In-game flashcard editor: add, edit, delete cards. Supports multi-CSV."""
 
-    def __init__(self, cards, csv_path):
-        self.cards    = cards        # live list ref
-        self.csv_path = csv_path
-        self.state    = "list"       # list | edit_q | edit_a | confirm_del
+    def __init__(self, cards, csv_path, save=None):
+        self.cards    = cards        # live merged list
+        self.csv_path = csv_path     # default save path (flashcards.csv)
+        self.save     = save
+        self.state    = "list"       # list | edit_q | edit_a | confirm_del | pick_csv
         self.sel      = 0
         self.input_q  = ""
         self.input_a  = ""
-        self.edit_idx = None         # None = new card
-        self.edit_field = "q"        # "q" | "a"
+        self.edit_idx = None
         self.scroll   = 0
         self.search   = ""
         self.searching= False
         self.del_confirm = False
+        # CSV file picker for new cards
+        self._all_csvs   = scan_csv_files()   # [(fname, display)]
+        self._csv_sel    = 0
+        # Filter: "all" | fname
+        self._filter_src = "all"
+        self._filter_idx = 0
 
     def _visible(self):
-        if not self.search:
-            return list(range(len(self.cards)))
-        s = self.search.lower()
-        return [i for i,c in enumerate(self.cards)
-                if s in c["q"].lower() or s in c["a"].lower()]
+        src_filter = self._filter_src
+        cards = [c for c in self.cards
+                 if src_filter == "all" or c.get("_src","flashcards.csv") == src_filter]
+        if self.search:
+            s = self.search.lower()
+            cards = [c for c in cards if s in c["q"].lower() or s in c["a"].lower()]
+        # Return indices into self.cards
+        result = []
+        for c in cards:
+            try: result.append(self.cards.index(c))
+            except ValueError: pass
+        return result
 
     def _save_csv(self):
         try:
             import csv as _csv
+            # Determine target file from csv_path
+            target_fname = os.path.basename(self.csv_path)
+            # Only write cards that belong to THIS file
+            cards_to_save = [c for c in self.cards if c.get("_src", "flashcards.csv") == target_fname]
+            if not cards_to_save:
+                # Fallback: if no _src tags, save all (legacy behaviour)
+                cards_to_save = self.cards
             with open(self.csv_path, "w", newline="", encoding="utf-8") as f:
                 w = _csv.writer(f)
-                for c in self.cards:
+                for c in cards_to_save:
                     w.writerow([c["q"], c["a"]])
-            notify("💾 Karten gespeichert!", C_GREEN, 150)
+            notify(f"💾 {len(cards_to_save)} Karten gespeichert ({os.path.basename(self.csv_path)})!", C_GREEN, 170)
         except Exception as e:
             notify(f"⚠ Speicherfehler: {e}", C_RED, 180)
 
@@ -3571,6 +3955,18 @@ class CardEditorScreen:
         if event.type != pygame.KEYDOWN:
             return None
         k = event.key
+
+        if self.state == "pick_csv":
+            total = len(self._all_csvs)
+            if k == pygame.K_UP:   self._csv_sel = (self._csv_sel-1) % max(1,total)
+            elif k == pygame.K_DOWN: self._csv_sel = (self._csv_sel+1) % max(1,total)
+            elif k in (pygame.K_RETURN, pygame.K_z):
+                # Set target csv and open edit form
+                self.edit_idx = None; self.input_q = ""; self.input_a = ""
+                self.state = "edit_q"
+            elif k in (pygame.K_ESCAPE, pygame.K_x):
+                self.state = "list"
+            return None
 
         if self.state == "list":
             if self.searching:
@@ -3587,21 +3983,35 @@ class CardEditorScreen:
             if k == pygame.K_UP:    self.sel = max(0, self.sel - 1)
             elif k == pygame.K_DOWN: self.sel = min(max(0,total-1), self.sel + 1)
             elif k == pygame.K_RETURN or k == pygame.K_e:
-                # Edit selected
                 if 0 <= self.sel < total:
                     self.edit_idx = vis[self.sel]
                     c = self.cards[self.edit_idx]
                     self.input_q = c["q"]; self.input_a = c["a"]
-                    self.edit_field = "q"; self.state = "edit_q"
+                    self.state = "edit_q"
             elif k == pygame.K_n:
-                # New card
-                self.edit_idx = None; self.input_q = ""; self.input_a = ""
-                self.edit_field = "q"; self.state = "edit_q"
+                # New card — pick CSV first if multiple available
+                if len(self._all_csvs) > 1:
+                    self.state = "pick_csv"
+                else:
+                    self.edit_idx = None; self.input_q = ""; self.input_a = ""
+                    self.state = "edit_q"
             elif k == pygame.K_DELETE or k == pygame.K_d:
                 if 0 <= self.sel < total:
                     self.del_confirm = vis[self.sel]; self.state = "confirm_del"
             elif k == pygame.K_s:
                 self.searching = True; self.search = ""
+            elif k == pygame.K_f:
+                # Cycle filter: all → each csv → all
+                sources = ["all"] + [f for f,_ in self._all_csvs]
+                self._filter_idx = (self._filter_idx + 1) % len(sources)
+                self._filter_src = sources[self._filter_idx]
+                self.sel = 0
+            elif k == pygame.K_r:
+                # Reset SRS for selected card
+                if 0 <= self.sel < total:
+                    c = self.cards[vis[self.sel]]
+                    c.update({"ease":2.5,"interval":0,"due":"","reps":0,"streak":0,"known":False})
+                    notify("🔄 SRS-Daten zurückgesetzt!", C_ORANGE, 130)
             elif k == pygame.K_F5:
                 self._save_csv()
             elif k in (pygame.K_ESCAPE, pygame.K_x):
@@ -3609,16 +4019,14 @@ class CardEditorScreen:
                 return "close"
 
         elif self.state in ("edit_q", "edit_a"):
-            field = self.state[-1]   # "q" or "a"
+            field = self.state[-1]
             target = "input_" + field
             val = getattr(self, target)
             if k == pygame.K_BACKSPACE:
                 setattr(self, target, val[:-1])
             elif k == pygame.K_TAB or k == pygame.K_DOWN:
-                # Switch between q/a field
                 self.state = "edit_a" if self.state == "edit_q" else "edit_q"
             elif k == pygame.K_RETURN and (pygame.key.get_mods() & pygame.KMOD_CTRL):
-                # Ctrl+Enter = save
                 self._save_edit()
             elif k == pygame.K_ESCAPE:
                 self.state = "list"
@@ -3646,12 +4054,23 @@ class CardEditorScreen:
             notify("⚠ Frage und Antwort dürfen nicht leer sein!", C_RED, 150)
             return
         if self.edit_idx is None:
-            # New card with SR defaults
+            # Duplicate check
+            q_lower = q.lower()
+            for existing in self.cards:
+                if existing["q"].strip().lower() == q_lower:
+                    notify(f"⚠ Diese Frage existiert bereits!", C_RED, 180)
+                    return
+            # Determine target CSV
+            if self._all_csvs and 0 <= self._csv_sel < len(self._all_csvs):
+                target_fname = self._all_csvs[self._csv_sel][0]
+            else:
+                target_fname = os.path.basename(self.csv_path)
             self.cards.append({
                 "q": q, "a": a, "known": False, "shown": 0,
                 "ease": 2.5, "interval": 0, "due": "", "reps": 0, "streak": 0,
+                "_src": target_fname,
             })
-            notify("✅ Neue Karte hinzugefügt!", C_GREEN, 130)
+            notify(f"✅ Karte hinzugefügt → {target_fname}", C_GREEN, 140)
             self.sel = len(self.cards) - 1
         else:
             self.cards[self.edit_idx]["q"] = q
@@ -3663,12 +4082,18 @@ class CardEditorScreen:
         surf.fill((10, 12, 20))
         draw_rounded_rect(surf, C_PANEL, (0, 0, SW, 54), 0)
         draw_text(surf, "✏ Karteneditor", F_BIG, C_YELLOW, SW//2, 6, center=True, shadow=True)
-        draw_text(surf, f"{len(self.cards)} Karten  |  N=Neu  E=Bearbeiten  D=Löschen  S=Suche  F5=Speichern  ESC=Fertig",
-                  F_TINY, C_GRAY, SW//2, 38, center=True)
 
+        # Filter indicator
+        src_lbl = "Alle Quellen" if self._filter_src == "all" else \
+                  ("AP2 Lernkarten" if self._filter_src=="flashcards.csv"
+                   else os.path.splitext(self._filter_src)[0])
         vis = self._visible()
+        total_all = len(self.cards)
+        draw_text(surf,
+            f"{len(vis)}/{total_all} Karten  |  [N]=Neu  [E]=Bearbeiten  [D]=Löschen  [R]=SRS-Reset  [F]=Filter: {src_lbl}  [S]=Suche  [F5]=Speichern  [ESC]=Fertig",
+            F_TINY, C_GRAY, SW//2, 38, center=True)
+
         total = len(vis)
-        # Clamp scroll
         per_page = 12
         page = self.sel // per_page if total else 0
         start = page * per_page; end = min(start + per_page, total)
@@ -3687,38 +4112,43 @@ class CardEditorScreen:
             bg = (40, 60, 100) if sel else (22, 26, 38)
             bc = C_YELLOW if sel else (45, 50, 70)
             draw_rounded_rect(surf, bg, (16, iy, SW-32, card_h-4), 8, 2 if sel else 1, bc)
-            # SR indicator
-            ease = c.get("ease", 2.5)
-            reps  = c.get("reps", 0)
-            due   = c.get("due", "")
+            # SRS status
+            ease = c.get("ease", 2.5); reps = c.get("reps", 0); due = c.get("due", "")
             today = _today_str()
-            if reps == 0:     sr_col=(180,180,180); sr_txt="Neu"
-            elif due <= today: sr_col=(255,120,40);  sr_txt=f"Fällig"
+            if reps == 0:      sr_col=(180,180,180); sr_txt="Neu"
+            elif due<=today:   sr_col=(255,120,40);  sr_txt="Fällig"
             else:              sr_col=(80,200,120);  sr_txt=f"{c.get('interval',0)}d"
             draw_rounded_rect(surf, (30,34,50), (SW-100, iy+4, 80, 20), 6)
             draw_text(surf, sr_txt, F_TINY, sr_col, SW-60, iy+8, center=True)
-            # Ease dots (1-3 filled)
+            # Ease dots
             ease_dots = max(1, min(3, round(ease / 2.5 * 1.5)))
             for di in range(3):
                 dc = sr_col if di < ease_dots else (50,50,60)
                 pygame.draw.circle(surf, dc, (SW-110 + di*10, iy+14), 4)
+            # Source badge
+            src = c.get("_src","flashcards.csv")
+            src_short = "AP2" if src=="flashcards.csv" else os.path.splitext(src)[0][:10]
+            src_col = (200,160,60) if src=="flashcards.csv" else (80,140,200)
+            sw2 = max(30, F_TINY.size(src_short)[0]+10)
+            draw_rounded_rect(surf,(28,32,48),(SW-190, iy+6, sw2, 18),5,1,src_col)
+            draw_text(surf, src_short, F_TINY, src_col, SW-190+sw2//2, iy+9, center=True)
             # Q/A preview
-            q_short = c["q"][:70] + ("…" if len(c["q"])>70 else "")
-            a_short = c["a"][:60] + ("…" if len(c["a"])>60 else "")
-            draw_text(surf, q_short, F_SMALL, C_WHITE, 28, iy+6)
-            draw_text(surf, a_short, F_TINY, C_GRAY, 28, iy+28)
+            draw_text(surf, c["q"][:65]+("…" if len(c["q"])>65 else ""), F_SMALL, C_WHITE, 28, iy+6)
+            draw_text(surf, c["a"][:55]+("…" if len(c["a"])>55 else ""), F_TINY, C_GRAY, 28, iy+28)
 
         if total == 0:
-            draw_text(surf, "Keine Karten." if self.search else "Noch keine Karten — drücke N!", F_MED, C_GRAY, SW//2, 300, center=True)
+            draw_text(surf, "Keine Karten." if self.search or self._filter_src!="all"
+                      else "Noch keine Karten — drücke N!", F_MED, C_GRAY, SW//2, 300, center=True)
 
-        draw_text(surf, f"Seite {page+1}/{max(1,(total+per_page-1)//per_page)}  |  {total} Karte(n) gefunden",
+        draw_text(surf, f"Seite {page+1}/{max(1,(total+per_page-1)//per_page)}  |  {total} Karte(n)",
                   F_TINY, C_GRAY, SW//2, SH-20, center=True)
 
-        # Edit overlay
         if self.state in ("edit_q","edit_a"):
             self._draw_edit(surf)
         elif self.state == "confirm_del" and self.del_confirm is not False:
             self._draw_confirm(surf)
+        elif self.state == "pick_csv":
+            self._draw_csv_picker(surf)
 
         draw_notifications(surf)
 
@@ -3726,11 +4156,15 @@ class CardEditorScreen:
         overlay = pygame.Surface((SW,SH), pygame.SRCALPHA)
         overlay.fill((0,0,0,170))
         surf.blit(overlay,(0,0))
-        pw,ph = 780, 380
+        pw,ph = 780, 400
         px,py = SW//2-pw//2, SH//2-ph//2
         draw_rounded_rect(surf, C_PANEL, (px,py,pw,ph), 16, 2, C_YELLOW)
         title = "✏ Karte bearbeiten" if self.edit_idx is not None else "➕ Neue Karte"
         draw_text(surf, title, F_MED, C_YELLOW, px+pw//2, py+12, center=True, shadow=True)
+        # Show target CSV for new cards
+        if self.edit_idx is None and self._all_csvs:
+            fname, dname = self._all_csvs[self._csv_sel] if self._csv_sel < len(self._all_csvs) else (os.path.basename(self.csv_path),"AP2")
+            draw_text(surf, f"Ziel-Datei: {dname} ({fname})", F_TINY, (120,180,220), px+pw//2, py+36, center=True)
         for fi,(fstate,flbl,fval) in enumerate([("edit_q","Frage:",self.input_q),("edit_a","Antwort:",self.input_a)]):
             fy = py + 56 + fi * 130
             active = (self.state == fstate)
@@ -3743,6 +4177,27 @@ class CardEditorScreen:
                 draw_text(surf, ln, F_SMALL, C_WHITE, px+34, fy+30+li*26)
         draw_text(surf, "TAB=Feld wechseln   CTRL+ENTER=Speichern   ESC=Abbruch", F_TINY, C_GRAY, px+pw//2, py+ph-18, center=True)
 
+    def _draw_csv_picker(self, surf):
+        overlay = pygame.Surface((SW,SH), pygame.SRCALPHA)
+        overlay.fill((0,0,0,180))
+        surf.blit(overlay,(0,0))
+        pw,ph = 500, min(80 + len(self._all_csvs)*52 + 40, 460)
+        px,py = SW//2-pw//2, SH//2-ph//2
+        draw_rounded_rect(surf, C_PANEL, (px,py,pw,ph), 16, 2, C_BLUE)
+        draw_text(surf, "📁 In welche Datei?", F_MED, C_YELLOW, px+pw//2, py+12, center=True, shadow=True)
+        for i,(fname,dname) in enumerate(self._all_csvs):
+            sel = (i == self._csv_sel)
+            ry = py + 48 + i*50
+            draw_rounded_rect(surf, (40,60,100) if sel else (22,28,44),
+                              (px+16,ry,pw-32,42), 8, 2 if sel else 1,
+                              C_YELLOW if sel else (50,60,90))
+            col = C_YELLOW if sel else C_WHITE
+            draw_text(surf, dname, F_SMALL, col, px+32, ry+6)
+            draw_text(surf, fname, F_TINY, C_GRAY, px+32, ry+26)
+            cnt = len([c for c in self.cards if c.get("_src","flashcards.csv")==fname])
+            draw_text(surf, f"{cnt} Karten", F_TINY, C_GRAY, px+pw-20, ry+16, center=False)
+        draw_text(surf, "↑↓ wählen   ENTER=bestätigen   ESC=abbrechen", F_TINY, C_GRAY, px+pw//2, py+ph-18, center=True)
+
     def _draw_confirm(self, surf):
         overlay = pygame.Surface((SW,SH), pygame.SRCALPHA)
         overlay.fill((0,0,0,160))
@@ -3754,6 +4209,320 @@ class CardEditorScreen:
         draw_text(surf, "🗑 Karte löschen?", F_MED, C_RED, px+pw//2, py+16, center=True, shadow=True)
         draw_text(surf, c["q"][:60], F_SMALL, C_GRAY, px+pw//2, py+70, center=True)
         draw_text(surf, "ENTER / Y = Ja    ESC / N = Nein", F_SMALL, C_WHITE, px+pw//2, py+130, center=True)
+
+
+class LernstatistikScreen:
+    """Shows SRS statistics, card mastery chart, and streak info."""
+    def __init__(self, cards, save):
+        self.cards = cards
+        self.save  = save
+        self.anim_t = 0
+
+    def handle_event(self, event):
+        if event.type == pygame.KEYDOWN:
+            if event.key in (pygame.K_ESCAPE, pygame.K_x, pygame.K_l):
+                return "close"
+        return None
+
+    def draw(self, surf):
+        self.anim_t += 1
+        surf.fill((8, 10, 20))
+        draw_rounded_rect(surf, C_PANEL, (0, 0, SW, 56), 0)
+        draw_text(surf, "📊 Lernstatistiken", F_BIG, C_YELLOW, SW//2, 6, center=True, shadow=True)
+        draw_text(surf, "ESC = zurück", F_TINY, C_GRAY, SW//2, 40, center=True)
+
+        today = _today_str()
+        cards = self.cards
+        total = len(cards)
+        if total == 0:
+            draw_text(surf, "Keine Karten vorhanden.", F_MED, C_GRAY, SW//2, SH//2, center=True)
+            return
+
+        new_cards     = [c for c in cards if c.get("reps",0)==0]
+        due_cards     = [c for c in cards if c.get("reps",0)>0 and c.get("due","")<= today]
+        known_cards   = [c for c in cards if c.get("known",False)]
+        hard_cards    = [c for c in cards if c.get("ease",2.5) < 1.8 and c.get("reps",0)>0]
+        mastered      = [c for c in cards if c.get("interval",0) >= 14]
+
+        # ── Left column: summary stats ──
+        lx = 50
+        stats = [
+            ("📚 Gesamt",     total,          (180,180,200)),
+            ("🆕 Neu",        len(new_cards), (160,160,180)),
+            ("📅 Fällig",     len(due_cards), (255,130,40)),
+            ("✅ Bekannt",    len(known_cards),(80,200,120)),
+            ("😓 Schwierig",  len(hard_cards),(220,80,80)),
+            ("🏆 Gemeistert",len(mastered),  (255,215,0)),
+        ]
+        sy = 80
+        for lbl, val, col in stats:
+            draw_rounded_rect(surf, (18,22,38), (lx, sy, 260, 48), 10, 1, col)
+            draw_text(surf, lbl, F_SMALL, C_GRAY, lx+14, sy+6)
+            pct = f"({val/total*100:.0f}%)" if total > 0 else ""
+            draw_text(surf, f"{val} {pct}", F_MED, col, lx+14, sy+24)
+            # Mini bar
+            pygame.draw.rect(surf, (35,40,60), (lx+160, sy+18, 85, 10), border_radius=5)
+            if val > 0:
+                pygame.draw.rect(surf, col, (lx+160, sy+18, int(85*val/total), 10), border_radius=5)
+            sy += 58
+
+        # ── Middle: mastery donut-style bar ──
+        mx = 370
+        draw_text(surf, "Lernfortschritt", F_MED, C_WHITE, mx + 175, 72, center=True, shadow=True)
+        bar_y = 100
+        segments = [
+            (len(mastered),  (255,215,0),   "Gemeistert"),
+            (len(known_cards)-len(mastered), (80,200,120), "Bekannt"),
+            (len(due_cards), (255,130,40),  "Fällig"),
+            (len(new_cards), (120,120,150), "Neu"),
+            (len(hard_cards),(220,80,80),   "Schwierig"),
+        ]
+        bar_w = 350
+        bar_h = 28
+        # Stacked bar
+        bx = mx
+        for seg_count, seg_col, seg_lbl in segments:
+            if seg_count <= 0: continue
+            sw = int(bar_w * seg_count / total)
+            pygame.draw.rect(surf, seg_col, (bx, bar_y, sw, bar_h), border_radius=4)
+            bx += sw
+        # Fill remainder
+        pygame.draw.rect(surf, (35,40,60), (bx, bar_y, mx + bar_w - bx, bar_h), border_radius=4)
+        pygame.draw.rect(surf, (60,65,90), (mx, bar_y, bar_w, bar_h), 2, border_radius=4)
+        # Legend
+        leg_y = bar_y + bar_h + 8
+        leg_x = mx
+        for seg_count, seg_col, seg_lbl in segments:
+            if seg_count <= 0: continue
+            pygame.draw.rect(surf, seg_col, (leg_x, leg_y, 12, 12), border_radius=3)
+            draw_text(surf, f"{seg_lbl} ({seg_count})", F_TINY, C_GRAY, leg_x+16, leg_y)
+            leg_x += 100
+            if leg_x > mx + bar_w - 60:
+                leg_x = mx; leg_y += 18
+
+        # ── Ease distribution histogram ──
+        hist_y = 220
+        draw_text(surf, "Schwierigkeitsverteilung (Ease-Faktor)", F_SMALL, C_GRAY, mx+bar_w//2, hist_y, center=True)
+        buckets = {"Sehr schwer (1.3-1.6)":0, "Schwer (1.6-2.0)":0, "Mittel (2.0-2.5)":0,
+                   "Leicht (2.5-3.0)":0, "Sehr leicht (3.0+)":0}
+        bucket_cols = [(220,80,80),(255,130,40),(255,220,80),(120,200,100),(80,200,120)]
+        for c2 in cards:
+            e = c2.get("ease",2.5)
+            if e < 1.6:   buckets["Sehr schwer (1.3-1.6)"] += 1
+            elif e < 2.0: buckets["Schwer (1.6-2.0)"] += 1
+            elif e < 2.5: buckets["Mittel (2.0-2.5)"] += 1
+            elif e < 3.0: buckets["Leicht (2.5-3.0)"] += 1
+            else:         buckets["Sehr leicht (3.0+)"] += 1
+        max_b = max(1, max(buckets.values()))
+        bw2 = 60; gap2 = 10; hx = mx + 10
+        max_h = 120
+        hist_base_y = hist_y + max_h + 20
+        for i,(blbl,bval) in enumerate(buckets.items()):
+            bh2 = int(max_h * bval / max_b) if bval > 0 else 2
+            bcol = bucket_cols[i]
+            pygame.draw.rect(surf, bcol, (hx, hist_base_y - bh2, bw2, bh2), border_radius=4)
+            pygame.draw.rect(surf, (50,55,75), (hx, hist_base_y - bh2, bw2, bh2), 1, border_radius=4)
+            draw_text(surf, str(bval), F_TINY, C_WHITE, hx + bw2//2, hist_base_y - bh2 - 14, center=True)
+            # Short label below
+            short = blbl.split("(")[1].rstrip(")") if "(" in blbl else blbl[:6]
+            draw_text(surf, short, F_TINY, C_GRAY, hx + bw2//2, hist_base_y + 4, center=True)
+            hx += bw2 + gap2
+
+        # ── Right: streaks & session info ──
+        rx = SW - 260
+        s = self.save
+        streak = s.get("cards_current_streak",0)
+        best   = s.get("cards_best_streak",0)
+        total_correct = s.get("cards_correct_total",0)
+
+        draw_rounded_rect(surf, (18,22,38), (rx, 80, 230, 130), 12, 1, C_ORANGE)
+        draw_text(surf, "🔥 Streak", F_MED, C_ORANGE, rx+115, 86, center=True)
+        draw_text(surf, str(streak), F_BIG, C_YELLOW, rx+115, 108, center=True, shadow=True)
+        draw_text(surf, f"Bester: {best}", F_SMALL, C_GRAY, rx+115, 152, center=True)
+        draw_text(surf, f"Gesamt richtig: {total_correct}", F_TINY, C_GRAY, rx+115, 172, center=True)
+
+        # Next due cards
+        draw_rounded_rect(surf, (18,22,38), (rx, 230, 230, 220), 12, 1, (80,100,180))
+        draw_text(surf, "📅 Nächste fällig", F_SMALL, C_BLUE, rx+115, 238, center=True)
+        sorted_due = sorted([c3 for c3 in cards if c3.get("due","") > today],
+                             key=lambda c3: c3.get("due",""))[:5]
+        if sorted_due:
+            for di, dc in enumerate(sorted_due):
+                days_left = max(0, (_dt.date.fromisoformat(dc["due"]) - _dt.date.today()).days) if dc.get("due") else 0
+                draw_text(surf, dc["q"][:28] + ("…" if len(dc["q"])>28 else ""),
+                          F_TINY, C_WHITE, rx+12, 260+di*30)
+                col_d = (80,200,120) if days_left > 3 else (255,180,60)
+                draw_text(surf, f"in {days_left}d", F_TINY, col_d, rx+215, 260+di*30)
+        else:
+            draw_text(surf, "Alle Karten sind fällig!", F_TINY, C_GREEN, rx+115, 275, center=True)
+
+        # ── Per-CSV source breakdown (bottom left) ──
+        src_y = 430
+        pygame.draw.line(surf,(40,46,70),(lx,src_y),(lx+260,src_y),1)
+        draw_text(surf,"📁 Quellen:", F_TINY, C_GRAY, lx, src_y+4)
+        src_y += 18
+        srcs = {}
+        for c3 in self.cards:
+            src = c3.get("_src","flashcards.csv")
+            srcs[src] = srcs.get(src,0) + 1
+        active_files = get_active_csv_files(self.save)
+        fname_to_display = {f:d for f,d in active_files}
+        for fi,(fname,cnt) in enumerate(sorted(srcs.items())):
+            dname = fname_to_display.get(fname, os.path.splitext(fname)[0])
+            col = C_YELLOW if fname=="flashcards.csv" else (120,180,220)
+            draw_text(surf, f"• {dname}: {cnt}", F_TINY, col, lx, src_y)
+            src_y += 16
+            if src_y > SH - 30: break
+
+        draw_notifications(surf)
+
+
+class MysteryBoxScreen:
+    """Daily mystery box — open once per day for random items or a wild Pokémon encounter."""
+
+    # Possible item rewards: (save_key, display_name, amount, color, rarity_weight)
+    ITEM_POOL = [
+        ("coins",          "💰 Münzen",         50,  (255,215,0),   15),
+        ("coins",          "💰 Münzen",        200,  (255,215,0),   6),
+        ("coins",          "💰 Münzen",        500,  (255,200,50),  2),
+        ("potions",        "🧪 Trank",           2,  (100,220,130), 12),
+        ("super_potions",  "💊 Super Trank",     1,  (80,160,255),  8),
+        ("hyper_potions",  "💉 Hyper Trank",     1,  (200,100,255), 4),
+        ("pokeballs",      "🔵 Pokéball",        3,  (80,140,220),  12),
+        ("superballs",     "🟡 Superball",       2,  (220,180,60),  7),
+        ("masterballs",    "🟣 Meisterball",     1,  (180,50,220),  1),
+        ("sonderbonbons",  "🍬 Sonderbonbon",    1,  (255,180,230), 5),
+        ("raid_passes",    "🎫 Raid-Pass",       1,  (255,140,40),  4),
+        ("xp_boost",       "⚡ XP-Boost (1h)",  1,  (255,255,80),  3),
+    ]
+    POKEMON_CHANCE = 0.18   # 18% chance for a wild pokemon instead of item
+
+    def __init__(self, save, all_moonies):
+        self.save       = save
+        self.all_moonies = all_moonies
+        self.anim_t     = 0
+        self.phase      = "opening"   # opening → reveal → done
+        self.reward     = None        # {"type":"item","key":..,"name":..,"amount":..,"color":..} or {"type":"pokemon","name":..}
+        self.wild_battle = False      # if pokemon, trigger battle after close
+        self._pick_reward()
+
+    def _pick_reward(self):
+        if random.random() < self.POKEMON_CHANCE:
+            # Rare or uncommon pokemon
+            pool = [m for m in self.all_moonies.values()
+                    if m.rarity in ("rare","uncommon") and m.image]
+            if not pool:
+                pool = list(self.all_moonies.values())
+            mon = random.choice(pool)
+            self.reward = {"type": "pokemon", "name": mon.name, "rarity": mon.rarity}
+            self.wild_battle = True
+        else:
+            weights = [r[4] for r in self.ITEM_POOL]
+            total_w = sum(weights)
+            r_val   = random.uniform(0, total_w)
+            cumul   = 0
+            chosen  = self.ITEM_POOL[0]
+            for item in self.ITEM_POOL:
+                cumul += item[4]
+                if r_val <= cumul:
+                    chosen = item
+                    break
+            key, name, amount, color, _ = chosen
+            self.reward = {"type": "item", "key": key, "name": name,
+                           "amount": amount, "color": color}
+            # Apply reward to save immediately
+            if key == "xp_boost":
+                self.save["xp_boost_until"] = (_dt.datetime.now() + _dt.timedelta(hours=1)).isoformat()
+            else:
+                self.save[key] = self.save.get(key, 0) + amount
+            self.wild_battle = False
+        # Mark today as opened
+        self.save["mystery_box_date"] = _today_str()
+        add_rank_points(self.save, 2)
+
+    def handle_event(self, event):
+        if event.type != pygame.KEYDOWN: return None
+        if self.phase == "opening":
+            pass  # wait for animation
+        elif self.phase == "reveal":
+            self.phase = "done"
+        elif self.phase == "done":
+            if self.wild_battle:
+                return "mystery_pokemon"
+            return "close"
+        return None
+
+    def draw(self, surf):
+        self.anim_t += 1
+        t = self.anim_t
+
+        # Auto-advance phases
+        if t == 60:   self.phase = "reveal"
+
+        surf.fill((10, 6, 22))
+        # Particle background
+        for i in range(12):
+            angle = (i/12)*math.pi*2 + t*0.025
+            dist  = 110 + 30*math.sin(t*0.04 + i)
+            sx = int(SW//2 + math.cos(angle)*dist)
+            sy = int(SH//2 - 30 + math.sin(angle)*dist*0.5)
+            a  = int(100 + 80*math.sin(t*0.07 + i*0.8))
+            s2 = pygame.Surface((8,8), pygame.SRCALPHA)
+            pygame.draw.circle(s2,(180,120,255,a),(4,4),4)
+            surf.blit(s2,(sx-4,sy-4))
+
+        if self.phase == "opening":
+            # Shaking box animation
+            shake_x = int(math.sin(t*0.5)*min(t*0.3, 12))
+            shake_y = int(math.cos(t*0.7)*min(t*0.2, 6))
+            box_img = load_img("assets/mysteryBox.png", (180, 180))
+            bob = int(math.sin(t*0.12)*5)
+            surf.blit(box_img, (SW//2 - 90 + shake_x, SH//2 - 130 + bob + shake_y))
+            draw_text(surf, "Mystery Box öffnet sich...", F_BIG, (200,150,255), SW//2, SH//2+80, center=True, shadow=True)
+            # Flash effect near end of opening
+            if t > 45:
+                alpha = int(180 * (t-45)/15)
+                fl = pygame.Surface((SW,SH),pygame.SRCALPHA)
+                fl.fill((255,255,255,min(255,alpha)))
+                surf.blit(fl,(0,0))
+
+        elif self.phase in ("reveal", "done"):
+            r = self.reward
+            if r["type"] == "item":
+                # Big item reveal
+                col = r["color"]
+                # Glow circle
+                glow = pygame.Surface((300,300),pygame.SRCALPHA)
+                pulse = abs(math.sin(t*0.05))
+                pygame.draw.circle(glow, (*col, int(40+40*pulse)), (150,150), 150)
+                surf.blit(glow,(SW//2-150, SH//2-220))
+                draw_text(surf, r["name"], F_HUGE, col, SW//2, SH//2-80, center=True, shadow=True)
+                draw_text(surf, f"× {r['amount']}", F_BIG, C_WHITE, SW//2, SH//2-20, center=True, shadow=True)
+                draw_text(surf, "Du hast erhalten:", F_SMALL, C_GRAY, SW//2, SH//2-120, center=True)
+                # Coin-toss particles
+                add_particles(SW//2, SH//2-50, col, n=3, size=5)
+            else:
+                # Pokémon encounter teaser
+                mon = ALL_MOONIES_DICT.get(r["name"])
+                if mon:
+                    bob2 = int(math.sin(t*0.07)*8)
+                    img  = load_img(mon.image,(160,160))
+                    surf.blit(img,(SW//2-80, SH//2-180+bob2))
+                    glow2 = pygame.Surface((200,200),pygame.SRCALPHA)
+                    pygame.draw.circle(glow2,(200,150,255,60),(100,100),100)
+                    surf.blit(glow2,(SW//2-100,SH//2-190))
+                draw_text(surf,"Ein wildes Pokémon!", F_BIG,(200,150,255),SW//2,SH//2-20,center=True,shadow=True)
+                draw_text(surf, r["name"], F_HUGE, C_YELLOW, SW//2, SH//2+30, center=True, shadow=True)
+                rc = ALL_MOONIES_DICT.get(r["name"])
+                if rc:
+                    draw_text(surf, rc.rarity.capitalize(), F_SMALL, rc.get_rarity_color(), SW//2, SH//2+78, center=True)
+
+            if self.phase == "done":
+                draw_text(surf,"[ beliebige Taste ]",F_TINY,C_GRAY,SW//2,SH-32,center=True)
+            else:
+                draw_text(surf,"[ beliebige Taste ] weiter",F_TINY,(120,100,160),SW//2,SH-32,center=True)
+
+        update_particles(surf)
 
 
 class GuildScreen:
@@ -4004,82 +4773,235 @@ class ExamScreen:
 # EINSTELLUNGS-SCREEN
 # ══════════════════════════════════════════════════════════════════════════════
 class SettingsScreen:
-    ITEMS = [
-        {"key": "sfx_vol",    "label": "SFX Lautstärke",     "type": "range", "min": 0, "max": 10},
-        {"key": "music_vol",  "label": "Musik Lautstärke",   "type": "range", "min": 0, "max": 10},
-        {"key": "game_speed", "label": "Spielgeschwindigkeit","type": "choice","choices": [1,2], "labels": ["Normal","Schnell"]},
-        {"key": "show_hints", "label": "Tipps anzeigen",      "type": "bool"},
+    GENERAL_ITEMS = [
+        {"key": "sfx_vol",    "label": "SFX Lautstärke",      "type": "range",  "min": 0, "max": 10},
+        {"key": "music_vol",  "label": "Musik Lautstärke",    "type": "range",  "min": 0, "max": 10},
+        {"key": "game_speed", "label": "Spielgeschwindigkeit", "type": "choice", "choices": [1,2], "labels": ["Normal","Schnell"]},
+        {"key": "show_hints", "label": "Tipps anzeigen",       "type": "bool"},
     ]
+    TABS = ["⚙ Allgemein", "📚 Lernkarten"]
 
     def __init__(self, save):
-        self.save = save
-        self.sel  = 0
-        self.anim_t = 0
+        self.save     = save
+        self.tab      = 0      # 0=General, 1=Flashcards
+        self.sel      = 0
+        self.anim_t   = 0
         self.settings = save.setdefault("settings", {
             "sfx_vol": 5, "music_vol": 5, "game_speed": 1, "show_hints": True})
+        # Lernkarten tab state
+        self._csvs        = scan_csv_files()   # [(fname, display_name)]
+        self._csv_sel     = 0
+        self._csv_scroll  = 0
+        self._reload_cb   = None   # callback set by GameManager to reload flashcards
+        self.PER_PAGE     = 10
+
+    def _is_active(self, fname):
+        disabled = set(self.save.get("disabled_csvs", []))
+        enabled  = set(self.save.get("enabled_csvs",  []))
+        if fname == "flashcards.csv":
+            return fname not in disabled
+        return fname in enabled
+
+    def _toggle_csv(self, fname):
+        disabled = set(self.save.get("disabled_csvs", []))
+        enabled  = set(self.save.get("enabled_csvs",  []))
+        if fname == "flashcards.csv":
+            if fname in disabled: disabled.discard(fname)
+            else:                 disabled.add(fname)
+        else:
+            if fname in enabled: enabled.discard(fname)
+            else:                enabled.add(fname)
+        self.save["disabled_csvs"] = list(disabled)
+        self.save["enabled_csvs"]  = list(enabled)
+        # Notify GameManager to reload
+        if self._reload_cb:
+            self._reload_cb()
+        active_count = sum(1 for f,_ in self._csvs if self._is_active(f))
+        notify(f"Lernkarten neu geladen — {active_count} Datei(en) aktiv", C_GREEN, 180)
 
     def handle_event(self, event):
         if event.type != pygame.KEYDOWN: return None
         k = event.key
         if k in (pygame.K_ESCAPE, pygame.K_x): return "close"
-        if k in (pygame.K_UP, pygame.K_w):
-            self.sel = (self.sel - 1) % len(self.ITEMS)
-        elif k in (pygame.K_DOWN, pygame.K_s):
-            self.sel = (self.sel + 1) % len(self.ITEMS)
-        item = self.ITEMS[self.sel]
-        if item["type"] == "range":
-            if k in (pygame.K_LEFT, pygame.K_a):
-                self.settings[item["key"]] = max(item["min"], self.settings.get(item["key"],5)-1)
-            elif k in (pygame.K_RIGHT, pygame.K_d):
-                self.settings[item["key"]] = min(item["max"], self.settings.get(item["key"],5)+1)
-        elif item["type"] == "choice":
-            if k in (pygame.K_LEFT,pygame.K_a,pygame.K_RIGHT,pygame.K_d,pygame.K_RETURN,pygame.K_z):
-                choices = item["choices"]
-                cur = self.settings.get(item["key"], choices[0])
-                idx = choices.index(cur) if cur in choices else 0
-                self.settings[item["key"]] = choices[(idx+1)%len(choices)]
-        elif item["type"] == "bool":
-            if k in (pygame.K_LEFT,pygame.K_a,pygame.K_RIGHT,pygame.K_d,pygame.K_RETURN,pygame.K_z):
-                self.settings[item["key"]] = not self.settings.get(item["key"],True)
-        self.save["settings"] = self.settings
+        # Tab switch
+        if k == pygame.K_TAB or k == pygame.K_q:
+            self.tab = (self.tab + 1) % len(self.TABS)
+            self.sel = 0; self._csv_sel = 0; self._csv_scroll = 0
+            return None
+
+        if self.tab == 0:
+            # General settings
+            if k in (pygame.K_UP, pygame.K_w):
+                self.sel = (self.sel - 1) % len(self.GENERAL_ITEMS)
+            elif k in (pygame.K_DOWN, pygame.K_s):
+                self.sel = (self.sel + 1) % len(self.GENERAL_ITEMS)
+            item = self.GENERAL_ITEMS[self.sel]
+            if item["type"] == "range":
+                if k in (pygame.K_LEFT, pygame.K_a):
+                    self.settings[item["key"]] = max(item["min"], self.settings.get(item["key"],5)-1)
+                elif k in (pygame.K_RIGHT, pygame.K_d):
+                    self.settings[item["key"]] = min(item["max"], self.settings.get(item["key"],5)+1)
+            elif item["type"] == "choice":
+                if k in (pygame.K_LEFT,pygame.K_a,pygame.K_RIGHT,pygame.K_d,pygame.K_RETURN,pygame.K_z):
+                    choices = item["choices"]
+                    cur = self.settings.get(item["key"], choices[0])
+                    idx = choices.index(cur) if cur in choices else 0
+                    self.settings[item["key"]] = choices[(idx+1)%len(choices)]
+            elif item["type"] == "bool":
+                if k in (pygame.K_LEFT,pygame.K_a,pygame.K_RIGHT,pygame.K_d,pygame.K_RETURN,pygame.K_z):
+                    self.settings[item["key"]] = not self.settings.get(item["key"],True)
+            self.save["settings"] = self.settings
+
+        else:
+            # Lernkarten CSV toggle tab
+            total = len(self._csvs)
+            if k in (pygame.K_UP, pygame.K_w):
+                self._csv_sel = (self._csv_sel - 1) % max(1, total)
+                # Scroll
+                if self._csv_sel < self._csv_scroll:
+                    self._csv_scroll = self._csv_sel
+            elif k in (pygame.K_DOWN, pygame.K_s):
+                self._csv_sel = (self._csv_sel + 1) % max(1, total)
+                if self._csv_sel >= self._csv_scroll + self.PER_PAGE:
+                    self._csv_scroll = self._csv_sel - self.PER_PAGE + 1
+            elif k in (pygame.K_RETURN, pygame.K_z, pygame.K_SPACE):
+                if 0 <= self._csv_sel < total:
+                    fname, _ = self._csvs[self._csv_sel]
+                    self._toggle_csv(fname)
+            elif k == pygame.K_r:
+                # Rescan
+                self._csvs = scan_csv_files()
+                notify("CSV-Dateien neu gescannt!", C_BLUE, 140)
         return None
 
     def draw(self, surf):
         self.anim_t += 1
         overlay = pygame.Surface((SW,SH),pygame.SRCALPHA)
         overlay.fill((0,0,0,200)); surf.blit(overlay,(0,0))
-        pw,ph = 600,420; px,py = SW//2-pw//2, SH//2-ph//2
+
+        pw,ph = 720, 520; px,py = SW//2-pw//2, SH//2-ph//2
         draw_rounded_rect(surf,(14,18,40),(px,py,pw,ph),16,2,(80,100,160))
         draw_text(surf,"⚙ Einstellungen",F_BIG,C_WHITE,SW//2,py+10,center=True,shadow=True)
 
-        iy = py+60
-        for i,item in enumerate(self.ITEMS):
-            sel = (i == self.sel)
-            bg  = (30,50,90) if sel else (22,28,50)
-            draw_rounded_rect(surf,bg,(px+20,iy,pw-40,52),8,2 if sel else 1,C_BLUE if sel else (50,60,90))
-            draw_text(surf,item["label"],F_SMALL,C_YELLOW if sel else C_WHITE,px+40,iy+10)
-            val = self.settings.get(item["key"])
-            if item["type"] == "range":
-                bar_x = px+270; bar_w = pw-320
-                mx = item["max"]; mn = item["min"]
-                filled = int(bar_w*(val-mn)/(mx-mn)) if mx!=mn else 0
-                pygame.draw.rect(surf,(40,40,60),(bar_x,iy+18,bar_w,16),border_radius=8)
-                pygame.draw.rect(surf,C_BLUE,    (bar_x,iy+18,filled,16),border_radius=8)
-                draw_text(surf,str(val),F_SMALL,C_YELLOW,bar_x+bar_w+14,iy+16)
-                if sel:
-                    draw_text(surf,"◄ ►",F_TINY,C_GRAY,bar_x-28,iy+18)
-            elif item["type"] == "choice":
-                choices,labels = item["choices"],item["labels"]
-                idx = choices.index(val) if val in choices else 0
-                lbl = labels[idx]
-                draw_text(surf,f"◄ {lbl} ►",F_SMALL,C_YELLOW,px+pw-120,iy+16,center=True)
-            elif item["type"] == "bool":
-                onoff = "EIN" if val else "AUS"
-                col   = C_GREEN if val else C_RED
-                draw_text(surf,onoff,F_MED,col,px+pw-80,iy+12,center=True)
-            iy += 62
+        # Tab bar
+        tab_w = pw // len(self.TABS)
+        for ti, tlbl in enumerate(self.TABS):
+            tx = px + ti * tab_w
+            is_sel = (ti == self.tab)
+            draw_rounded_rect(surf,
+                (30,50,100) if is_sel else (20,26,50),
+                (tx+4, py+44, tab_w-8, 30), 8,
+                2 if is_sel else 1,
+                C_YELLOW if is_sel else (60,70,100))
+            draw_text(surf, tlbl, F_SMALL, C_YELLOW if is_sel else C_GRAY,
+                      tx+tab_w//2, py+49, center=True)
+        pygame.draw.line(surf,(60,70,100),(px+6,py+74),(px+pw-6,py+74),1)
 
-        draw_text(surf,"↑↓ navigieren   ◄► ändern   ESC schließen",F_TINY,C_GRAY,SW//2,py+ph-24,center=True)
+        # ── Tab 0: General ──
+        if self.tab == 0:
+            iy = py+82
+            for i,item in enumerate(self.GENERAL_ITEMS):
+                sel = (i == self.sel)
+                bg  = (30,50,90) if sel else (22,28,50)
+                draw_rounded_rect(surf,bg,(px+20,iy,pw-40,52),8,2 if sel else 1,C_BLUE if sel else (50,60,90))
+                draw_text(surf,item["label"],F_SMALL,C_YELLOW if sel else C_WHITE,px+40,iy+10)
+                val = self.settings.get(item["key"])
+                if item["type"] == "range":
+                    bar_x = px+290; bar_w2 = pw-350
+                    mx = item["max"]; mn = item["min"]
+                    filled = int(bar_w2*(val-mn)/(mx-mn)) if mx!=mn else 0
+                    pygame.draw.rect(surf,(40,40,60),(bar_x,iy+18,bar_w2,16),border_radius=8)
+                    pygame.draw.rect(surf,C_BLUE,    (bar_x,iy+18,filled,16),border_radius=8)
+                    draw_text(surf,str(val),F_SMALL,C_YELLOW,bar_x+bar_w2+14,iy+16)
+                    if sel: draw_text(surf,"◄ ►",F_TINY,C_GRAY,bar_x-28,iy+18)
+                elif item["type"] == "choice":
+                    choices,labels = item["choices"],item["labels"]
+                    idx = choices.index(val) if val in choices else 0
+                    draw_text(surf,f"◄ {labels[idx]} ►",F_SMALL,C_YELLOW,px+pw-120,iy+16,center=True)
+                elif item["type"] == "bool":
+                    onoff = "EIN" if val else "AUS"
+                    draw_text(surf,onoff,F_MED,C_GREEN if val else C_RED,px+pw-80,iy+12,center=True)
+                iy += 62
+            draw_text(surf,"↑↓ navigieren   ◄► ändern   TAB=Lernkarten   ESC schließen",
+                      F_TINY,C_GRAY,SW//2,py+ph-22,center=True)
+
+        # ── Tab 1: Lernkarten CSV ──
+        else:
+            csvs = self._csvs
+            total = len(csvs)
+            # Summary
+            active_cnt = sum(1 for f,_ in csvs if self._is_active(f))
+            active_cards = sum(len(load_flashcards(os.path.join(BASE,f)))
+                               for f,_ in csvs if self._is_active(f))
+            draw_rounded_rect(surf,(20,40,20),(px+16,py+80,pw-32,32),8,1,C_GREEN)
+            draw_text(surf,
+                f"✅ {active_cnt}/{total} Dateien aktiv  •  {active_cards} Karten geladen  •  [R] neu scannen",
+                F_SMALL,C_GREEN,SW//2,py+86,center=True)
+
+            # Column headers
+            draw_text(surf,"Dateiname / Anzeigename",F_TINY,C_GRAY,px+30,py+118)
+            draw_text(surf,"Karten",F_TINY,C_GRAY,px+pw-160,py+118)
+            draw_text(surf,"Status",F_TINY,C_GRAY,px+pw-80,py+118)
+            pygame.draw.line(surf,(50,60,90),(px+16,py+130),(px+pw-16,py+130),1)
+
+            if total == 0:
+                draw_text(surf,"Keine CSV-Dateien im Spielordner gefunden.", F_MED, C_GRAY, SW//2, py+250, center=True)
+                draw_text(surf,"Lege .csv-Dateien neben game.py ab.", F_SMALL, (100,110,140), SW//2, py+286, center=True)
+            else:
+                row_h = 46
+                visible_start = self._csv_scroll
+                visible_end   = min(total, visible_start + self.PER_PAGE)
+                for vi, idx in enumerate(range(visible_start, visible_end)):
+                    fname, dname = csvs[idx]
+                    ry = py + 134 + vi * row_h
+                    is_sel    = (idx == self._csv_sel)
+                    is_active = self._is_active(fname)
+                    is_main   = (fname == "flashcards.csv")
+
+                    bg  = (30,50,90) if is_sel else ((20,36,22) if is_active else (22,24,36))
+                    bdr = C_YELLOW if is_sel else (C_GREEN if is_active else (50,55,70))
+                    draw_rounded_rect(surf, bg, (px+14, ry, pw-28, row_h-4), 8, 2 if is_sel else 1, bdr)
+
+                    # Icon
+                    icon = "📚" if is_main else "📄"
+                    draw_text(surf, icon, F_SMALL, C_WHITE, px+28, ry+10)
+
+                    # Display name (big) + filename (small)
+                    name_col = C_YELLOW if is_main else C_WHITE
+                    draw_text(surf, dname, F_SMALL, name_col, px+52, ry+6)
+                    draw_text(surf, fname, F_TINY, (100,110,140), px+52, ry+26)
+
+                    # Card count
+                    try:
+                        card_count = len(load_flashcards(os.path.join(BASE, fname)))
+                        draw_text(surf, str(card_count), F_SMALL, C_GRAY, px+pw-150, ry+12, center=True)
+                    except:
+                        draw_text(surf, "?", F_SMALL, C_GRAY, px+pw-150, ry+12, center=True)
+
+                    # Toggle badge
+                    tog_col  = C_GREEN if is_active else (100,100,120)
+                    tog_bg   = (20,50,20) if is_active else (28,28,40)
+                    tog_lbl  = "AN" if is_active else "AUS"
+                    draw_rounded_rect(surf, tog_bg, (px+pw-98, ry+8, 70, 26), 8, 2, tog_col)
+                    draw_text(surf, tog_lbl, F_MED, tog_col, px+pw-63, ry+12, center=True)
+
+                    # Lock icon for main file (always re-toggleable, just special look)
+                    if is_main:
+                        draw_text(surf, "★", F_TINY, (200,180,60), px+pw-100, ry+10)
+
+                # Scrollbar if needed
+                if total > self.PER_PAGE:
+                    sb_x = px + pw - 10
+                    sb_h = self.PER_PAGE * row_h
+                    sb_y = py + 134
+                    pygame.draw.rect(surf,(35,40,60),(sb_x-4, sb_y, 6, sb_h),border_radius=3)
+                    thumb_h = max(20, int(sb_h * self.PER_PAGE / total))
+                    thumb_y = sb_y + int((sb_h - thumb_h) * self._csv_scroll / max(1, total - self.PER_PAGE))
+                    pygame.draw.rect(surf,C_BLUE,(sb_x-4, thumb_y, 6, thumb_h),border_radius=3)
+
+            draw_text(surf,"↑↓ navigieren   ENTER/SPACE = an/aus   R = neu scannen   TAB = Allgemein   ESC schließen",
+                      F_TINY,C_GRAY,SW//2,py+ph-22,center=True)
+
         draw_notifications(surf)
 
 
@@ -4192,7 +5114,7 @@ class TravelMenuScreen:
             draw_text(surf, weather_label, F_TINY, (160,170,200), cx + card_w//2, cy+80, center=True)
 
             # Badges: buildings present
-            bld_icons = {"shop":"🏪","center":"💊","arena":"⚔","blackmarket":"💀","daily":"❓","guild":"⚔","pc":"💾"}
+            bld_icons = {"shop":"🏪","center":"💊","arena":"⚔","blackmarket":"💀","daily":"❓","guild":"⚔","pc":"💾","mystery":"🎁"}
             bx2 = cx + 6
             for bk in sorted(md["buildings"]):
                 if bk == "pc": continue
@@ -4366,18 +5288,23 @@ class BlackMarketScreen:
 # ── Shop screen ────────────────────────────────────────────────────────────────
 class ShopScreen:
     ITEMS = [
-        {"name": "Pokéball x5",       "cost":    50, "desc": "Fange wilde Pokémon (5 Stück)",       "key": "balls",               "amount": 5,  "icon": "balls"},
-        {"name": "Trank",             "cost":    20, "desc": "Heilt 30 HP",                         "key": "potions",             "amount": 1,  "icon": "potions"},
-        {"name": "Super Trank",       "cost":    45, "desc": "Heilt 80 HP",                         "key": "super_potions",       "amount": 1,  "icon": "super_potions"},
-        {"name": "Trank x5",          "cost":    80, "desc": "Heilt 30 HP (5 Stück)",               "key": "potions",             "amount": 5,  "icon": "potions"},
-        {"name": "Hyper Trank",       "cost":   120, "desc": "Heilt 150 HP",                        "key": "hyper_potions",       "amount": 1,  "icon": "hyper_potions"},
-        {"name": "Energy Drink",      "cost":  3000, "desc": "3 Runden 2× Angriff, dann Pause",     "key": "redbull",             "amount": 1,  "icon": "redbull"},
-        {"name": "Sonderbonbon",      "cost":  5000, "desc": "+1 Level für ein Pokémon",            "key": "sonderbonbons",       "amount": 1,  "icon": "sonderbonbons"},
-        {"name": "Beleber",           "cost":   400, "desc": "Belebt besiegtes Pokémon (½ HP)",     "key": "beleber",             "amount": 1,  "icon": "beleber"},
-        {"name": "Top-Beleber",       "cost":   800, "desc": "Belebt besiegtes Pokémon (voll HP)",  "key": "top_beleber",         "amount": 1,  "icon": "top_beleber"},
-        {"name": "💎 Entwicklungsstein","cost":50000,"desc": "Entwickelt ein Pokémon sofort!",      "key": "entwicklungsstein",   "amount": 1,  "icon": "entwicklungsstein"},
-        {"name": "Raid-Pass",         "cost": 10000, "desc": "Zutritt zu einem Raid",               "key": "raid_passes",         "amount": 1,  "icon": "raid_passes"},
-        {"name": "Premium Raid-Pass", "cost": 30000, "desc": "Raid erleichtert + Zutritt",          "key": "premium_raid_passes", "amount": 1,  "icon": "premium_raid_passes"},
+        {"name": "Pokéball x5",       "cost":    50, "desc": "Fange wilde Pokémon (5 Stück)",          "key": "balls",               "amount": 5,  "icon": "balls"},
+        {"name": "Superball x3",      "cost":   180, "desc": "1.5× Fangrate (3 Stück)",                "key": "super_balls",         "amount": 3,  "icon": "super_balls"},
+        {"name": "Hyperball",         "cost":   120, "desc": "2× Fangrate",                            "key": "hyper_balls",         "amount": 1,  "icon": "hyper_balls"},
+        {"name": "Schnellball x3",    "cost":   150, "desc": "4× Fangrate in Runde 1",                 "key": "quick_balls",         "amount": 3,  "icon": "quick_balls"},
+        {"name": "Schwerball",        "cost":   200, "desc": "Besser vs. seltene Pokémon",             "key": "heavy_balls",         "amount": 1,  "icon": "heavy_balls"},
+        {"name": "Heilball",          "cost":   100, "desc": "Normal + gefangenes Pokémon voll HP",    "key": "heal_balls",          "amount": 1,  "icon": "heal_balls"},
+        {"name": "Trank",             "cost":    20, "desc": "Heilt 30 HP",                            "key": "potions",             "amount": 1,  "icon": "potions"},
+        {"name": "Super Trank",       "cost":    45, "desc": "Heilt 80 HP",                            "key": "super_potions",       "amount": 1,  "icon": "super_potions"},
+        {"name": "Trank x5",          "cost":    80, "desc": "Heilt 30 HP (5 Stück)",                  "key": "potions",             "amount": 5,  "icon": "potions"},
+        {"name": "Hyper Trank",       "cost":   120, "desc": "Heilt 150 HP",                           "key": "hyper_potions",       "amount": 1,  "icon": "hyper_potions"},
+        {"name": "Energy Drink",      "cost":  3000, "desc": "3 Runden 2× Angriff, dann Pause",        "key": "redbull",             "amount": 1,  "icon": "redbull"},
+        {"name": "Sonderbonbon",      "cost":  5000, "desc": "+1 Level für ein Pokémon",               "key": "sonderbonbons",       "amount": 1,  "icon": "sonderbonbons"},
+        {"name": "Beleber",           "cost":   400, "desc": "Belebt besiegtes Pokémon (½ HP)",        "key": "beleber",             "amount": 1,  "icon": "beleber"},
+        {"name": "Top-Beleber",       "cost":   800, "desc": "Belebt besiegtes Pokémon (voll HP)",     "key": "top_beleber",         "amount": 1,  "icon": "top_beleber"},
+        {"name": "💎 Entwicklungsstein","cost":50000,"desc": "Entwickelt ein Pokémon sofort!",         "key": "entwicklungsstein",   "amount": 1,  "icon": "entwicklungsstein"},
+        {"name": "Raid-Pass",         "cost": 10000, "desc": "Zutritt zu einem Raid",                  "key": "raid_passes",         "amount": 1,  "icon": "raid_passes"},
+        {"name": "Premium Raid-Pass", "cost": 30000, "desc": "Raid erleichtert + Zutritt",             "key": "premium_raid_passes", "amount": 1,  "icon": "premium_raid_passes"},
     ]
     VISIBLE = 6
     ROW_H   = 58
@@ -4614,7 +5541,7 @@ def day_night_icon(phase):
 MAP_DEFS = {
     "Normal":   {"bg":(45,80,45),  "grid":(42,75,42),   "grass_tint":(255,255,255),
                  "particle":(80,180,80),  "weather_pool":["Klar","Sonnig","Windig"],
-                 "buildings":{"shop","center","pc","daily","guild"},
+                 "buildings":{"shop","center","pc","daily","guild","mystery"},
                  "spawn_types":["Normal"],
                  "ambient":None, "name":"Normal-Welt", "icon":"⬜"},
 
@@ -4774,8 +5701,9 @@ class OverworldScreen:
     CENTER_RECT = pygame.Rect(210,  58, 140, 90)
     PC_RECT     = pygame.Rect(SW - 300, 58, 130, 80)
     ARENA_RECT  = pygame.Rect(SW//2 - 70, 58, 140, 90)
-    SKULL_RECT  = pygame.Rect(SW - 160, SH - 120, 130, 85)
-    DAILY_RECT  = pygame.Rect(SW//2 + 100, SH - 120, 130, 85)
+    SKULL_RECT   = pygame.Rect(SW - 160, SH - 120, 130, 85)
+    DAILY_RECT   = pygame.Rect(SW//2 + 100, SH - 120, 130, 85)
+    MYSTERY_RECT = pygame.Rect(50, SH - 120, 130, 85)
     MAX_TRAINERS = 4
 
     def __init__(self, save_data, flashcards, map_key="Normal"):
@@ -4784,7 +5712,7 @@ class OverworldScreen:
         self.map_def = MAP_DEFS.get(map_key, MAP_DEFS["Normal"])
         self.player_x=450.0; self.player_y=350.0; self.speed=3.0
         self.step_anim=0; self.encounter_timer=0
-        self.trainer_cooldown={}; self.center_cooldown=0; self.blackmarket_cooldown=0; self.daily_cooldown=0
+        self.trainer_cooldown={}; self.center_cooldown=0; self.blackmarket_cooldown=0; self.daily_cooldown=0; self.mystery_cooldown=0
         self.pending_action=None; self.in_grass=False; self.grass_particle_t=0
         self._ach_cb=None; self._trainers=[]; self._spawn_timer=random.randint(180,480)
         self._spawn_initial()
@@ -5153,6 +6081,9 @@ class OverworldScreen:
         elif "guild" in b and pr.colliderect(self.DAILY_RECT):
             self.pending_action="guild_building"
             if enter_pressed: return "guild_from_map"
+        elif "mystery" in b and self.mystery_cooldown==0 and pr.colliderect(self.MYSTERY_RECT):
+            self.pending_action="mystery"
+            if enter_pressed: return "mystery_box"
         elif pr.colliderect(self.PC_RECT):  # pc always available
             self.pending_action="pc"
         else: self.pending_action=None
@@ -5175,6 +6106,7 @@ class OverworldScreen:
         b    = self._buildings
 
         surf.fill(bg)
+        pr=pygame.Rect(int(self.player_x)-12,int(self.player_y)-20,24,40)
         for gx in range(0,SW,40): pygame.draw.line(surf,grid,(gx,54),(gx,SH))
         for gy in range(54,SH,40): pygame.draw.line(surf,grid,(0,gy),(SW,gy))
 
@@ -5230,6 +6162,29 @@ class OverworldScreen:
             skull_img=load_img("assets/skull.png",(self.SKULL_RECT.width,self.SKULL_RECT.height))
             surf.blit(skull_img,(self.SKULL_RECT.x,self.SKULL_RECT.y))
             draw_text(surf,"💀 Schwarzmarkt",F_TINY,(180,50,220),self.SKULL_RECT.centerx,self.SKULL_RECT.bottom+3,center=True,shadow=True)
+        if "mystery" in b:
+            t_ms = pygame.time.get_ticks()
+            pulse_m = abs(math.sin(t_ms * 0.002))
+            can_open = self.mystery_cooldown == 0
+            # Check if daily mystery already opened
+            today_opened = self.save.get("mystery_box_date","") == _today_str()
+            mbox_col = (100,100,110) if today_opened else (180,120,255)
+            if not today_opened and can_open:
+                glow_m = pygame.Surface((self.MYSTERY_RECT.width+20,self.MYSTERY_RECT.height+20),pygame.SRCALPHA)
+                pygame.draw.rect(glow_m,(180,120,255,int(50+60*pulse_m)),(0,0,self.MYSTERY_RECT.width+20,self.MYSTERY_RECT.height+20),border_radius=14)
+                surf.blit(glow_m,(self.MYSTERY_RECT.x-10,self.MYSTERY_RECT.y-10))
+            mbox_img = load_img("assets/mysteryBox.png",(self.MYSTERY_RECT.width, self.MYSTERY_RECT.height))
+            if today_opened:
+                dim = pygame.Surface(mbox_img.get_size(), pygame.SRCALPHA)
+                dim.fill((0,0,0,120))
+                mbox_img = mbox_img.copy(); mbox_img.blit(dim,(0,0))
+            surf.blit(mbox_img,(self.MYSTERY_RECT.x, self.MYSTERY_RECT.y))
+            lbl = "✓ Heute geöffnet" if today_opened else "Mystery Box"
+            draw_text(surf, lbl, F_TINY, mbox_col, self.MYSTERY_RECT.centerx, self.MYSTERY_RECT.bottom+3, center=True, shadow=True)
+            if not today_opened and pr.colliderect(self.MYSTERY_RECT):
+                draw_text(surf,"[ ENTER ] Öffnen!",F_SMALL,(200,150,255),self.MYSTERY_RECT.centerx,self.MYSTERY_RECT.bottom+18,center=True,shadow=True)
+            elif today_opened and pr.colliderect(self.MYSTERY_RECT):
+                draw_text(surf,"Komm morgen wieder!",F_TINY,C_GRAY,self.MYSTERY_RECT.centerx,self.MYSTERY_RECT.bottom+18,center=True)
         # PC always visible
         bw=120
         draw_rounded_rect(surf,(30,50,90),(self.PC_RECT.x,self.PC_RECT.y,bw,self.PC_RECT.height),10,2,C_BLUE)
@@ -5238,7 +6193,6 @@ class OverworldScreen:
         draw_rounded_rect(surf,(30,80,60),(self.PC_RECT.x+bw+6,self.PC_RECT.y,bw,self.PC_RECT.height),10,2,C_GREEN)
         draw_text(surf,"PC-Box",F_TINY,C_GREEN,self.PC_RECT.x+bw+6+bw//2,self.PC_RECT.centery-7,center=True)
         draw_text(surf,"[ P ]",F_TINY,C_GRAY,self.PC_RECT.x+bw+6+bw//2,self.PC_RECT.centery+9,center=True)
-        pr=pygame.Rect(int(self.player_x)-12,int(self.player_y)-20,24,40)
         # Daily event or Guild building (share the DAILY_RECT slot)
         pulse_d = abs(math.sin(pygame.time.get_ticks()*0.003))
         if "daily" in b:
@@ -5323,6 +6277,13 @@ class OverworldScreen:
         w_data = get_map_weather(cur_mk, self.save)
         phase_now, _, _ = get_time_of_day()
         dn_ico = day_night_icon(phase_now)
+        held_name = self.save.get("held_moonie","")
+        if held_name:
+            hm = ALL_MOONIES_DICT.get(held_name)
+            if hm:
+                himg = load_img(hm.image, (22,22))
+                surf.blit(himg, (SW-310, 1))
+            draw_text(surf,f"⭐{held_name}",F_TINY,C_YELLOW,SW-286,7)
         draw_text(surf,f"{dn_ico} {w_data['icon']} {w_data['name']}",F_TINY,w_data["color"],SW-110,7)
 
         # ── HUD Row 2: Shortcut Buttons (height 26, at y=28) ──
@@ -5337,7 +6298,7 @@ class OverworldScreen:
             ("[K] Schwarzm.", (180,50,220)),
             ("[G] Gilde",     C_ORANGE),
             ("[E] Prüfung",   C_BLUE),
-            ("[O] Settings",  C_GRAY),
+            ("[O] Einstellungen", C_GRAY),
             ("[R] Reisen",    C_YELLOW),
             ("[V] Editor",    (140,80,180)),
         ]
@@ -5519,8 +6480,13 @@ def _eevee_set():
 
 class GameManager:
     def __init__(self):
-        self.flashcards = load_flashcards(os.path.join(BASE, "flashcards.csv"))
+        self.csv_path   = os.path.join(BASE, "flashcards.csv")
+        self.flashcards = load_flashcards(self.csv_path)  # temp until save loaded
         self.card_editor = None
+        self.lern_stat_screen = None
+        self.new_dex_screen = None
+        self._new_dex_entry = None
+        self.mystery_box_screen = None
         random.shuffle(self.flashcards)
         self.save = None; self.team = []
         self.screen_state = "title"
@@ -5551,6 +6517,7 @@ class GameManager:
 
     def start_new_game(self, save_data):
         self.save = save_data
+        self.flashcards = load_active_flashcards(self.save)
         starter_name = save_data.get("starter","Bisasam")
         starter = get_moonie(starter_name)
         self.team = [starter]; self.save["team"] = [starter_name]
@@ -5567,6 +6534,7 @@ class GameManager:
     def load_existing_game(self):
         self.save = load_game()
         if self.save is None: self.save = default_save()
+        self.flashcards = load_active_flashcards(self.save)
         raw_team = self.save.get("team", ["Bisasam", "Glumanda", "Schiggy"])
         # Support both old format (list of names) and new format (list of dicts)
         self.team = [
@@ -5586,36 +6554,63 @@ class GameManager:
 
     def start_wild_battle(self):
         step = self.save.get("step_count",0)
-        rarity = "common" if step<500 else "uncommon" if step<2000 else "rare"
-        pool = get_wild_pool([rarity])
-        # Filter by map spawn types
+        # Build a weighted pool: all pokemon can spawn, but rarity controls probability
+        # Common: weight 10, Uncommon: weight 4, Rare: weight 1.5, Legendary: weight 0.3
+        all_pool = list(ALL_MOONIES_DICT.values())
+        RARITY_WEIGHTS = {"common": 10, "uncommon": 4, "rare": 1.5, "legendary": 0.3}
+        # As step increases, rare pokemon become more common (but never as common as common)
+        rare_boost = min(3.0, 1.0 + step / 2000)
+        weights = []
+        for m in all_pool:
+            base_w = RARITY_WEIGHTS.get(m.rarity, 4)
+            if m.rarity in ("rare","legendary"):
+                base_w *= rare_boost
+            weights.append(base_w)
+        # Filter by map spawn types — keep full pool but zero-out non-matching types
         cur_map = self.save.get("current_map","Normal")
         md = MAP_DEFS.get(cur_map, MAP_DEFS["Normal"])
         spawn_types = md.get("spawn_types")
         if spawn_types:
-            typed_pool = [m for m in pool if any(t in m.types for t in spawn_types)]
-            if typed_pool: pool = typed_pool
-        # Time-of-day spawn modifier
+            # Instead of hard-filter: reduce weight of non-matching types to 15%
+            weights = [w * (1.0 if any(t in m.types for t in spawn_types) else 0.15)
+                       for m, w in zip(all_pool, weights)]
+        pool_weighted = list(zip(all_pool, weights))
+        # Time-of-day spawn modifier: boost certain types by multiplying their weight
         phase_w, _, _ = get_time_of_day()
-        if phase_w in ("night", "evening"):
-            # Ghost/Dark/Psychic more common at night
-            bonus_types = {"Geist", "Dunkel", "Psycho"}
-            bonus_pool = [m for m in pool if any(t in m.types for t in bonus_types)]
-            if bonus_pool: pool = pool + bonus_pool * 2
-        elif phase_w in ("dawn", "morning"):
-            # Flying/Normal more common in the morning
-            bonus_types = {"Flug", "Normal", "Fee"}
-            bonus_pool = [m for m in pool if any(t in m.types for t in bonus_types)]
-            if bonus_pool: pool = pool + bonus_pool
-        elif phase_w in ("day", "afternoon"):
-            # Fire/Grass/Bug more common midday
-            bonus_types = {"Feuer", "Pflanze", "Käfer"}
-            bonus_pool = [m for m in pool if any(t in m.types for t in bonus_types)]
-            if bonus_pool: pool = pool + bonus_pool
-        # Apply map weather modifier
+        TIME_BOOST = {
+            "night":   ({"Geist","Dunkel","Psycho"}, 2.5),
+            "evening": ({"Geist","Dunkel","Psycho"}, 1.8),
+            "dawn":    ({"Flug","Normal","Fee"},      1.5),
+            "morning": ({"Flug","Normal","Fee"},      1.4),
+            "day":     ({"Feuer","Pflanze","Käfer"},  1.4),
+            "afternoon":({"Feuer","Pflanze","Käfer"}, 1.3),
+        }
+        if phase_w in TIME_BOOST:
+            boost_types, boost_mult = TIME_BOOST[phase_w]
+            pool_weighted = [
+                (m, w * (boost_mult if any(t in m.types for t in boost_types) else 1.0))
+                for m, w in pool_weighted
+            ]
+        # Weather modifier: use spawn_mod weights from weather definition
         weather = get_map_weather(cur_map, self.save)
-        pool = weather_modified_pool(pool, weather)
-        wild = random.choice(pool).clone_for_battle()
+        spawn_mod = weather.get("spawn_mod", {})
+        if spawn_mod:
+            pool_weighted = [
+                (m, w * max(spawn_mod.get(t, 1.0) for t in m.types))
+                for m, w in pool_weighted
+            ]
+        # Weighted random choice
+        moonies, w_vals = zip(*pool_weighted)
+        total_w = sum(w_vals)
+        r = random.uniform(0, total_w)
+        cumul = 0.0
+        wild_base = moonies[0]
+        for m, w in zip(moonies, w_vals):
+            cumul += w
+            if r <= cumul:
+                wild_base = m
+                break
+        wild = wild_base.clone_for_battle()
         wild.level = max(1, min(50, step//40 + random.randint(1,5)))
         wild.max_hp = wild.max_hp + wild.level*2; wild.current_hp = wild.max_hp
         # Mark as seen in pokédex
@@ -5778,6 +6773,7 @@ class GameManager:
                     notify(f"Raid gewonnen, aber nur {self.battle.raid_cards_answered}/{self.battle.raid_cards_needed} Lernkarten! Kein Fangen.", C_RED, 300)
             # Check evolutions (level-based) — branching = random
             self._pending_evos = []
+            self._pending_evo_names = []  # list of (old_name, new_name) for the queue
             for m in self.team:
                 if m.can_evolve() and m.nextEvolution:
                     evo_val = m.nextEvolution
@@ -5789,6 +6785,7 @@ class GameManager:
             for moonie_obj, evo_name in self._pending_evos:
                 if moonie_obj not in self.team: continue
                 old_name = moonie_obj.name
+                self._pending_evo_names.append((old_name, evo_name))   # save before replacing
                 new_m = get_moonie(evo_name)
                 new_m.level = moonie_obj.level; new_m.xp = moonie_obj.xp
                 new_m.max_hp = max(new_m.max_hp, moonie_obj.max_hp+10)
@@ -5809,12 +6806,28 @@ class GameManager:
         elif result == "catch":
             caught_name = self.battle.enemy_moonie.name if self.battle.enemy_moonie else "Unbekannt"
             pc = self.save.get("pc_box",[])
+            is_new_dex = caught_name not in pc   # True if first time catching this species
             if caught_name not in pc: pc.append(caught_name)
             self.save["pc_box"] = pc
+            # Heilball: the caught pokémon arrives at full HP
+            ball_type = getattr(self.battle, "_catch_ball_type", "standard")
+            if ball_type == "heal":
+                notify(f"💚 Heilball: {caught_name} wurde vollständig geheilt!", (100,255,150), 200)
+            # Also mark as seen
+            seen = self.save.setdefault("dex_seen", [])
+            if caught_name not in seen:
+                seen.append(caught_name)
             self.save["total_catches"] = self.save.get("total_catches",0)+1
             add_rank_points(self.save, 3)
             update_challenges(self.save)
-            notify(f"{caught_name} wurde zum PC hinzugefügt!", C_GREEN, 160)
+            if is_new_dex:
+                dex_total  = len(ALL_MOONIES_DICT)
+                dex_caught = len(self.save.get("pc_box",[]))
+                add_rank_points(self.save, 5)   # bonus RP for new entry
+                # Store for new-dex screen (shown after battle cleanup)
+                self._new_dex_entry = (caught_name, dex_caught, dex_total)
+            else:
+                notify(f"{caught_name} wurde zum PC hinzugefügt!", C_GREEN, 160)
             try_card_drop(caught_name, self.save)
             if random.random() < 0.08:
                 self.save["sonderbonbons"] = self.save.get("sonderbonbons",0)+1
@@ -5835,17 +6848,38 @@ class GameManager:
         save_game(self.save)
         self.battle = None
 
-        # Show evolution screens for level-based evos
-        if hasattr(self,'_pending_evos') and self._pending_evos:
-            _, evo_name = self._pending_evos[-1]
-            # Find old name (first in list)
-            old_n, _ = (self._pending_evos[0][0].name, evo_name) if self._pending_evos else ("?", evo_name)
-            # Build queue for evo screens — simple: show first pending
-            self.evo_screen = EvolutionScreen(self._pending_evos[0][0].name if hasattr(self._pending_evos[0][0],'name') else "?", self._pending_evos[0][1], self.team)
+        # Build evo queue first (so new_dex screen can hand off to it)
+        self._evo_queue = []
+        if hasattr(self,'_pending_evo_names') and self._pending_evo_names:
+            self._evo_queue = list(self._pending_evo_names)
+            self._pending_evo_names = []
             self._pending_evos = []
+
+        # Show NewDexEntryScreen first if a new pokédex entry was caught
+        if hasattr(self, '_new_dex_entry') and self._new_dex_entry:
+            cname, dc, dt = self._new_dex_entry
+            self._new_dex_entry = None
+            self.new_dex_screen = NewDexEntryScreen(cname, dc, dt, self.save)
+            self.screen_state = "new_dex_entry"; return
+
+        # Then show evolution screens
+        if self._evo_queue:
+            old_n, new_n = self._evo_queue.pop(0)
+            self.evo_screen = EvolutionScreen(old_n, new_n, self.team)
             self.screen_state = "evolution"; return
 
         self.screen_state = "overworld"
+
+    def reload_flashcards(self):
+        """Reload flashcards from all active CSVs — called when settings change."""
+        persist_srs_state(self.save, self.flashcards)
+        self.flashcards = load_active_flashcards(self.save)
+        FlashcardGame._save_ref = self.save
+        # Propagate to any open battle or exam
+        if self.battle:
+            self.battle.flashcards = self.flashcards
+        if hasattr(self, 'exam_screen') and self.exam_screen:
+            self.exam_screen.flashcards = self.flashcards
 
     def run(self):
         global shake_timer
@@ -5884,16 +6918,43 @@ class GameManager:
                         elif event.key == pygame.K_a: self.ach_screen = AchievementScreen(self.save, self.flashcards, ALL_MOONIES_DICT); self.screen_state = "achievements"
                         elif event.key == pygame.K_c: self.card_album_screen = CardAlbumScreen(self.save); self.screen_state = "card_album"
                         elif event.key == pygame.K_k: self.blackmarket_screen = BlackMarketScreen(self.save); self.screen_state = "blackmarket"
-                        elif event.key == pygame.K_t: self.team_screen = TeamScreen(self.team, self.save); self.screen_state = "team"
+                        elif event.key == pygame.K_t:
+                            # Check friendship evolutions before opening
+                            for fmon, fevo_name in check_friendship_evolution(self.save, self.team):
+                                fevo = ALL_MOONIES_DICT.get(fevo_name)
+                                if fevo:
+                                    fmon.name = fevo_name
+                                    fmon.types = fevo.types[:]
+                                    fmon.max_hp = fevo.max_hp + fmon.level*2
+                                    fmon.current_hp = min(fmon.current_hp, fmon.max_hp)
+                                    fmon.attack = fevo.attack
+                                    fmon.image = fevo.image
+                                    fmon.nextEvolution = fevo.nextEvolution
+                                    fmon.rarity = fevo.rarity
+                                    notify(f"✨ {fmon.name} hat sich entwickelt!", C_YELLOW, 240)
+                                    pc = self.save.setdefault("pc_box",[])
+                                    if fevo_name not in pc: pc.append(fevo_name)
+                            self.team_screen = TeamScreen(self.team, self.save); self.screen_state = "team"
                         elif event.key == pygame.K_i: self.item_bag = ItemBagScreen(self.save, self.team); self.screen_state = "itembag"
                         elif event.key == pygame.K_g: self.guild_screen = GuildScreen(self.save); self.screen_state = "guild"
                         elif event.key == pygame.K_e: self.exam_screen = ExamScreen(self.save, self.flashcards); self.screen_state = "exam"
-                        elif event.key == pygame.K_o: self.settings_screen = SettingsScreen(self.save); self.screen_state = "settings"
+                        elif event.key == pygame.K_o:
+                            self.settings_screen = SettingsScreen(self.save)
+                            self.settings_screen._reload_cb = self.reload_flashcards
+                            self.screen_state = "settings"
+                        elif event.key == pygame.K_v:
+                            self.card_editor = CardEditorScreen(self.flashcards, self.csv_path, save=self.save)
+                            self.screen_state = "card_editor"
+                        elif event.key == pygame.K_l:
+                            self.lern_stat_screen = LernstatistikScreen(self.flashcards, self.save)
+                            self.screen_state = "lernstat"
                         elif event.key == pygame.K_r:
                             cur = self.save.get("current_map","Normal")
                             self.travel_screen = TravelMenuScreen(self.save, cur)
                             self.screen_state = "travel"
-                        elif event.key == pygame.K_ESCAPE: save_game(self.save); notify("Spiel gespeichert!", C_GREEN)
+                        elif event.key == pygame.K_ESCAPE:
+                            persist_srs_state(self.save, self.flashcards)
+                            save_game(self.save); notify("Spiel gespeichert!", C_GREEN)
 
                 # Battle
                 elif self.screen_state == "battle" and self.battle:
@@ -5969,6 +7030,14 @@ class GameManager:
                         save_game(self.save)
 
                 # Exam
+                elif self.screen_state == "lernstat" and self.lern_stat_screen:
+                    result = self.lern_stat_screen.handle_event(event)
+                    if result == "close": self.screen_state = "overworld"
+                elif self.screen_state == "card_editor" and self.card_editor:
+                    result = self.card_editor.handle_event(event)
+                    if result == "close":
+                        self.card_editor = None
+                        self.screen_state = "overworld"
                 elif self.screen_state == "exam" and self.exam_screen:
                     result = self.exam_screen.handle_event(event)
                     if result == "close":
@@ -5980,6 +7049,7 @@ class GameManager:
                 elif self.screen_state == "settings" and self.settings_screen:
                     result = self.settings_screen.handle_event(event)
                     if result == "close":
+                        self.reload_flashcards()
                         self.screen_state = "overworld"
                         save_game(self.save)
 
@@ -6000,10 +7070,53 @@ class GameManager:
                         self.screen_state = "overworld"
                         self.start_raid_battle(premium=(result[1]=="premium"))
 
+                # Mystery Box
+                elif self.screen_state == "mystery_box" and self.mystery_box_screen:
+                    result = self.mystery_box_screen.handle_event(event)
+                    if result == "mystery_pokemon":
+                        # Start a wild battle with the mystery pokemon
+                        mon_name = self.mystery_box_screen.reward["name"]
+                        mon = ALL_MOONIES_DICT.get(mon_name)
+                        if mon:
+                            wild = mon.clone_for_battle()
+                            wild.level = random.randint(15, 35)
+                            wild.max_hp = wild.max_hp + wild.level*2
+                            wild.current_hp = wild.max_hp
+                            seen = self.save.setdefault("dex_seen", [])
+                            if wild.name not in seen: seen.append(wild.name)
+                            self.battle = Battle(self.team, None, wild_moonie=wild,
+                                                 flashcards=self.flashcards, is_wild=True)
+                            self.battle.save_data_ref = self.save
+                        self.mystery_box_screen = None
+                        self.screen_state = "battle"
+                    elif result == "close":
+                        self.mystery_box_screen = None
+                        self.screen_state = "overworld"
+
+                # New Pokédex Entry Screen
+                elif self.screen_state == "new_dex_entry" and self.new_dex_screen:
+                    result = self.new_dex_screen.handle_event(event)
+                    if result == "done":
+                        self.new_dex_screen = None
+                        # Now check evo queue
+                        if hasattr(self, '_evo_queue') and self._evo_queue:
+                            old_n, new_n = self._evo_queue.pop(0)
+                            self.evo_screen = EvolutionScreen(old_n, new_n, self.team)
+                            self.screen_state = "evolution"
+                        else:
+                            self.screen_state = "overworld"
+
                 # Evolution
                 elif self.screen_state == "evolution" and self.evo_screen:
                     result = self.evo_screen.handle_event(event)
-                    if result == "done": self.evo_screen = None; self.screen_state = "overworld"
+                    if result == "done":
+                        self.evo_screen = None
+                        # Check if more evolutions are queued
+                        if hasattr(self, '_evo_queue') and self._evo_queue:
+                            old_n, new_n = self._evo_queue.pop(0)
+                            self.evo_screen = EvolutionScreen(old_n, new_n, self.team)
+                        else:
+                            self.screen_state = "overworld"
 
                 # Pokedex
                 elif self.screen_state == "pokedex" and self.pokedex:
@@ -6057,9 +7170,18 @@ class GameManager:
                 elif action == "raid_pass_select":
                     self.raid_pass_screen = RaidPassSelectScreen(self.save, self.overworld.raid)
                     self.screen_state = "raid_pass_select"
+                elif action == "mystery_box":
+                    today_opened = self.save.get("mystery_box_date","") == _today_str()
+                    if today_opened:
+                        notify("Du hast die Mystery Box heute schon geöffnet! Komm morgen wieder.", C_GRAY, 200)
+                    else:
+                        self.mystery_box_screen = MysteryBoxScreen(self.save, ALL_MOONIES_DICT)
+                        self.screen_state = "mystery_box"
             elif self.screen_state == "battle" and self.battle:
                 self.battle.update()
                 if self.battle.state == "done": self.end_battle()
+            elif self.screen_state == "new_dex_entry" and self.new_dex_screen:
+                self.new_dex_screen.update()
             elif self.screen_state == "evolution" and self.evo_screen:
                 self.evo_screen.update()
             elif self.screen_state == "stein_mon" and self.stein_mon_screen:
@@ -6083,6 +7205,8 @@ class GameManager:
             elif self.screen_state == "center" and self.center: self.center.draw(surface)
             elif self.screen_state == "team" and self.team_screen: self.team_screen.draw(surface)
             elif self.screen_state == "itembag" and self.item_bag: self.item_bag.draw(surface)
+            elif self.screen_state == "mystery_box" and self.mystery_box_screen: self.mystery_box_screen.draw(surface)
+            elif self.screen_state == "new_dex_entry" and self.new_dex_screen: self.new_dex_screen.draw(surface)
             elif self.screen_state == "evolution" and self.evo_screen: self.evo_screen.draw(surface)
             elif self.screen_state == "pcbox" and self.pc_box_screen: self.pc_box_screen.draw(surface)
             elif self.screen_state == "achievements" and self.ach_screen: self.ach_screen.draw(surface)
@@ -6096,6 +7220,8 @@ class GameManager:
             elif self.screen_state == "raid_pass_select" and hasattr(self,'raid_pass_screen'):
                 if self.overworld: self.overworld.draw(surface)
                 self.raid_pass_screen.draw(surface)
+            elif self.screen_state == "lernstat" and self.lern_stat_screen: self.lern_stat_screen.draw(surface)
+            elif self.screen_state == "card_editor" and self.card_editor: self.card_editor.draw(surface)
             elif self.screen_state == "pokedex" and self.pokedex: self.pokedex.draw(surface)
             elif self.screen_state == "stein_mon" and self.stein_mon_screen: self.stein_mon_screen.draw(surface)
             elif self.screen_state == "stein_evo" and self.stein_evo_screen: self.stein_evo_screen.draw(surface)
